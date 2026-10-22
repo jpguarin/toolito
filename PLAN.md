@@ -78,8 +78,8 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Objetivo:** el esqueleto del sitio con diseño base.
 **Aprendes:** estructura de Astro, componentes `.astro`, layouts, rutas por archivos, Tailwind.
 
-- [ ] Tutorial oficial de Astro (fuera del proyecto, unas horas)
-- [ ] Crear `web/` con Astro + TypeScript estricto
+- [x] ~~Tutorial oficial de Astro~~ (omitido: aprendemos Astro construyendo `web/`)
+- [x] Crear `web/` con Astro + TypeScript estricto
 - [x] Exportar las capturas de las pantallas a `design/screens/` (ver `design/screens/README.md`)
 - [ ] Copiar `design/tokens.css` a `web/src/styles/`, importarlo en el layout y conectar Tailwind a esas variables; cargar Bungee, Work Sans y Caveat
 - [ ] Script en línea en el `<head>` que elige el tema antes de pintar (sin parpadeo)
