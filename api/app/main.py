@@ -1,6 +1,5 @@
 """FastAPI application and HTTP routes."""
 
-import shutil
 import tempfile
 from pathlib import Path
 from typing import Annotated
@@ -9,7 +8,9 @@ from fastapi import FastAPI, File, Form, Response, UploadFile
 
 from app import __version__
 from app.compressor import Level, compress_pdf
+from app.config import settings
 from app.errors import register_error_handlers
+from app.validation import check_pdf, save_upload
 
 app = FastAPI(
     title="Toolito API",
@@ -40,8 +41,8 @@ def compress_pdf_route(
     with tempfile.TemporaryDirectory(prefix="toolito-") as workdir:
         input_path = Path(workdir) / "input.pdf"
         output_path = Path(workdir) / "output.pdf"
-        with input_path.open("wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
+        save_upload(file.file, input_path, settings.max_file_bytes)
+        check_pdf(input_path, settings.max_pages)
         result = compress_pdf(input_path, output_path, level)
         # Read into memory before the folder disappears (max 30 MB).
         content = output_path.read_bytes()
