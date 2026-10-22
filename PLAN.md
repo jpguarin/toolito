@@ -81,8 +81,8 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] ~~Tutorial oficial de Astro~~ (omitido: aprendemos Astro construyendo `web/`)
 - [x] Crear `web/` con Astro + TypeScript estricto
 - [x] Exportar las capturas de las pantallas a `design/screens/` (ver `design/screens/README.md`)
-- [ ] Copiar `design/tokens.css` a `web/src/styles/`, importarlo en el layout y conectar Tailwind a esas variables; cargar Bungee, Work Sans y Caveat
-- [ ] Script en línea en el `<head>` que elige el tema antes de pintar (sin parpadeo)
+- [x] Copiar `design/tokens.css` a `web/src/styles/`, importarlo en el layout y conectar Tailwind a esas variables; cargar Bungee, Work Sans y Caveat
+- [x] Script en línea en el `<head>` que elige el tema antes de pintar (sin parpadeo)
 - [ ] Cambio automático en vivo: reevaluar la hora cada minuto y al volver a la pestaña (sin interruptor de tema)
 - [ ] Función `resolveTheme(hour)` con tests de las horas límite (6, 7, 18, 19)
 - [ ] `BaseLayout.astro` con cabecera (toldo + letrero), pie y metadatos SEO

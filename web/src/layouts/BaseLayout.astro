@@ -2,6 +2,7 @@
 // Minimal shell: styles, fonts and metadata. Header, footer and full SEO
 // tags come in the "BaseLayout" task of PLAN.md (stage 4).
 import { Font } from "astro:assets";
+import { DAY_START, NIGHT_START } from "../lib/theme";
 import "../styles/global.css";
 
 interface Props {
@@ -16,6 +17,18 @@ const { title, description } = Astro.props;
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <!--
+      Pick the theme before the first paint (no flash of the wrong theme).
+      Mirrors resolveTheme() in src/lib/theme.ts; the hours come from there.
+      ?theme=light|dark is a test-only override: never saved, never linked.
+    -->
+    <script is:inline define:vars={{ DAY_START, NIGHT_START }}>
+      var hour = new Date().getHours();
+      var theme = hour >= DAY_START && hour < NIGHT_START ? "light" : "dark";
+      var forced = new URLSearchParams(location.search).get("theme");
+      if (forced === "light" || forced === "dark") theme = forced;
+      document.documentElement.dataset.theme = theme;
+    </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
