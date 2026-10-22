@@ -10,9 +10,16 @@ from fastapi.testclient import TestClient
 from PIL import Image
 
 from app.main import app
+from app.rate_limit import limiter
 
 PHOTO_SIZE = (3000, 2000)
 SAMPLE_TEXT = b"Hello Toolito"
+
+
+@pytest.fixture(autouse=True)
+def reset_rate_limits() -> None:
+    """Each test starts with fresh counters, so tests never hit 429 by accident."""
+    limiter.reset()
 
 
 @pytest.fixture

@@ -4,12 +4,13 @@ import tempfile
 from pathlib import Path
 from typing import Annotated
 
-from fastapi import FastAPI, File, Form, Response, UploadFile
+from fastapi import FastAPI, File, Form, Request, Response, UploadFile
 
 from app import __version__
 from app.compressor import Level, compress_pdf
 from app.config import settings
 from app.errors import register_error_handlers
+from app.rate_limit import limiter
 from app.validation import check_pdf, save_upload
 
 app = FastAPI(
@@ -17,6 +18,7 @@ app = FastAPI(
     version=__version__,
     description="Little tools, big results. Server-side PDF compression.",
 )
+app.state.limiter = limiter  # slowapi looks for it here.
 register_error_handlers(app)
 
 
@@ -27,7 +29,9 @@ def health() -> dict[str, str]:
 
 
 @app.post("/v1/compress-pdf")
+@limiter.limit(settings.rate_limit)
 def compress_pdf_route(
+    request: Request,  # Required by slowapi to read the client IP.
     file: Annotated[UploadFile, File(description="The PDF to compress.")],
     level: Annotated[Level, Form()] = "recommended",
 ) -> Response:

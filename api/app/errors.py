@@ -1,8 +1,13 @@
 """Error format shared by every endpoint: {"error": {"code", "message"}}."""
 
+import logging
+
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from slowapi.errors import RateLimitExceeded
+
+logger = logging.getLogger("toolito")
 
 
 class ApiError(Exception):
@@ -15,10 +20,16 @@ class ApiError(Exception):
         self.message = message
 
 
-def _error_response(status_code: int, code: str, message: str) -> JSONResponse:
+def _error_response(
+    status_code: int,
+    code: str,
+    message: str,
+    headers: dict[str, str] | None = None,
+) -> JSONResponse:
     return JSONResponse(
         status_code=status_code,
         content={"error": {"code": code, "message": message}},
+        headers=headers,
     )
 
 
@@ -40,6 +51,28 @@ def _handle_validation_error(_: Request, exc: Exception) -> JSONResponse:
     return _error_response(400, "invalid_request", "The request is not valid.")
 
 
+def _handle_rate_limit(_: Request, exc: Exception) -> JSONResponse:
+    assert isinstance(exc, RateLimitExceeded)
+    # Window length in seconds: an upper bound of the real wait.
+    retry_after = exc.limit.limit.get_expiry() if exc.limit else 60
+    return _error_response(
+        429,
+        "rate_limited",
+        "Too many requests. Please wait a moment and try again.",
+        headers={"Retry-After": str(retry_after)},
+    )
+
+
+def _handle_unexpected_error(_: Request, exc: Exception) -> JSONResponse:
+    """Log the traceback for us; show the user nothing internal."""
+    logger.error("Unexpected error", exc_info=exc)
+    return _error_response(
+        500, "internal_error", "Something went wrong. Please try again."
+    )
+
+
 def register_error_handlers(app: FastAPI) -> None:
     app.add_exception_handler(ApiError, _handle_api_error)
     app.add_exception_handler(RequestValidationError, _handle_validation_error)
+    app.add_exception_handler(RateLimitExceeded, _handle_rate_limit)
+    app.add_exception_handler(Exception, _handle_unexpected_error)
