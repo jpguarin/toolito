@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 2 (Etapas 0 y 1 completadas)
+**Estado actual:** Etapa 3 (Etapas 0, 1 y 2 completadas)
 
 ---
 
@@ -47,10 +47,10 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Objetivo:** la API corre dentro de un contenedor.
 **Aprendes:** qué es una imagen y un contenedor, `Dockerfile`, capas, `.dockerignore`.
 
-- [ ] Escribir `api/Dockerfile` (imagen `python:3.12-slim`, usuario no root)
-- [ ] `.dockerignore`
-- [ ] `docker build` y `docker run` en local, probar `/docs`
-- [ ] Leer la variable `PORT` (Cloud Run la define)
+- [x] Escribir `api/Dockerfile` (imagen `python:3.14-slim`, igual que en local; usuario no root)
+- [x] `.dockerignore`
+- [x] `docker build` y `docker run` en local, probar `/docs`
+- [x] Leer la variable `PORT` (Cloud Run la define)
 
 **Terminado cuando:** la API responde igual dentro del contenedor que fuera de él.
 

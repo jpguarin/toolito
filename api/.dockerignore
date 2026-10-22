@@ -1,0 +1,13 @@
+# Only app/ and requirements.txt are needed inside the image.
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+tests/
+scripts/
+*.pdf
+.env
+.env.*
+Dockerfile
+.dockerignore
