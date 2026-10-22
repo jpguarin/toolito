@@ -1,6 +1,7 @@
 """PDF compression logic, independent from the web layer."""
 
 import io
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal
@@ -27,12 +28,20 @@ MIN_IMAGE_SIDE = 64  # Icons and tiny images are not worth recompressing.
 POINTS_PER_INCH = 72  # PDF page sizes are measured in points.
 
 
+@dataclass(frozen=True)
+class CompressionResult:
+    original_size: int  # Bytes.
+    compressed_size: int  # Bytes of the file left at output_path.
+    already_optimized: bool  # True when the original was returned unchanged.
+
+
 def compress_pdf(
     input_path: Path, output_path: Path, level: Level = "recommended"
-) -> None:
+) -> CompressionResult:
     """Shrink a PDF: recompress its images, then pack its structure.
 
     Text and vector graphics are never touched, so text stays selectable.
+    If the result is not smaller, the original is copied to output_path.
     """
     with pikepdf.open(input_path) as pdf:
         _recompress_images(pdf, LEVELS[level])
@@ -42,6 +51,15 @@ def compress_pdf(
             compress_streams=True,
             recompress_flate=True,
         )
+
+    # Never hand back a bigger file: fall back to the original.
+    original_size = input_path.stat().st_size
+    compressed_size = output_path.stat().st_size
+    already_optimized = compressed_size >= original_size
+    if already_optimized:
+        shutil.copyfile(input_path, output_path)
+        compressed_size = original_size
+    return CompressionResult(original_size, compressed_size, already_optimized)
 
 
 def _recompress_images(pdf: pikepdf.Pdf, settings: LevelSettings) -> None:
