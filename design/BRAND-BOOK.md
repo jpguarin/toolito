@@ -57,8 +57,7 @@ Reglas:
 
 ## 5. Tipografía
 
-Tres familias de Google Fonts: cárgalas con
-`https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&family=Caveat:wght@700&display=swap`.
+Tres familias de Google Fonts (licencia SIL OFL), **servidas desde nuestro propio sitio** con la Fonts API de Astro (proveedor Fontsource, ver `web/astro.config.mjs`): los visitantes nunca se conectan a Google y las fuentes funcionan sin conexión. Pesos: Bungee 400, Work Sans 400 / 600 / 800, Caveat 700.
 
 - **Bungee** (`font-sign`): letreros, números de máquina, LED, botones principales. Solo mayúsculas cortas o palabras sueltas.
 - **Work Sans** (`font-sans`): todo el texto de lectura y los formularios, en 400 / 600 / 800.

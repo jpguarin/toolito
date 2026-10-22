@@ -56,8 +56,8 @@ Para que la página no aparezca un instante en claro y luego salte a oscuro, el 
 Todos los componentes usan **tokens** (variables CSS), nunca colores sueltos. Solo cambian los valores:
 
 ```css
-:root[data-theme="light"] { --bg: #BFE6DA; --text: #12233D; /* … */ }
-:root[data-theme="dark"]  { --bg: #0F1630; --text: #F4F1EA; /* … */ }
+:root[data-theme="light"] { --bg: #BFE6DA; --ink: #12233D; /* … */ }
+:root[data-theme="dark"]  { --bg: #0F1630; --ink: #F4F1EA; /* … */ }
 ```
 
 ### Tokens
@@ -66,14 +66,14 @@ Todos los componentes usan **tokens** (variables CSS), nunca colores sueltos. So
 |---|---|---|---|
 | `--bg` | `#BFE6DA` | `#0F1630` | Fondo (baldosa) |
 | `--grid` | `#A5D8C8` | `#1A2448` | Juntas de la baldosa |
-| `--text` | `#12233D` | `#F4F1EA` | Texto principal |
+| `--ink` | `#12233D` | `#F4F1EA` | Texto principal |
 | `--muted` | `#33445E` | `#C9CEE0` | Texto secundario |
 | `--line` | `#12233D` | `#F4F1EA` | Bordes de máquinas y tarjetas |
 | `--paper` | `#FFF4EA` | `#1A2347` | Paneles crema / tarjetas |
 | `--surface` | `#F2F6F7` | `#1A2347` | Cuerpo de las máquinas |
 | `--card` | `#FFFFFF` | `#141C3B` | Listas y formularios |
 | `--panel` | `#12233D` | `#070B1C` | Cabecera y panel de control |
-| `--panel-text` | `#FFF4EA` | `#F4F1EA` | Texto sobre el panel |
+| `--panel-ink` | `#FFF4EA` | `#F4F1EA` | Texto sobre el panel |
 | `--led-bg` / `--led` | `#08121F` / `#5CF2C2` | `#000000` / `#3DE8F5` | Pantallas LED |
 | `--accent` / `--on-accent` | `#FF4F5E` / `#12233D` | `#FF5E6C` / `#0F1630` | Acción principal (Start, Fold, Split) |
 | `--accent-2` / `--on-accent-2` | `#5CF2C2` / `#12233D` | `#3DE8F5` / `#0F1630` | Selección (ciclo elegido, página marcada) |

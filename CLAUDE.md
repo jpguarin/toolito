@@ -127,6 +127,7 @@ npm run build
 
 ### Licencias
 - Solo dependencias con licencia permisiva: **MIT, BSD, Apache-2.0, MPL-2.0, ISC**.
+- **Solo para fuentes tipográficas:** también se permite **SIL OFL-1.1** (uso comercial e incrustación en webs permitidos; lo único prohibido es vender la fuente por separado).
 - **Prohibido** GPL y AGPL (por ejemplo Ghostscript, MuPDF, pngquant). Antes de añadir cualquier dependencia nueva, verifica su licencia y explícale al usuario por qué la elegimos.
 
 ### Seguridad de la API
