@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 0
+**Estado actual:** Etapa 1 (Etapa 0 completada)
 
 ---
 
@@ -16,7 +16,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] Instalar herramientas (ver `docs/SETUP.md`) y verificar versiones
 - [x] Crear el repositorio `toolito` en GitHub y clonarlo
 - [x] Primer commit con estos documentos (`docs: add project documentation`)
-- [ ] Repasar comandos Git: `status`, `add`, `commit`, `push`, `log`
+- [x] Repasar comandos Git: `status`, `add`, `commit`, `push`, `log`
 
 **Terminado cuando:** los documentos están en GitHub y todos los comandos de verificación de `docs/SETUP.md` responden.
 
