@@ -51,11 +51,48 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Variable de entorno** | Ajuste que se le da al programa al arrancar, fuera del código (`MAX_FILE_MB=30`). |
 | **Magic bytes** | Primeros bytes que identifican el formato real de un archivo (`%PDF-`); la extensión se puede falsificar. |
 | **Traceback** | El rastro de un error en Python; se lee de abajo hacia arriba: qué pasó, dónde, quién llamó. |
+| **Fixture** | Ingrediente preparado que pytest le pasa a un test (un cliente, un PDF de prueba, una carpeta temporal). |
+| **Perfil de color ICC** | Datos que dicen cómo interpretar los colores de una imagen (sRGB, Display P3…). |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-22 — Etapa 1: tests y prueba manual (cierre de la etapa)
+
+**Qué hicimos:**
+- Cambiamos `httpx` por `httpx2` (BSD-3), que es lo que pide Starlette 1.9 para `TestClient`.
+- Suite de pytest: 19 tests (health, compresor, endpoint, validaciones y archivos temporales), con PDFs generados en memoria.
+- Comprobamos que el test de temporales detecta fugas de verdad: rompimos la limpieza a propósito y falló.
+- Prueba manual con `YOUR-FILE.pdf` y corrección del perfil de color.
+
+**Resultados de la prueba manual (`YOUR-FILE.pdf`: 1 página, foto de iPhone 4032×3024, Display P3, guardada sin pérdida):**
+
+| Nivel | Tamaño | Foto | ¿Se ve bien? |
+|---|---|---|---|
+| original | 13,4 MB | 4032×3024 | — |
+| `low` | 563 KB (−95,8 %) | 2200×1650 | sí |
+| `recommended` | 235 KB (−98,2 %) | 1650×1238 | sí, colores iguales y nítida al 100 % |
+| `extreme` | 86 KB (−99,4 %) | 1056×792 | sí, aceptable para enviar por chat |
+
+- Este PDF no tiene texto, así que "texto seleccionable" lo cubre el test automático `test_text_is_kept`.
+
+**Conceptos nuevos:**
+- **Fixture:** un "ingrediente preparado" que pytest le entrega a cada test (`client`, `make_pdf`, `tmp_path`).
+- **`parametrize`:** un solo test que corre con muchos casos.
+- **`monkeypatch`:** cambia algo solo durante un test (bajar el límite a 1 MB, redirigir las carpetas temporales).
+- **Probar el test:** romper el código a propósito para comprobar que el test falla; si no falla, no protege nada.
+- **Perfil de color ICC:** describe cómo interpretar los colores de una imagen. Las fotos de iPhone usan Display P3 (más amplio que sRGB); si se borra el perfil, los colores se ven más apagados.
+
+**Comandos que aprendí:**
+- `pytest -q` / `pytest -v` → correr los tests en resumen / uno por uno.
+
+**Errores y cómo los resolvimos:**
+- Error: la prueba manual mostró que la foto Display P3 perdía su perfil ICC al recomprimir. → Causa: reemplazábamos el espacio de color por `DeviceRGB`. → Solución: conservar el perfil ICC si tiene los mismos canales, y un test nuevo (`test_icc_color_profile_is_kept`).
+
+**Dudas pendientes:**
+- Probar con un PDF con texto real y con un escaneo cuando tenga uno.
 
 ## 2026-10-22 — Etapa 1: API de compresión de PDF
 
@@ -102,10 +139,7 @@ Se va llenando a medida que aparecen términos nuevos.
 - `git push` desde Claude falla con `could not read Username` → Causa: su terminal no es interactiva y no puede pedir credenciales. → Solución: hacer push yo, o configurar `gh auth login`.
 
 **Dudas pendientes:**
-- Revisar a ojo la calidad de los 3 niveles con fotos reales y ajustar `LEVELS` si `recommended` se ve mal.
 - Python 3.14 en local vs. `python:3.12-slim` en el plan de Docker: decidir en la etapa 2 (sugerencia: `3.14-slim`).
-- Starlette recomienda `httpx2` en vez de `httpx` para `TestClient`: revisarlo (y su licencia) al escribir los tests.
-- Al recomprimir, las imágenes con perfil de color ICC pasan a `DeviceRGB`; podría cambiar un poco el color. Ver si importa con PDFs reales.
 - Aún faltan: timeout de 60 s, error `500 internal_error`, CORS y rate limiting (siguientes tareas / etapas).
 
 ## 2026-10-22 — Etapa 0: preparación del entorno

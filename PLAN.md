@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 1 — 8 de 10 tareas (faltan los tests con pytest y la prueba manual)
+**Estado actual:** Etapa 2 (Etapas 0 y 1 completadas)
 
 ---
 
@@ -35,8 +35,8 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] Endpoint `POST /v1/compress-pdf` según `docs/API.md`
 - [x] Validaciones: tamaño, cabecera `%PDF-`, cifrado, número de páginas
 - [x] Archivos temporales que se borran siempre
-- [ ] Tests con pytest (PDFs de prueba generados en los tests)
-- [ ] Probar a mano desde `http://localhost:8000/docs` con PDFs reales y anotar resultados en `docs/LEARNING.md`
+- [x] Tests con pytest (PDFs de prueba generados en los tests)
+- [x] Probar a mano desde `http://localhost:8000/docs` con PDFs reales y anotar resultados en `docs/LEARNING.md`
 
 **Terminado cuando:** `pytest` pasa y un PDF con fotos se reduce notablemente manteniendo el texto seleccionable.
 
