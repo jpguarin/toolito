@@ -10,7 +10,7 @@ def client_ip(request: Request) -> str:
     On Cloud Run the direct peer is Google's proxy, which appends the real
     client IP as the LAST entry of X-Forwarded-For (earlier entries can be
     forged by the caller). Locally there is no proxy, so use the peer address.
-    TODO (stage 3): confirm this in the Cloud Run logs.
+    Verified on Cloud Run: spoofed X-Forwarded-For values do not bypass the limit.
     """
     forwarded_for = request.headers.get("x-forwarded-for")
     if forwarded_for:
