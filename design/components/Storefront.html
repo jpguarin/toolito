@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background-color:var(--bg);background-image:linear-gradient(var(--grid) 2px,transparent 2px),linear-gradient(90deg,var(--grid) 2px,transparent 2px);background-size:var(--tile) var(--tile);font-family:var(--font-sans);color:var(--ink)}
+.awning{height:48px;background-image:repeating-linear-gradient(90deg,var(--awning-a) 0 56px,var(--awning-b) 56px 112px)}
+.scallop{height:28px;background-image:radial-gradient(circle at 28px 0,var(--awning-a) 0 28px,transparent 29px),radial-gradient(circle at 84px 0,var(--awning-b) 0 28px,transparent 29px);background-size:112px 28px;background-repeat:repeat-x}
+.hero{padding:24px 24px 40px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
+.sign{background:var(--panel);border-radius:18px;padding:18px 36px;border:5px solid var(--awning-b);box-shadow:0 0 0 4px var(--line)}
+.sign b{display:block;font-family:var(--font-sign);font-weight:400;font-size:60px;line-height:1;color:var(--accent);text-shadow:var(--glow-sign)}
+.sign span{font-family:var(--font-sign);font-size:18px;letter-spacing:6px;color:var(--sign-sub);text-shadow:var(--glow-led)}
+h1{margin:6px 0 0;font-size:40px;line-height:1.05;font-weight:800;letter-spacing:-1px}
+p{margin:0;font-size:17px;color:var(--muted);max-width:520px}
+</style>
+</head>
+<body>
+<div>
+<div class="awning" aria-hidden="true"></div>
+<div class="scallop" aria-hidden="true"></div>
+<section class="hero">
+<div class="sign"><b>TOOLITO</b><span>LAUNDROMAT</span></div>
+<h1>We shrink your files. On purpose.</h1>
+<p>Toss in heavy images and PDFs, pick a cycle, take them home lighter. Every machine is free, day or night.</p>
+</section>
+</div>
+</body>
+</html>

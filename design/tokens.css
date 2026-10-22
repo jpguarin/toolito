@@ -1,0 +1,204 @@
+/* Toolito Laundromat — generated from tokens.json. Do not edit by hand: change tokens.json and regenerate. */
+
+:root, [data-theme="light"] {
+  --bg: #BFE6DA;
+  --grid: #A5D8C8;
+  --ink: #12233D;
+  --muted: #33445E;
+  --line: #12233D;
+  --paper: #FFF4EA;
+  --surface: #F2F6F7;
+  --card: #FFFFFF;
+  --panel: #12233D;
+  --panel-ink: #FFF4EA;
+  --led-bg: #08121F;
+  --led: #5CF2C2;
+  --accent: #FF4F5E;
+  --on-accent: #12233D;
+  --accent-2: #5CF2C2;
+  --on-accent-2: #12233D;
+  --hot: #FF4F5E;
+  --on-hot: #12233D;
+  --heading: #C81D3B;
+  --btn: #12233D;
+  --on-btn: #FFF4EA;
+  --rim: #C5D0D6;
+  --awning-a: #FF4F5E;
+  --awning-b: #FFF4EA;
+  --sign-sub: #5CF2C2;
+  --note: #FFFDF8;
+  --on-note: #12233D;
+  --tape: #FFF3B0;
+  --wood: #C99E6E;
+  --cork: #C89F6B;
+  --cork-frame: #6B4A28;
+  --ok: #5CF2C2;
+  --on-ok: #12233D;
+  --error: #C81D3B;
+  --glass-image: #6FD3E0;
+  --glass-convert: #FF9AA4;
+  --glass-dryer: #FFD166;
+  --glass-fold: #A99BFF;
+  --glass-sort: #7DE3B2;
+  --icon-image: #12233D;
+  --icon-convert: #12233D;
+  --icon-dryer: #12233D;
+  --icon-fold: #12233D;
+  --icon-sort: #12233D;
+  --shadow-press: 4px 4px 0 #12233D;
+  --shadow-hot: 0 0 0 4px #FF4F5E;
+  --glow-accent: none;
+  --glow-led: none;
+  --glow-sign: none;
+}
+
+[data-theme="dark"] {
+  --bg: #0F1630;
+  --grid: #1A2448;
+  --ink: #F4F1EA;
+  --muted: #C9CEE0;
+  --line: #F4F1EA;
+  --paper: #1A2347;
+  --surface: #1A2347;
+  --card: #141C3B;
+  --panel: #070B1C;
+  --panel-ink: #F4F1EA;
+  --led-bg: #000000;
+  --led: #3DE8F5;
+  --accent: #FF5E6C;
+  --on-accent: #0F1630;
+  --accent-2: #3DE8F5;
+  --on-accent-2: #0F1630;
+  --hot: #FFE45E;
+  --on-hot: #0F1630;
+  --heading: #FFE45E;
+  --btn: #FFE45E;
+  --on-btn: #0F1630;
+  --rim: #8C96B8;
+  --awning-a: #FF5E6C;
+  --awning-b: #F4F1EA;
+  --sign-sub: #3DE8F5;
+  --note: #FFFDF8;
+  --on-note: #0F1630;
+  --tape: #FFF3B0;
+  --wood: #3A2A1C;
+  --cork: #B88D5A;
+  --cork-frame: #5E3F1E;
+  --ok: #5CF2A0;
+  --on-ok: #0F1630;
+  --error: #FF5E6C;
+  --glass-image: #12304A;
+  --glass-convert: #3E1A34;
+  --glass-dryer: #3D3714;
+  --glass-fold: #2A2356;
+  --glass-sort: #163D33;
+  --icon-image: #3DE8F5;
+  --icon-convert: #FF5E6C;
+  --icon-dryer: #FFE45E;
+  --icon-fold: #B79CFF;
+  --icon-sort: #5CF2A0;
+  --shadow-press: 4px 4px 0 #F4F1EA;
+  --shadow-hot: 0 0 26px rgba(255,228,94,0.4);
+  --glow-accent: 0 0 22px rgba(255,94,108,0.55);
+  --glow-led: 0 0 10px rgba(61,232,245,0.8);
+  --glow-sign: 0 0 10px rgba(255,94,108,0.9), 0 0 26px rgba(255,94,108,0.6);
+}
+
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 28px;
+  --space-7: 48px;
+  --space-8: 64px;
+  --tile: 56px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 26px;
+  --radius-pill: 999px;
+  --border-thin: 2px;
+  --border-md: 3px;
+  --border-thick: 4px;
+  --font-sign: Bungee, "Arial Black", sans-serif;
+  --font-sans: "Work Sans", system-ui, sans-serif;
+  --font-hand: Caveat, "Comic Sans MS", cursive;
+}
+
+.sign-xl {
+  font-family: var(--font-sign);
+  font-size: 72px;
+  line-height: 72px;
+  font-weight: 400;
+}
+.sign-lg {
+  font-family: var(--font-sign);
+  font-size: 30px;
+  line-height: 32px;
+  font-weight: 400;
+}
+.sign-md {
+  font-family: var(--font-sign);
+  font-size: 20px;
+  line-height: 24px;
+  font-weight: 400;
+}
+.sign-sm {
+  font-family: var(--font-sign);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.display {
+  font-family: var(--font-sans);
+  font-size: 54px;
+  line-height: 57px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.title {
+  font-family: var(--font-sans);
+  font-size: 48px;
+  line-height: 52px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+.heading {
+  font-family: var(--font-sans);
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 800;
+}
+.lead {
+  font-family: var(--font-sans);
+  font-size: 20px;
+  line-height: 30px;
+  font-weight: 400;
+}
+.body {
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 26px;
+  font-weight: 400;
+}
+.label {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 800;
+}
+.caption {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 600;
+}
+.note {
+  font-family: var(--font-hand);
+  font-size: 30px;
+  line-height: 30px;
+  font-weight: 700;
+}

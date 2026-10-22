@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.awning{height:26px;background-image:repeating-linear-gradient(90deg,var(--awning-a) 0 56px,var(--awning-b) 56px 112px)}
+.bar{background:var(--panel);border-bottom:var(--border-md) solid var(--line);padding:10px 24px;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:baseline;gap:10px;text-decoration:none}
+.logo b{font-family:var(--font-sign);font-weight:400;font-size:30px;line-height:1;color:var(--accent);text-shadow:var(--glow-sign)}
+.logo span{font-family:var(--font-sign);font-size:12px;letter-spacing:4px;color:var(--sign-sub);text-shadow:var(--glow-led)}
+nav{display:flex;gap:22px;font-weight:800;font-size:15px}
+nav a{color:var(--panel-ink);text-decoration:none}
+nav a[aria-current]{color:var(--accent-2)}
+.signs{display:flex;gap:8px;font-family:var(--font-sign);font-size:12px}
+.signs span{padding:6px 10px;border-radius:var(--radius-sm);border:var(--border-thin) solid var(--panel-ink);color:var(--panel-ink)}
+.signs .open{color:var(--led);border-color:var(--led);text-shadow:var(--glow-led)}
+</style>
+</head>
+<body>
+<div>
+<div class="awning" aria-hidden="true"></div>
+<header class="bar">
+<a class="logo" href="#"><b>TOOLITO</b><span>LAUNDROMAT</span></a>
+<nav aria-label="Main"><a href="#">Images</a><a href="#" aria-current="page">PDFs</a><a href="#">House rules</a></nav>
+<div class="signs"><span class="open">OPEN 24/7</span><span>SELF-SERVICE</span></div>
+</header>
+</div>
+</body>
+</html>

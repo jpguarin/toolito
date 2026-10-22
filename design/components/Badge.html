@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.save{font-family:var(--font-sign);font-size:15px;background:var(--ok);color:var(--on-ok);padding:6px 10px;border-radius:var(--radius-sm)}
+.machine{font-family:var(--font-sign);font-size:14px;background:var(--panel);color:var(--led);padding:4px 10px;border-radius:var(--radius-sm);border:var(--border-thin) solid var(--line)}
+.hot{font-family:var(--font-sign);font-size:14px;background:var(--hot);color:var(--on-hot);padding:4px 10px;border-radius:var(--radius-sm)}
+.local,.server{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;padding:6px 12px;border-radius:var(--radius-pill);border:var(--border-thin) solid var(--line);background:var(--paper)}
+.err{font-family:var(--font-sign);font-size:14px;background:var(--error);color:var(--paper);padding:4px 10px;border-radius:var(--radius-sm)}
+</style>
+</head>
+<body>
+<div class="row">
+<span class="save">−72%</span>
+<span class="machine">WASHER No.1</span>
+<span class="hot">DRYER No.3</span>
+<span class="local"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Never uploaded</span>
+<span class="server"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 18a5 5 0 1 1 1-9.9A6 6 0 0 1 19 10a4 4 0 0 1-1 8z"/></svg>Deleted after every load</span>
+<span class="err">OUT OF ORDER</span>
+</div>
+</body>
+</html>

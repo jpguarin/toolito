@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.card{max-width:380px;background:var(--card);border:var(--border-thick) solid var(--line);border-radius:var(--radius-lg);padding:20px;display:flex;flex-direction:column;gap:18px}
+.f{display:flex;flex-direction:column;gap:6px}
+label.l,legend{font-weight:800;font-size:15px}
+input[type=text]{min-height:46px;padding:0 14px;border:var(--border-md) solid var(--line);border-radius:var(--radius-md);font:600 16px var(--font-sans);color:var(--ink);background:var(--paper)}
+input[type=text]:focus{outline:3px solid var(--accent);outline-offset:2px}
+input.bad{border-color:var(--error)}
+.h{font-size:13px;color:var(--muted)}
+.e{font-size:13px;font-weight:800;color:var(--error)}
+fieldset{margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:2px}
+.r{display:flex;align-items:center;gap:10px;min-height:44px;font-size:15px}
+.r input{width:20px;height:20px;accent-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="f"><label class="l" for="p">Pages</label><input id="p" type="text" value="1-3, 8" aria-describedby="ph"><span class="h" id="ph">Type ranges or tap pages on the line.</span></div>
+<div class="f"><label class="l" for="p2">Pages</label><input id="p2" class="bad" type="text" value="1-3, 40" aria-invalid="true" aria-describedby="pe"><span class="e" id="pe">This PDF only has 12 pages.</span></div>
+<fieldset><legend>Take them home as</legend>
+<label class="r"><input type="radio" name="o" checked>One PDF with those pages</label>
+<label class="r"><input type="radio" name="o">One PDF per range</label>
+</fieldset>
+</div>
+</body>
+</html>

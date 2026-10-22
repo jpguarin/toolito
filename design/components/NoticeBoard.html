@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.cork{width:300px;box-sizing:border-box;border:8px solid var(--cork-frame);border-radius:8px;padding:22px;background-color:var(--cork);background-image:radial-gradient(rgba(0,0,0,.18) 1px,transparent 1.5px);background-size:7px 7px}
+.flyer{position:relative;background:var(--note);color:var(--on-note);min-height:170px;transform:rotate(2deg);box-shadow:0 6px 10px rgba(0,0,0,.25);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;text-align:center}
+.pin{position:absolute;top:-8px;left:50%;margin-left:-9px;width:18px;height:18px;border-radius:999px;background:var(--accent);border:2px solid var(--on-note)}
+.k{font-family:var(--font-sign);font-size:15px}
+.s{font-size:13px}
+.banner{flex:1 1 320px;min-height:96px;border:var(--border-md) dashed var(--rim);border-radius:var(--radius-md);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+.banner .s{color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="row">
+<aside class="cork" aria-label="Advertisement"><div class="flyer"><span class="pin" aria-hidden="true"></span><span class="k">Notice board</span><span class="s">Advertisement · 300 × 250</span></div></aside>
+<aside class="banner" aria-label="Advertisement"><span class="k">Notice board</span><span class="s">Advertisement · 728 × 90</span></aside>
+</div>
+</body>
+</html>

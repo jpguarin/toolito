@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+fieldset{margin:0;padding:0;border:0;display:flex;flex-direction:column;gap:10px;max-width:520px}
+legend{font-family:var(--font-sign);font-size:18px;margin-bottom:10px}
+button{display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:64px;padding:10px 18px;border-radius:16px;border:var(--border-md) solid var(--line);background:var(--card);color:var(--ink);font-family:var(--font-sans);cursor:pointer;text-align:left}
+button[aria-pressed="true"]{background:var(--accent-2);color:var(--on-accent-2);box-shadow:var(--shadow-press)}
+.n{display:flex;flex-direction:column;gap:2px}
+.n b{font-family:var(--font-sign);font-weight:400;font-size:18px}
+.n span{font-size:14px;font-weight:600}
+.e{font-size:14px;font-weight:800;white-space:nowrap}
+</style>
+</head>
+<body>
+<fieldset>
+<legend>Pick a cycle</legend>
+<button type="button" aria-pressed="false"><span class="n"><b>Delicate</b><span>Best quality, great for printing</span></span><span class="e">~30–40% off</span></button>
+<button type="button" aria-pressed="true"><span class="n"><b>Normal</b><span>Email-ready, looks just as good</span></span><span class="e">~50–65% off</span></button>
+<button type="button" aria-pressed="false"><span class="n"><b>Heavy duty</b><span>Smallest file, softer photos</span></span><span class="e">~70–85% off</span></button>
+</fieldset>
+</body>
+</html>

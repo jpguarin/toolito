@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:var(--space-3)}
+button{cursor:pointer;display:inline-flex;align-items:center;gap:10px}
+.primary{min-height:58px;padding:0 32px;border-radius:var(--radius-pill);border:var(--border-thick) solid var(--line);background:var(--accent);color:var(--on-accent);box-shadow:var(--glow-accent);font:400 20px var(--font-sign)}
+.download{min-height:54px;padding:0 26px;border-radius:var(--radius-pill);border:0;background:var(--btn);color:var(--on-btn);font:800 17px var(--font-sans)}
+.secondary{min-height:54px;padding:0 22px;border-radius:var(--radius-pill);border:var(--border-md) solid var(--line);background:transparent;color:var(--ink);font:800 16px var(--font-sans)}
+.icon{width:44px;height:44px;justify-content:center;border-radius:var(--radius-pill);border:var(--border-thin) solid var(--line);background:transparent;color:var(--ink)}
+</style>
+</head>
+<body>
+<div class="row">
+<button type="button" class="primary"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>START DRYER</button>
+<button type="button" class="download"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg>Take it home</button>
+<button type="button" class="secondary">Run another load</button>
+<button type="button" class="icon" aria-label="Download beach-sunset.jpg"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg></button>
+</div>
+</body>
+</html>

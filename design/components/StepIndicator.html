@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg)}
+ol{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+li{font-family:var(--font-sign);font-size:13px;padding:8px 12px;border-radius:var(--radius-pill);border:var(--border-md) solid var(--line);color:var(--ink)}
+li.done{background:var(--accent-2);color:var(--on-accent-2)}
+li[aria-current]{background:var(--panel);color:var(--led)}
+</style>
+</head>
+<body>
+<ol aria-label="Progress">
+<li class="done">1 Load</li><li class="done">2 Cycle</li><li aria-current="step">3 Dry</li><li>4 Take home</li>
+</ol>
+</body>
+</html>

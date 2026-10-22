@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans)}
+.panel{max-width:400px;background:var(--panel);color:var(--panel-ink);border:var(--border-thick) solid var(--line);border-radius:var(--radius-lg);padding:16px 18px;display:flex;flex-direction:column;gap:14px}
+.top{display:flex;justify-content:space-between;align-items:center}
+.top b{font-family:var(--font-sign);font-weight:400;font-size:20px}
+.led{font-family:var(--font-sign);font-size:16px;letter-spacing:2px;background:var(--led-bg);color:var(--led);text-shadow:var(--glow-led);padding:6px 12px;border-radius:var(--radius-sm)}
+fieldset{margin:0;padding:0;border:0}
+legend,.lab{font-size:12px;font-weight:800;letter-spacing:2px;margin-bottom:8px}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pills button{min-height:44px;padding:0 12px;border-radius:var(--radius-pill);border:var(--border-thin) solid var(--panel-ink);background:transparent;color:var(--panel-ink);font:800 14px var(--font-sans);cursor:pointer}
+.pills button[aria-pressed="true"]{border-color:var(--led);background:var(--led);color:var(--on-accent-2)}
+.q{display:flex;justify-content:space-between}
+.q span{font-family:var(--font-sign);color:var(--led)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.ends{display:flex;justify-content:space-between;font-size:12px;font-weight:600}
+.chk{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:600;font-size:15px}
+.chk input{width:20px;height:20px;accent-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="panel">
+<div class="top"><b>No.1</b><span class="led" role="status">Q75 · WEBP</span></div>
+<fieldset><legend>OUTPUT FORMAT</legend><div class="pills">
+<button type="button" aria-pressed="false">Same</button><button type="button" aria-pressed="true">WebP</button><button type="button" aria-pressed="false">AVIF</button><button type="button" aria-pressed="false">JPG</button><button type="button" aria-pressed="false">PNG</button>
+</div></fieldset>
+<div><div class="q"><label class="lab" for="q">QUALITY</label><span>75</span></div><input id="q" type="range" min="10" max="100" value="75"><div class="ends"><span>Smaller load</span><span>Crisper colors</span></div></div>
+<label class="chk"><input type="checkbox">Resize to fit 1920 px</label>
+</div>
+</body>
+</html>

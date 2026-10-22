@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Folding table merge PDF</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&amp;family=Work+Sans:wght@400;600;800&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="min-height: 100vh; font-family: 'Work Sans', system-ui, sans-serif; color: {{ t.text }}; background-color: {{ t.bg }}; background-image: linear-gradient({{ t.grid }} 2px, transparent 2px), linear-gradient(90deg, {{ t.grid }} 2px, transparent 2px); background-size: 56px 56px;">
+
+<div aria-hidden="true" style="height: 26px; background-image: repeating-linear-gradient(90deg, {{ t.awnA }} 0 56px, {{ t.awnB }} 56px 112px);"></div>
+<header style="background: {{ t.panel }}; border-bottom: 3px solid {{ t.line }};">
+<div style="max-width: 1180px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+<a href="TlHome.dc.html" style="display: flex; align-items: baseline; gap: 10px; text-decoration: none;"><span style="font-family: Bungee, sans-serif; font-size: 30px; line-height: 1; color: {{ t.signTitle }}; text-shadow: {{ t.glowTitle }};">TOOLITO</span><span style="font-family: Bungee, sans-serif; font-size: 12px; letter-spacing: 4px; color: {{ t.signSub }}; text-shadow: {{ t.glowSub }};">LAUNDROMAT</span></a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 22px; font-weight: 800; font-size: 15px;">
+<a href="TlWasher.dc.html" style="color: {{ t.panelText }}; text-decoration: none;">Images</a>
+<a href="TlDryer.dc.html" aria-current="page" style="color: {{ t.accent2 }}; text-decoration: none;">PDFs</a>
+<a href="TlHome.dc.html" style="color: {{ t.panelText }}; text-decoration: none;">House rules</a>
+</nav>
+<div style="display: flex; gap: 8px; font-family: Bungee, sans-serif; font-size: 12px;">
+<span style="color: {{ t.led }}; text-shadow: {{ t.glowSub }}; padding: 6px 10px; border-radius: 6px; border: 2px solid {{ t.led }};">OPEN 24/7</span>
+<span style="color: {{ t.panelText }}; padding: 6px 10px; border-radius: 6px; border: 2px solid {{ t.panelText }};">SELF-SERVICE</span>
+</div>
+</div>
+</header>
+
+<section style="max-width: 1180px; margin: 0 auto; padding: 36px 24px 8px; display: flex; flex-direction: column; gap: 8px;">
+<span style="align-self: flex-start; font-family: Bungee, sans-serif; font-size: 14px; background: {{ t.panel }}; color: {{ t.led }}; padding: 4px 10px; border-radius: 6px; border: 2px solid {{ t.line }};">FOLDING TABLE No.4</span>
+<h1 style="margin: 0; font-size: 48px; font-weight: 800; letter-spacing: -1px;">Merge PDF</h1>
+<p style="margin: 0; font-size: 18px; color: {{ t.muted }};">Stack your PDFs in order, then fold them into one. Folded right here on your device.</p>
+</section>
+
+<section style="max-width: 1180px; margin: 0 auto; padding: 24px 24px 64px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 28px;">
+
+<div style="flex: 999 1 560px; min-width: 0; border: 4px solid {{ t.line }}; border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 14px; background-color: {{ t.wood }}; background-image: repeating-linear-gradient(90deg, rgba(0,0,0,.07) 0 2px, transparent 2px 22px);">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
+<h2 style="margin: 0; font-family: Bungee, sans-serif; font-size: 20px; background: {{ t.paper }}; padding: 4px 10px; border-radius: 6px;">The table</h2>
+<span style="font-size: 14px; font-weight: 800; background: {{ t.paper }}; padding: 4px 10px; border-radius: 6px;">Use the arrows to reorder</span>
+</div>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 12px;">
+<sc-for list="{{ items }}" as="it" hint-placeholder-count="4">
+<li style="display: flex; align-items: center; gap: 14px; background: {{ t.paper }}; border: 3px solid {{ t.line }}; border-radius: 14px; padding: 0 10px 0 0; overflow: hidden;">
+<span aria-hidden="true" style="{{ it.stripe }}"></span>
+<span style="font-family: Bungee, sans-serif; font-size: 22px; width: 30px;">{{ it.n }}</span>
+<div style="flex: 1; min-width: 0; padding: 12px 0;"><div style="font-weight: 800; font-size: 16px;">{{ it.name }}</div><div style="font-size: 14px; color: {{ t.muted }};">{{ it.meta }}</div></div>
+<button type="button" aria-label="Move {{ it.name }} up" disabled="{{ it.first }}" onClick="{{ it.up }}" style="{{ it.btn }}">↑</button>
+<button type="button" aria-label="Move {{ it.name }} down" disabled="{{ it.last }}" onClick="{{ it.down }}" style="{{ it.btn }}">↓</button>
+</li>
+</sc-for>
+</ol>
+<label style="display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 64px; border: 3px dashed {{ t.line }}; border-radius: 14px; background: {{ t.paper }}; cursor: pointer; font-weight: 800; font-size: 16px;">
+<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg>
+Add another PDF to the table
+<input type="file" accept="application/pdf" multiple style="position: absolute; width: 1px; height: 1px; opacity: 0;">
+</label>
+</div>
+
+<aside style="flex: 1 1 320px; display: flex; flex-direction: column; gap: 18px;">
+<div style="background: {{ t.paper }}; border: 4px solid {{ t.line }}; border-radius: 20px; padding: 22px; display: flex; flex-direction: column; gap: 16px;">
+<h2 style="margin: 0; font-family: Bungee, sans-serif; font-size: 20px;">The pile</h2>
+<div aria-hidden="true" style="display: flex; flex-direction: column; gap: 4px; padding: 0 30px;">
+<sc-for list="{{ items }}" as="it" hint-placeholder-count="4">
+<div style="{{ it.pile }}"></div>
+</sc-for>
+</div>
+<div style="font-size: 16px; font-weight: 600;"><strong>4 files · 18 pages</strong><br><span style="color: {{ t.muted }};">Top of the pile = first pages</span></div>
+<button type="button" style="min-height: 56px; border-radius: 999px; border: 4px solid {{ t.line }}; background: {{ t.accent }}; color: {{ t.onAccent }}; box-shadow: {{ t.glowSoft }}; font: 400 18px Bungee, sans-serif; cursor: pointer;">FOLD INTO ONE</button>
+<div style="font-size: 13px; font-weight: 600; color: {{ t.muted }};">Nothing is uploaded. The table is in your browser.</div>
+</div>
+<div style="background: {{ t.card }}; border: 3px dashed {{ t.rim }}; border-radius: 12px; min-height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;">
+<span style="font-family: Bungee, sans-serif; font-size: 13px;">Notice board</span>
+<span style="font-size: 13px; color: {{ t.muted }};">Advertisement · 300 × 250</span>
+</div>
+</aside>
+
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["auto","light","dark"],"default":"auto"},"$preview":{"width":1280,"height":1250}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { order: [0, 1, 2, 3] };
+}
+componentDidMount() {
+var self = this;
+this.clock = setInterval(function () { self.forceUpdate(); }, 60000);
+}
+componentWillUnmount() {
+clearInterval(this.clock);
+}
+palette(name) {
+if (name === 'dark') {
+return { bg: '#0F1630', grid: '#1A2448', text: '#F4F1EA', muted: '#C9CEE0', line: '#F4F1EA', paper: '#1A2347', card: '#141C3B', panel: '#070B1C', panelText: '#F4F1EA', led: '#3DE8F5', accent: '#FF5E6C', onAccent: '#0F1630', accent2: '#3DE8F5', onAccent2: '#0F1630', rim: '#8C96B8', awnA: '#FF5E6C', awnB: '#F4F1EA', signTitle: '#FF5E6C', signSub: '#3DE8F5', glowTitle: '0 0 10px rgba(255,94,108,.9), 0 0 26px rgba(255,94,108,.6)', glowSub: '0 0 10px rgba(61,232,245,.8)', glowSoft: '0 0 22px rgba(255,94,108,.55)', wood: '#3A2A1C', stripes: ['#3DE8F5', '#FF5E6C', '#FFE45E', '#B79CFF'] };
+}
+return { bg: '#BFE6DA', grid: '#A5D8C8', text: '#12233D', muted: '#33445E', line: '#12233D', paper: '#FFF4EA', card: '#FFFFFF', panel: '#12233D', panelText: '#FFF4EA', led: '#5CF2C2', accent: '#FF4F5E', onAccent: '#12233D', accent2: '#5CF2C2', onAccent2: '#12233D', rim: '#C5D0D6', awnA: '#FF4F5E', awnB: '#FFF4EA', signTitle: '#FF4F5E', signSub: '#5CF2C2', glowTitle: 'none', glowSub: 'none', glowSoft: 'none', wood: '#C99E6E', stripes: ['#6FD3E0', '#FF9AA4', '#FFD166', '#A99BFF'] };
+}
+theme() {
+var mode = this.props.mode || 'auto';
+var h = new Date().getHours();
+var night = h >= 19 || h < 7;
+return { t: this.palette(mode === 'auto' ? (night ? 'dark' : 'light') : mode) };
+}
+move(i, dir) {
+var o = this.state.order.slice();
+var j = i + dir;
+if (j < 0 || j >= o.length) return;
+var tmp = o[i]; o[i] = o[j]; o[j] = tmp;
+this.setState({ order: o });
+}
+renderVals() {
+var self = this;
+var th = this.theme();
+var t = th.t;
+var files = [
+{ name: 'cover-letter.pdf', meta: '2 pages · 180 KB' },
+{ name: 'resume.pdf', meta: '3 pages · 420 KB' },
+{ name: 'portfolio.pdf', meta: '12 pages · 3.1 MB' },
+{ name: 'references.pdf', meta: '1 page · 95 KB' }
+];
+var o = this.state.order;
+return {
+t: t,
+items: o.map(function (fi, i) {
+var c = t.stripes[fi];
+return {
+n: i + 1,
+name: files[fi].name,
+meta: files[fi].meta,
+first: i === 0,
+last: i === o.length - 1,
+stripe: 'align-self: stretch; width: 18px; border-right: 3px solid ' + t.line + '; background-image: repeating-linear-gradient(0deg, ' + c + ' 0 8px, ' + t.paper + ' 8px 14px);',
+pile: 'height: 28px; border-radius: 8px; border: 3px solid ' + t.line + '; background: ' + c + '; transform: translateX(' + ((i % 2 === 0) ? -6 : 6) + 'px);',
+btn: 'width: 44px; height: 44px; border-radius: 999px; border: 2px solid ' + t.line + '; background: transparent; color: ' + t.text + '; cursor: pointer; font: 800 16px Work Sans, sans-serif;',
+up: function () { self.move(i, -1); },
+down: function () { self.move(i, 1); }
+};
+})
+};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.wrap{display:flex;flex-wrap:wrap;gap:24px;align-items:flex-start}
+.table{flex:1 1 420px;border:var(--border-thick) solid var(--line);border-radius:var(--radius-lg);padding:18px;background-color:var(--wood);background-image:repeating-linear-gradient(90deg,rgba(0,0,0,.07) 0 2px,transparent 2px 22px)}
+ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+li{display:flex;align-items:center;gap:12px;background:var(--paper);border:var(--border-md) solid var(--line);border-radius:14px;padding:0 8px 0 0;overflow:hidden}
+.st{align-self:stretch;width:18px;border-right:var(--border-md) solid var(--line)}
+.n{font-family:var(--font-sign);font-size:22px;width:28px}
+.mid{flex:1;min-width:0;padding:10px 0}
+.mid b{display:block;font-weight:800;font-size:15px}
+.mid span{font-size:13px;color:var(--muted)}
+button{width:44px;height:44px;border-radius:var(--radius-pill);border:var(--border-thin) solid var(--line);background:transparent;color:var(--ink);font:800 16px var(--font-sans);cursor:pointer}
+button:disabled{opacity:.4;cursor:default}
+.pile{flex:0 1 220px;background:var(--paper);border:var(--border-thick) solid var(--line);border-radius:var(--radius-lg);padding:18px;display:flex;flex-direction:column;gap:4px}
+.pile h3{margin:0 0 8px;font-family:var(--font-sign);font-weight:400;font-size:18px}
+.pile div{height:24px;border-radius:8px;border:var(--border-md) solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="table">
+<ol>
+<li><span class="st" style="background-image:repeating-linear-gradient(0deg,var(--glass-image) 0 8px,var(--paper) 8px 14px)"></span><span class="n">1</span><div class="mid"><b>cover-letter.pdf</b><span>2 pages · 180 KB</span></div><button type="button" disabled aria-label="Move cover-letter.pdf up">↑</button><button type="button" aria-label="Move cover-letter.pdf down">↓</button></li>
+<li><span class="st" style="background-image:repeating-linear-gradient(0deg,var(--glass-convert) 0 8px,var(--paper) 8px 14px)"></span><span class="n">2</span><div class="mid"><b>resume.pdf</b><span>3 pages · 420 KB</span></div><button type="button" aria-label="Move resume.pdf up">↑</button><button type="button" aria-label="Move resume.pdf down">↓</button></li>
+<li><span class="st" style="background-image:repeating-linear-gradient(0deg,var(--glass-dryer) 0 8px,var(--paper) 8px 14px)"></span><span class="n">3</span><div class="mid"><b>portfolio.pdf</b><span>12 pages · 3.1 MB</span></div><button type="button" aria-label="Move portfolio.pdf up">↑</button><button type="button" disabled aria-label="Move portfolio.pdf down">↓</button></li>
+</ol>
+</div>
+<div class="pile" aria-hidden="true"><h3>The pile</h3><div style="background:var(--glass-image);margin-left:-6px"></div><div style="background:var(--glass-convert);margin-left:6px"></div><div style="background:var(--glass-dryer);margin-left:-6px"></div></div>
+</div>
+</body>
+</html>

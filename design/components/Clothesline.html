@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.box{max-width:720px;background:var(--paper);border:var(--border-thick) solid var(--line);border-radius:var(--radius-lg);padding:20px 20px 28px}
+.line{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));column-gap:0;row-gap:26px}
+.cell{border-top:4px solid var(--line);padding:0 7px}
+button{position:relative;width:100%;margin-top:14px;height:130px;border-radius:6px;padding:18px 10px 10px;cursor:pointer;display:flex;flex-direction:column;gap:6px;background:var(--note);color:var(--on-note);border:var(--border-md) solid var(--line)}
+button[aria-pressed="true"]{border-color:var(--heading);box-shadow:0 0 0 3px var(--accent)}
+.pin{position:absolute;top:-20px;left:50%;margin-left:-6px;width:12px;height:26px;border-radius:3px;border:var(--border-thin) solid var(--line);background:var(--rim)}
+button[aria-pressed="true"] .pin{background:var(--accent)}
+.rules{flex:1;width:100%;background-image:repeating-linear-gradient(0deg,#D9DEE0 0 2px,transparent 2px 12px)}
+.n{font-family:var(--font-sign);font-size:16px}
+</style>
+</head>
+<body>
+<div class="box">
+<div class="line">
+<div class="cell"><button type="button" aria-pressed="true" aria-label="Page 1, pinned" style="transform:rotate(-2deg)"><span class="pin" aria-hidden="true"></span><span class="rules" aria-hidden="true"></span><span class="n">1</span></button></div>
+<div class="cell"><button type="button" aria-pressed="true" aria-label="Page 2, pinned" style="transform:rotate(1.5deg)"><span class="pin" aria-hidden="true"></span><span class="rules" aria-hidden="true"></span><span class="n">2</span></button></div>
+<div class="cell"><button type="button" aria-pressed="false" aria-label="Page 3" style="transform:rotate(-1deg)"><span class="pin" aria-hidden="true"></span><span class="rules" aria-hidden="true"></span><span class="n">3</span></button></div>
+<div class="cell"><button type="button" aria-pressed="false" aria-label="Page 4" style="transform:rotate(2deg)"><span class="pin" aria-hidden="true"></span><span class="rules" aria-hidden="true"></span><span class="n">4</span></button></div>
+<div class="cell"><button type="button" aria-pressed="true" aria-label="Page 5, pinned" style="transform:rotate(-1.5deg)"><span class="pin" aria-hidden="true"></span><span class="rules" aria-hidden="true"></span><span class="n">5</span></button></div>
+</div>
+</div>
+</body>
+</html>

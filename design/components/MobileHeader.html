@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:var(--bg)}
+.wrap{width:390px}
+.awning{height:20px;background-image:repeating-linear-gradient(90deg,var(--awning-a) 0 44px,var(--awning-b) 44px 88px)}
+header{background:var(--panel);border-bottom:var(--border-md) solid var(--line);padding:6px 10px 6px 14px;display:flex;align-items:center;justify-content:space-between}
+b{font-family:var(--font-sign);font-weight:400;font-size:22px;color:var(--accent);text-shadow:var(--glow-sign)}
+button{width:44px;height:44px;border:0;border-radius:10px;background:transparent;color:var(--panel-ink);display:flex;align-items:center;justify-content:center;cursor:pointer}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="awning" aria-hidden="true"></div>
+<header><b>TOOLITO</b><button type="button" aria-label="Open menu" aria-expanded="false"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button></header>
+</div>
+</body>
+</html>

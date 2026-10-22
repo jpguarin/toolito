@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:760px}
+label{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:150px;padding:20px;box-sizing:border-box;border:var(--border-md) dashed var(--line);border-radius:var(--radius-lg);background:var(--paper);cursor:pointer;text-align:center}
+label.over{border-style:solid;border-color:var(--accent);background:var(--card);box-shadow:var(--shadow-press)}
+label.compact{grid-column:1 / -1;min-height:64px;flex-direction:row;gap:10px}
+.ico{width:52px;height:52px;border-radius:var(--radius-pill);background:var(--accent);color:var(--on-accent);display:flex;align-items:center;justify-content:center}
+b{font-size:17px;font-weight:800}
+span.h{font-size:13px;color:var(--muted)}
+input{position:absolute;width:1px;height:1px;opacity:0}
+</style>
+</head>
+<body>
+<div class="row">
+<label><span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span><b>Drop your PDF in the dryer</b><span class="h">or tap to choose · up to 30 MB</span><input type="file" accept="application/pdf"></label>
+<label class="over"><span class="ico"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span><b>Let go to load it</b><span class="h">1 file</span><input type="file"></label>
+<label class="compact"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><b>Add more to the drum</b><span class="h">JPG, PNG, WebP, AVIF</span><input type="file" multiple accept="image/*"></label>
+</div>
+</body>
+</html>

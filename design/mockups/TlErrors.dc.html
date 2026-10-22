@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Out of order error states</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&amp;family=Work+Sans:wght@400;600;800&amp;family=Caveat:wght@700&amp;display=swap" rel="stylesheet">
+<style>body{margin:0}</style>
+</helmet>
+<div style="min-height: 100vh; font-family: 'Work Sans', system-ui, sans-serif; color: {{ t.text }}; background-color: {{ t.bg }}; background-image: linear-gradient({{ t.grid }} 2px, transparent 2px), linear-gradient(90deg, {{ t.grid }} 2px, transparent 2px); background-size: 56px 56px;">
+
+<div aria-hidden="true" style="height: 26px; background-image: repeating-linear-gradient(90deg, {{ t.awnA }} 0 56px, {{ t.awnB }} 56px 112px);"></div>
+<header style="background: {{ t.panel }}; border-bottom: 3px solid {{ t.line }};">
+<div style="max-width: 1180px; margin: 0 auto; padding: 10px 24px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px;">
+<a href="TlHome.dc.html" style="display: flex; align-items: baseline; gap: 10px; text-decoration: none;"><span style="font-family: Bungee, sans-serif; font-size: 30px; line-height: 1; color: {{ t.signTitle }}; text-shadow: {{ t.glowTitle }};">TOOLITO</span><span style="font-family: Bungee, sans-serif; font-size: 12px; letter-spacing: 4px; color: {{ t.signSub }}; text-shadow: {{ t.glowSub }};">LAUNDROMAT</span></a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 22px; font-weight: 800; font-size: 15px;">
+<a href="TlWasher.dc.html" style="color: {{ t.panelText }}; text-decoration: none;">Images</a>
+<a href="TlDryer.dc.html" style="color: {{ t.panelText }}; text-decoration: none;">PDFs</a>
+<a href="TlHome.dc.html" style="color: {{ t.panelText }}; text-decoration: none;">House rules</a>
+</nav>
+<div style="display: flex; gap: 8px; font-family: Bungee, sans-serif; font-size: 12px;">
+<span style="color: {{ t.led }}; text-shadow: {{ t.glowSub }}; padding: 6px 10px; border-radius: 6px; border: 2px solid {{ t.led }};">OPEN 24/7</span>
+<span style="color: {{ t.panelText }}; padding: 6px 10px; border-radius: 6px; border: 2px solid {{ t.panelText }};">SELF-SERVICE</span>
+</div>
+</div>
+</header>
+
+<section style="max-width: 1180px; margin: 0 auto; padding: 36px 24px 8px; display: flex; flex-direction: column; gap: 8px;">
+<span style="align-self: flex-start; font-family: Bungee, sans-serif; font-size: 14px; background: {{ t.errBg }}; color: {{ t.onErr }}; padding: 4px 10px; border-radius: 6px;">OUT OF ORDER</span>
+<h1 style="margin: 0; font-size: 48px; font-weight: 800; letter-spacing: -1px;">When a load can't go in</h1>
+<p style="margin: 0; font-size: 18px; color: {{ t.muted }};">Every error gets a friendly note on the machine and one clear way forward.</p>
+</section>
+
+<section style="max-width: 1180px; margin: 0 auto; padding: 24px 24px 64px; display: grid; grid-template-columns: repeat(auto-fit, minmax(330px, 1fr)); gap: 28px;">
+<sc-for list="{{ errors }}" as="er" hint-placeholder-count="8">
+<article style="background: {{ t.surface }}; border: 4px solid {{ t.line }}; border-radius: 22px; overflow: hidden; display: flex; flex-direction: column;">
+<div style="background: {{ t.panel }}; padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid {{ t.line }};"><span style="font-family: Bungee, sans-serif; font-size: 16px; color: {{ t.panelText }};">{{ er.machine }}</span><span style="font-family: Bungee, sans-serif; font-size: 13px; background: {{ t.ledBg }}; color: {{ er.codeColor }}; padding: 3px 8px; border-radius: 4px;">{{ er.code }}</span></div>
+<div style="position: relative; padding: 26px 18px 18px; display: flex; flex-direction: column; align-items: center; gap: 16px; flex: 1;">
+<div aria-hidden="true" style="width: 120px; height: 120px; border-radius: 999px; border: 12px solid {{ t.rim }}; box-shadow: 0 0 0 4px {{ t.line }}; background: {{ er.glass }}; display: flex; align-items: center; justify-content: center;"><svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="{{ t.icon }}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="{{ er.d }}"></path></svg></div>
+<sc-if value="{{ er.hasNote }}" hint-placeholder-val="{{ false }}">
+<div aria-hidden="true" style="position: absolute; top: 48px; left: 50%; margin-left: -110px; width: 220px; background: #FFF3B0; color: #12233D; padding: 10px 12px; transform: rotate({{ er.tilt }}deg); box-shadow: 0 4px 8px rgba(0,0,0,.25); font-family: Caveat, cursive; font-size: 30px; text-align: center; line-height: 1;">{{ er.note }}</div>
+</sc-if>
+<h2 style="margin: 0; font-size: 22px; font-weight: 800; text-align: center;">{{ er.title }}</h2>
+<p style="margin: 0; font-size: 15px; line-height: 1.5; text-align: center; color: {{ t.muted }};">{{ er.body }}</p>
+<sc-if value="{{ er.isLink }}" hint-placeholder-val="{{ false }}">
+<a href="{{ er.href }}" style="margin-top: auto; display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 20px; border-radius: 999px; background: {{ t.btn }}; color: {{ t.onBtn }}; font-weight: 800; text-decoration: none;">{{ er.cta }}</a>
+</sc-if>
+<sc-if value="{{ er.isButton }}" hint-placeholder-val="{{ true }}">
+<button type="button" disabled="{{ er.disabled }}" style="{{ er.btnStyle }}">{{ er.cta }}</button>
+</sc-if>
+</div>
+</article>
+</sc-for>
+</section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"mode":{"editor":"enum","options":["auto","light","dark"],"default":"auto"},"$preview":{"width":1280,"height":1750}}'>
+class Component extends DCLogic {
+componentDidMount() {
+var self = this;
+this.clock = setInterval(function () { self.forceUpdate(); }, 60000);
+}
+componentWillUnmount() {
+clearInterval(this.clock);
+}
+palette(name) {
+if (name === 'dark') {
+return { bg: '#0F1630', grid: '#1A2448', text: '#F4F1EA', muted: '#C9CEE0', line: '#F4F1EA', surface: '#1A2347', panel: '#070B1C', panelText: '#F4F1EA', ledBg: '#000000', led: '#3DE8F5', accent2: '#3DE8F5', onAccent2: '#0F1630', rim: '#8C96B8', awnA: '#FF5E6C', awnB: '#F4F1EA', signTitle: '#FF5E6C', signSub: '#3DE8F5', glowTitle: '0 0 10px rgba(255,94,108,.9), 0 0 26px rgba(255,94,108,.6)', glowSub: '0 0 10px rgba(61,232,245,.8)', err: '#FF5E6C', warn: '#FFE45E', errBg: '#FF5E6C', onErr: '#0F1630', btn: '#FFE45E', onBtn: '#0F1630', icon: '#F4F1EA', dead: '#2B3456', cool: '#12304A', off: '#0A0F22', muteBorder: '#8C96B8', muteBg: '#1A2347', muteText: '#C9CEE0' };
+}
+return { bg: '#BFE6DA', grid: '#A5D8C8', text: '#12233D', muted: '#33445E', line: '#12233D', surface: '#F2F6F7', panel: '#12233D', panelText: '#FFF4EA', ledBg: '#08121F', led: '#5CF2C2', accent2: '#5CF2C2', onAccent2: '#12233D', rim: '#C5D0D6', awnA: '#FF4F5E', awnB: '#FFF4EA', signTitle: '#FF4F5E', signSub: '#5CF2C2', glowTitle: 'none', glowSub: 'none', err: '#FF8FA0', warn: '#FFD166', errBg: '#C81D3B', onErr: '#FFF4EA', btn: '#12233D', onBtn: '#FFF4EA', icon: '#12233D', dead: '#B9C4C8', cool: '#C8E9F2', off: '#7E8C92', muteBorder: '#5B6B73', muteBg: '#E1E7E9', muteText: '#3E4B52' };
+}
+theme() {
+var mode = this.props.mode || 'auto';
+var h = new Date().getHours();
+var night = h >= 19 || h < 7;
+return { t: this.palette(mode === 'auto' ? (night ? 'dark' : 'light') : mode) };
+}
+renderVals() {
+var th = this.theme();
+var t = th.t;
+var outline = 'margin-top: auto; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 3px solid ' + t.line + '; background: transparent; color: ' + t.text + '; font: 800 16px Work Sans, sans-serif; cursor: pointer;';
+var muted = 'margin-top: auto; min-height: 48px; padding: 0 20px; border-radius: 999px; border: 3px solid ' + t.muteBorder + '; background: ' + t.muteBg + '; color: ' + t.muteText + '; font: 800 16px Work Sans, sans-serif;';
+var defs = [
+{ machine: 'No.3 · DRYER', code: 'E-413', codeColor: t.err, glass: t.dead, d: '', hasNote: true, note: 'Too heavy!', tilt: -4, title: 'This load is too heavy', body: 'The dryer takes up to 30 MB per load. Split your PDF on the clothesline first, then dry each part.', isLink: true, href: 'TlLine.dc.html', cta: 'Go to Split PDF' },
+{ machine: 'No.3 · DRYER', code: 'LOCKED', codeColor: t.err, glass: t.dead, d: 'M7 11h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z M8 11V8a4 4 0 0 1 8 0v3', hasNote: false, title: 'This basket is locked', body: 'Your PDF has a password. Remove it in your PDF reader, then drop the file in again.', isLink: false, cta: 'Choose another file', btnStyle: outline, disabled: false },
+{ machine: 'No.3 · DRYER', code: 'E-415', codeColor: t.err, glass: t.dead, d: 'M6 4h12l-2 16H8z M10 9h4', hasNote: false, title: "That's not laundry", body: 'The dryer only takes PDFs. Got a photo instead? Washer No.1 handles images.', isLink: true, href: 'TlWasher.dc.html', cta: 'Go to Washer No.1' },
+{ machine: 'No.3 · DRYER', code: 'COOLING', codeColor: t.warn, glass: t.cool, d: 'M12 2v20 M4 6l16 12 M20 6L4 18', hasNote: false, title: 'Machine cooling down', body: "You've run a lot of loads in a row. Give it a minute and try again.", isLink: false, cta: 'Ready again in 0:42', btnStyle: muted, disabled: true },
+{ machine: 'No.3 · DRYER', code: 'NO POWER', codeColor: t.err, glass: t.off, d: '', hasNote: true, note: 'Back soon', tilt: 3, title: "You're offline", body: 'The dryer needs internet. The washers, folding table and clothesline still work offline.', isLink: false, cta: 'Try again', btnStyle: outline, disabled: false },
+{ machine: 'No.3 · DRYER', code: 'E-422', codeColor: t.err, glass: t.dead, d: 'M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M9 11l2 2-2 2 2 2', hasNote: false, title: "This one's torn", body: "We couldn't open this PDF. It may be damaged. Try saving it again from the app that made it.", isLink: false, cta: 'Choose another file', btnStyle: outline, disabled: false },
+{ machine: 'No.3 · DRYER', code: 'E-504', codeColor: t.warn, glass: t.cool, d: 'M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18z M12 7v5l3 2', hasNote: false, title: 'This load took too long', body: 'Big, photo-heavy PDFs can take more than a minute to dry. Split it on the clothesline and dry each part.', isLink: true, href: 'TlLine.dc.html', cta: 'Go to Split PDF' },
+{ machine: 'No.3 · DRYER', code: 'E-500', codeColor: t.err, glass: t.dead, d: '', hasNote: true, note: 'Jammed!', tilt: -3, title: 'Something jammed the drum', body: "That one's on us, not you. Your file wasn't kept. Give it a moment and run the load again.", isLink: false, cta: 'Try again', btnStyle: outline, disabled: false }
+];
+return {
+t: t,
+errors: defs.map(function (e) {
+e.isButton = !e.isLink;
+if (!e.btnStyle) e.btnStyle = outline;
+if (e.disabled === undefined) e.disabled = false;
+if (!e.href) e.href = '#';
+if (!e.note) e.note = '';
+if (e.tilt === undefined) e.tilt = 0;
+return e;
+})
+};
+}
+}
+</script>
+</body>
+</html>

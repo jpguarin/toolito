@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&family=Caveat:wght@700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+article{max-width:340px;background:var(--surface);border:var(--border-thick) solid var(--line);border-radius:22px;overflow:hidden}
+.head{background:var(--panel);color:var(--panel-ink);padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-family:var(--font-sign);font-size:16px;border-bottom:var(--border-md) solid var(--line)}
+.code{font-size:13px;background:var(--led-bg);color:var(--error);padding:3px 8px;border-radius:4px}
+.body{position:relative;padding:26px 18px 18px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center}
+.p{width:120px;height:120px;border-radius:var(--radius-pill);border:12px solid var(--rim);box-shadow:0 0 0 4px var(--line);background:var(--surface)}
+.note{position:absolute;top:48px;left:50%;margin-left:-110px;width:220px;background:var(--tape);color:var(--on-note);padding:10px 12px;transform:rotate(-4deg);font-family:var(--font-hand);font-size:30px;line-height:1}
+h2{margin:0;font-size:22px;font-weight:800}
+p{margin:0;font-size:15px;line-height:1.5;color:var(--muted)}
+a{display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:var(--radius-pill);background:var(--btn);color:var(--on-btn);font-weight:800;text-decoration:none}
+</style>
+</head>
+<body>
+<article>
+<div class="head"><span>No.3 · DRYER</span><span class="code">E-413</span></div>
+<div class="body">
+<div class="p" aria-hidden="true"></div>
+<div class="note" aria-hidden="true">Too heavy!</div>
+<h2>This load is too heavy</h2>
+<p>The dryer takes up to 30 MB per load. Split your PDF on the clothesline first, then dry each part.</p>
+<a href="#">Go to Split PDF</a>
+</div>
+</article>
+</body>
+</html>

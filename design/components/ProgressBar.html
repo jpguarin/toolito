@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.card{max-width:520px;background:var(--card);border:var(--border-md) solid var(--line);border-radius:18px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.t{font-family:var(--font-sign);font-size:22px}
+.lg{height:18px;border-radius:var(--radius-pill);border:var(--border-md) solid var(--line);background:var(--bg);overflow:hidden}
+.lg div{width:64%;height:100%;background:var(--accent);box-shadow:var(--glow-accent)}
+.ind{height:18px;border-radius:var(--radius-pill);border:var(--border-md) solid var(--line);background:var(--bg);overflow:hidden}
+.ind div{height:100%;background-image:repeating-linear-gradient(45deg,var(--accent) 0 14px,transparent 14px 28px);background-size:56px 100%;animation:stripe .9s linear infinite}
+@keyframes stripe{to{background-position:56px 0}}
+@media (prefers-reduced-motion: reduce){.ind div{animation:none}}
+.cap{font-size:13px;font-weight:600;color:var(--muted)}
+.sm{display:flex;align-items:center;gap:10px}
+.sm .tr{flex:1;height:10px;border-radius:var(--radius-pill);border:var(--border-thin) solid var(--line);background:var(--bg);overflow:hidden}
+.sm .tr div{width:45%;height:100%;background:var(--accent)}
+.sm span{font-size:13px;font-weight:800}
+</style>
+</head>
+<body>
+<div class="card">
+<span class="t">Loading the dryer…</span>
+<div class="lg" role="progressbar" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="64"><div></div></div>
+<span class="cap">Determinate: real upload percentage</span>
+<span class="t">Tumbling your PDF…</span>
+<div class="ind" role="progressbar" aria-label="Drying progress" aria-valuetext="Drying"><div></div></div>
+<span class="cap">Indeterminate: the server reports no percentage</span>
+<div class="sm"><div class="tr" role="progressbar" aria-label="Washing team-photo.png" aria-valuemin="0" aria-valuemax="100" aria-valuenow="45"><div></div></div><span>Spinning…</span></div>
+</div>
+</body>
+</html>

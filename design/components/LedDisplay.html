@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--panel)}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.led{font-family:var(--font-sign);font-size:18px;letter-spacing:2px;background:var(--led-bg);color:var(--led);text-shadow:var(--glow-led);padding:6px 14px;border-radius:var(--radius-sm);min-width:120px;text-align:center}
+.tag{font-family:var(--font-sign);font-size:12px;background:var(--led-bg);color:var(--led);padding:3px 8px;border-radius:4px}
+.err{color:var(--error)}
+</style>
+</head>
+<body>
+<div class="row">
+<span class="led" role="status">READY</span>
+<span class="led" role="status">LOADING 42%</span>
+<span class="led" role="status">DRYING 0:12</span>
+<span class="led" role="status">DONE</span>
+<span class="tag">IMG</span>
+<span class="tag err">E-413</span>
+</div>
+</body>
+</html>

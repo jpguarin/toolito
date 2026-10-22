@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="../tokens.css">
+<link href="https://fonts.googleapis.com/css2?family=Bungee&family=Work+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+body{margin:0;padding:24px;background:var(--bg);font-family:var(--font-sans);color:var(--ink)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;max-width:480px}
+.m{display:flex;flex-direction:column;text-decoration:none;color:var(--ink);background:var(--surface);border:var(--border-thick) solid var(--line);border-radius:var(--radius-lg);overflow:hidden}
+.m.hot{background:var(--paper);border-color:var(--hot);box-shadow:var(--shadow-hot)}
+.head{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:var(--panel);color:var(--panel-ink);font-family:var(--font-sign);font-size:18px}
+.hot .head{background:var(--hot);color:var(--on-hot)}
+.tag{font-size:12px;background:var(--led-bg);color:var(--led);padding:3px 8px;border-radius:4px}
+.hot .tag{color:var(--hot)}
+.port{margin:22px auto;width:108px;height:108px;border-radius:var(--radius-pill);border:12px solid var(--rim);box-shadow:0 0 0 4px var(--line);display:flex;align-items:center;justify-content:center}
+.txt{padding:0 14px 18px;display:flex;flex-direction:column;gap:4px;text-align:center}
+.txt b{font-size:18px}
+.txt span{font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="grid">
+<a class="m" href="#">
+<div class="head"><span>No.1</span><span class="tag">IMG</span></div>
+<div class="port" style="background:var(--glass-image)"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--icon-image)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></svg></div>
+<div class="txt"><b>Compress image</b><span>Gentle cycle · your device</span></div>
+</a>
+<a class="m hot" href="#">
+<div class="head"><span>No.3</span><span class="tag">DRYER</span></div>
+<div class="port" style="background:var(--glass-dryer)"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="var(--icon-dryer)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13l3 3 3-3"/></svg></div>
+<div class="txt"><b>Compress PDF</b><span>Heavy loads · emptied after every cycle</span></div>
+</a>
+</div>
+</body>
+</html>
