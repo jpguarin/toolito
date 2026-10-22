@@ -5,11 +5,13 @@ from pathlib import Path
 from typing import Annotated
 
 from fastapi import FastAPI, File, Form, Request, Response, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
 
 from app import __version__
-from app.compressor import Level, compress_pdf
+from app.compressor import Level
 from app.config import settings
 from app.errors import register_error_handlers
+from app.isolation import compress_with_timeout
 from app.rate_limit import limiter
 from app.validation import check_pdf, save_upload
 
@@ -20,6 +22,19 @@ app = FastAPI(
 )
 app.state.limiter = limiter  # slowapi looks for it here.
 register_error_handlers(app)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.allowed_origins,
+    allow_methods=["GET", "POST"],
+    # Without this, browser JavaScript cannot read these response headers.
+    expose_headers=[
+        "X-Original-Size",
+        "X-Compressed-Size",
+        "X-Already-Optimized",
+        "Retry-After",
+    ],
+    max_age=600,  # Browsers may cache the preflight answer for 10 minutes.
+)
 
 
 @app.get("/health")
@@ -47,7 +62,9 @@ def compress_pdf_route(
         output_path = Path(workdir) / "output.pdf"
         save_upload(file.file, input_path, settings.max_file_bytes)
         check_pdf(input_path, settings.max_pages)
-        result = compress_pdf(input_path, output_path, level)
+        result = compress_with_timeout(
+            input_path, output_path, level, settings.processing_timeout_s
+        )
         # Read into memory before the folder disappears (max 30 MB).
         content = output_path.read_bytes()
 
