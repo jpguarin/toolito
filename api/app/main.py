@@ -9,12 +9,14 @@ from fastapi import FastAPI, File, Form, Response, UploadFile
 
 from app import __version__
 from app.compressor import Level, compress_pdf
+from app.errors import register_error_handlers
 
 app = FastAPI(
     title="Toolito API",
     version=__version__,
     description="Little tools, big results. Server-side PDF compression.",
 )
+register_error_handlers(app)
 
 
 @app.get("/health")
