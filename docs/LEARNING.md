@@ -53,11 +53,45 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Traceback** | El rastro de un error en Python; se lee de abajo hacia arriba: qué pasó, dónde, quién llamó. |
 | **Fixture** | Ingrediente preparado que pytest le pasa a un test (un cliente, un PDF de prueba, una carpeta temporal). |
 | **Perfil de color ICC** | Datos que dicen cómo interpretar los colores de una imagen (sRGB, Display P3…). |
+| **Imagen (Docker)** | Plantilla congelada con el sistema, Python, dependencias y código; de ella se crean contenedores. |
+| **Capa** | Cada paso del Dockerfile; Docker guarda en caché las que no cambian. |
+| **Mapeo de puertos** | Conectar un puerto del computador con uno del contenedor (`-p 8000:8000`). |
+| **Cold start** | El tiempo que tarda un contenedor en arrancar antes de poder responder. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-22 — Etapa 2: Docker
+
+**Qué hicimos:**
+- `api/Dockerfile` con `python:3.14-slim` (la misma versión que en local, en vez de la 3.12 del plan), usuario no root `toolito` y puerto leído de `PORT`.
+- `api/.dockerignore`: la imagen solo lleva `app/` y `requirements.txt` (nada de tests, `.venv` ni PDFs).
+- Construimos la imagen (296 MB) y la probamos: mismo resultado que fuera de Docker (13.371.192 → 234.580 bytes), errores iguales, 0 archivos temporales, y los logs no muestran nombres de archivo.
+
+**Conceptos nuevos:**
+- **Imagen vs. contenedor:** la imagen es la "lonchera" congelada (Linux + Python + código); el contenedor es la lonchera abierta y corriendo. De una imagen salen muchos contenedores.
+- **Capas y caché:** cada línea del Dockerfile es una capa. Copiamos `requirements.txt` antes que el código para que cambiar el código no reinstale todas las dependencias.
+- **Usuario no root:** si alguien ataca la app, no tiene permisos de administrador dentro del contenedor.
+- **`PORT` con valor por defecto:** `${PORT:-8000}` = "usa `PORT` si existe; si no, 8000". Cloud Run define `PORT`.
+- **Mapeo de puertos:** `-p 8001:9000` conecta el puerto 8001 del Mac con el 9000 del contenedor.
+- **El contenedor tarda en arrancar:** las peticiones que llegan antes de que uvicorn esté listo fallan (en Cloud Run se llama *cold start*).
+
+**Comandos que aprendí:**
+- `docker build -t toolito-api ./api` → construir la imagen con nombre (`-t`) desde la carpeta `api/`.
+- `docker run --rm -p 8000:8000 toolito-api` → correr un contenedor; `--rm` lo borra al detenerlo.
+- `docker run -e PORT=9000 ...` → pasar una variable de entorno al contenedor.
+- `docker logs <nombre>` / `docker exec <nombre> <comando>` → ver los logs / ejecutar algo dentro del contenedor.
+- `docker images` / `docker rm -f <nombre>` → listar imágenes / borrar un contenedor.
+
+**Errores y cómo los resolvimos:**
+- Error: `curl` devolvía respuestas vacías y los logs salían vacíos. → Causa: las pruebas corrieron en menos de 1 s, antes de que uvicorn arrancara; el puente de puertos de Docker Desktop acepta la conexión aunque el servidor no esté listo, así que `--retry-connrefused` no reintentaba. → Solución: diagnosticar desde dentro (`docker exec ... python -c ...`) y probar de nuevo cuando estaba arriba.
+- `ps: executable file not found` → La imagen *slim* no trae herramientas extra; es normal y es parte de que pese poco.
+
+**Dudas pendientes:**
+- Todavía faltan en la API: timeout de 60 s (`504`), error `500 internal_error`, CORS y rate limiting. Revisar en qué etapa entran antes de desplegar.
+- Probar con un PDF con texto real y con un escaneo cuando tenga uno.
 
 ## 2026-10-22 — Etapa 1: tests y prueba manual (cierre de la etapa)
 
