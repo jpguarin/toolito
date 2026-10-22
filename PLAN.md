@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 1 (Etapa 0 completada)
+**Estado actual:** Etapa 1 — 8 de 10 tareas (faltan los tests con pytest y la prueba manual)
 
 ---
 
@@ -27,14 +27,14 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Objetivo:** un servicio FastAPI que comprime PDFs y funciona en local.
 **Aprendes:** estructura de un proyecto FastAPI, entornos virtuales, pikepdf, Pillow, tests con pytest.
 
-- [ ] Crear `api/` con entorno virtual y `requirements.txt`
-- [ ] Endpoint `GET /health`
-- [ ] `compressor.py`: abrir el PDF con pikepdf y guardarlo con object streams (sin tocar imágenes)
-- [ ] Recomprimir imágenes con Pillow según el nivel (`low`, `recommended`, `extreme`)
-- [ ] Devolver el original si el resultado pesa más ("already optimized")
-- [ ] Endpoint `POST /v1/compress-pdf` según `docs/API.md`
-- [ ] Validaciones: tamaño, cabecera `%PDF-`, cifrado, número de páginas
-- [ ] Archivos temporales que se borran siempre
+- [x] Crear `api/` con entorno virtual y `requirements.txt`
+- [x] Endpoint `GET /health`
+- [x] `compressor.py`: abrir el PDF con pikepdf y guardarlo con object streams (sin tocar imágenes)
+- [x] Recomprimir imágenes con Pillow según el nivel (`low`, `recommended`, `extreme`)
+- [x] Devolver el original si el resultado pesa más ("already optimized")
+- [x] Endpoint `POST /v1/compress-pdf` según `docs/API.md`
+- [x] Validaciones: tamaño, cabecera `%PDF-`, cifrado, número de páginas
+- [x] Archivos temporales que se borran siempre
 - [ ] Tests con pytest (PDFs de prueba generados en los tests)
 - [ ] Probar a mano desde `http://localhost:8000/docs` con PDFs reales y anotar resultados en `docs/LEARNING.md`
 
