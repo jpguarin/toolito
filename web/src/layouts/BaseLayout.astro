@@ -1,0 +1,31 @@
+---
+// Minimal shell: styles, fonts and metadata. Header, footer and full SEO
+// tags come in the "BaseLayout" task of PLAN.md (stage 4).
+import { Font } from "astro:assets";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Self-hosted brand fonts (configured in astro.config.mjs). -->
+    <Font cssVariable="--font-bungee" preload />
+    <Font cssVariable="--font-work-sans" preload />
+    <Font cssVariable="--font-caveat" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

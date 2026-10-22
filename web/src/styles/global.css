@@ -1,0 +1,130 @@
+@import "tailwindcss";
+/* Design tokens, copied verbatim from design/tokens.css (do not edit here). */
+@import "./tokens.css";
+
+/*
+ * Font bridge: tokens.css names the families ("Bungee", "Work Sans"...),
+ * but Astro's Fonts API self-hosts them under unique names exposed as
+ * --font-bungee, --font-work-sans and --font-caveat (see astro.config.mjs).
+ * Same fonts, now served from our own site.
+ */
+:root {
+  --font-sign: var(--font-bungee);
+  --font-sans: var(--font-work-sans);
+  --font-hand: var(--font-caveat);
+}
+
+/*
+ * Tailwind only knows our design tokens: every default color, font, size,
+ * radius and shadow is removed, so `bg-blue-500` simply does not exist.
+ * `inline` makes utilities read the token at runtime (e.g. `bg-accent` ->
+ * `var(--accent)`), so they follow the Light/Dark theme automatically.
+ * `reference` stops Tailwind from re-declaring these variables, so names
+ * shared with tokens.css (--radius-lg, --font-sign...) never self-reference.
+ */
+@theme inline reference {
+  --color-*: initial;
+  --font-*: initial;
+  --text-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --spacing: initial;
+
+  --color-bg: var(--bg);
+  --color-grid: var(--grid);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-panel: var(--panel);
+  --color-panel-ink: var(--panel-ink);
+  --color-led-bg: var(--led-bg);
+  --color-led: var(--led);
+  --color-accent: var(--accent);
+  --color-on-accent: var(--on-accent);
+  --color-accent-2: var(--accent-2);
+  --color-on-accent-2: var(--on-accent-2);
+  --color-hot: var(--hot);
+  --color-on-hot: var(--on-hot);
+  --color-heading: var(--heading);
+  --color-btn: var(--btn);
+  --color-on-btn: var(--on-btn);
+  --color-rim: var(--rim);
+  --color-awning-a: var(--awning-a);
+  --color-awning-b: var(--awning-b);
+  --color-sign-sub: var(--sign-sub);
+  --color-note: var(--note);
+  --color-on-note: var(--on-note);
+  --color-tape: var(--tape);
+  --color-wood: var(--wood);
+  --color-cork: var(--cork);
+  --color-cork-frame: var(--cork-frame);
+  --color-ok: var(--ok);
+  --color-on-ok: var(--on-ok);
+  --color-error: var(--error);
+  --color-glass-image: var(--glass-image);
+  --color-glass-convert: var(--glass-convert);
+  --color-glass-dryer: var(--glass-dryer);
+  --color-glass-fold: var(--glass-fold);
+  --color-glass-sort: var(--glass-sort);
+  --color-icon-image: var(--icon-image);
+  --color-icon-convert: var(--icon-convert);
+  --color-icon-dryer: var(--icon-dryer);
+  --color-icon-fold: var(--icon-fold);
+  --color-icon-sort: var(--icon-sort);
+
+  --font-sign: var(--font-sign);
+  --font-sans: var(--font-sans);
+  --font-hand: var(--font-hand);
+
+  --spacing-1: var(--space-1);
+  --spacing-2: var(--space-2);
+  --spacing-3: var(--space-3);
+  --spacing-4: var(--space-4);
+  --spacing-5: var(--space-5);
+  --spacing-6: var(--space-6);
+  --spacing-7: var(--space-7);
+  --spacing-8: var(--space-8);
+  --spacing-tile: var(--tile);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-pill: var(--radius-pill);
+
+  --shadow-press: var(--shadow-press);
+  --shadow-hot: var(--shadow-hot);
+  --shadow-glow-accent: var(--glow-accent);
+  --shadow-glow-led: var(--glow-led);
+  --shadow-glow-sign: var(--glow-sign);
+}
+
+@layer base {
+  /* Tile floor: `bg` with 2px `grid` joints every `tile` (BRAND-BOOK §6). */
+  body {
+    background-color: var(--bg);
+    background-image:
+      linear-gradient(var(--grid) var(--border-thin), transparent var(--border-thin)),
+      linear-gradient(90deg, var(--grid) var(--border-thin), transparent var(--border-thin));
+    background-size: var(--tile) var(--tile);
+    color: var(--ink);
+    font-family: var(--font-sans);
+  }
+}
+
+/* Border widths from the tokens (BRAND-BOOK §6): machines, rows, small parts. */
+@utility border-thick {
+  border-style: solid;
+  border-width: var(--border-thick);
+}
+@utility border-md {
+  border-style: solid;
+  border-width: var(--border-md);
+}
+@utility border-thin {
+  border-style: solid;
+  border-width: var(--border-thin);
+}

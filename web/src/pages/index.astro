@@ -1,16 +1,35 @@
 ---
+// TEMPORARY token check page. Replaced by the home page task (PLAN.md, stage 4).
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const swatches = ["bg", "paper", "panel", "accent", "accent-2", "hot", "btn", "led"];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout title="Toolito — token check" description="Temporary page to check design tokens.">
+  <main class="mx-auto flex max-w-3xl flex-col gap-7 p-5">
+    <section class="rounded-lg border-thick border-line bg-panel p-5 text-panel-ink">
+      <p class="sign-xl text-accent">TOOLITO</p>
+      <p class="sign-sm text-sign-sub">LAUNDROMAT · OPEN 24/7</p>
+    </section>
+
+    <section class="flex flex-col gap-3 rounded-lg border-md border-line bg-paper p-5">
+      <h1 class="title">We shrink your files. On purpose.</h1>
+      <p class="lead text-muted">Little tools, big results.</p>
+      <p class="body">Body text in Work Sans, using only design tokens.</p>
+      <p class="note">Out of order — back soon!</p>
+      <button class="label self-start rounded-pill border-thick border-line bg-accent px-5 py-3 text-on-accent shadow-press">
+        START
+      </button>
+      <!-- Must render unstyled: Tailwind defaults were removed on purpose. -->
+      <p class="bg-blue-500 text-xl">bg-blue-500 + text-xl (should look like plain body text)</p>
+    </section>
+
+    <section class="grid grid-cols-4 gap-3">
+      {swatches.map((name) => (
+        <div class="rounded-md border-md border-line p-3 caption" style={`background: var(--${name})`}>
+          <span class="rounded-sm bg-card px-2 text-ink">{name}</span>
+        </div>
+      ))}
+    </section>
+  </main>
+</BaseLayout>
