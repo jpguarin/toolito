@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 4 (Etapas 0 a 3 completadas; API en Cloud Run)
+**Estado actual:** Etapa 4 — 7 de 10 tareas (faltan BaseLayout, portada y Dropzone)
 
 ---
 

@@ -67,11 +67,61 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Revisión** | Cada versión desplegada de un servicio de Cloud Run; se puede volver a una anterior. |
 | **Concurrencia** | Cuántas peticiones atiende una instancia al mismo tiempo. |
 | **Escalar a cero** | Sin tráfico, Cloud Run apaga el contenedor y no cobra nada. |
+| **Monorepo** | Un solo repositorio con varios proyectos (`api/` en Python y `web/` en Astro). |
+| **Isla (Astro)** | Parte interactiva de una página estática; solo ahí llega JavaScript al navegador. |
+| **Utility-first** | Estilo de Tailwind: combinar clases pequeñas (`p-5 bg-accent`) en vez de escribir CSS a medida. |
+| **FOUC** | Parpadeo cuando la página se pinta con un estilo y salta a otro; lo evitamos decidiendo el tema antes de pintar. |
+| **Gestor de versiones** | Herramienta (nvm) para tener varias versiones de Node y elegir cuál usar. |
+| **Comodín (glob)** | Símbolos como `*` que la terminal convierte en nombres de archivos; se evitan con comillas. |
+| **Vitest** | El "pytest" del mundo JavaScript/Vite: `test`, `expect`, `test.each`. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-22 — Etapa 4: Astro, tokens y temas
+
+**Qué hicimos:**
+- Actualizamos Node de 22.19 a **24.22.1 LTS** con nvm (Astro 7 pide ≥ 22.23.4).
+- Omitimos el tutorial oficial de Astro: aprendemos construyendo `web/`.
+- Creamos `web/` (monorepo: `api/` + `web/`) con Astro 7, TypeScript estricto, `.nvmrc` = 24 y `npm run check`.
+- Conectamos `design/tokens.css` a Tailwind 4: **quitamos todos los valores por defecto** (`bg-blue-500` ya no existe) y solo quedan los tokens (`bg-accent`, `p-5`, `rounded-lg`, `border-thick`…). Fondo de baldosa en el `body`.
+- Fuentes **servidas desde nuestro sitio** con la Fonts API de Astro (Fontsource): nada de Google, funcionan sin conexión. Permitimos la licencia OFL solo para fuentes en `CLAUDE.md`.
+- Tema Light/Dark antes de pintar (script en línea), cambio en vivo cada minuto y al volver a la pestaña, y tests de `resolveTheme` con Vitest.
+- Corregimos `docs/THEMES.md` (`--ink`, `--panel-ink`) y `design/BRAND-BOOK.md` (fuentes propias).
+
+**Conceptos nuevos:**
+- **Gestor de versiones (nvm):** varias versiones de Node instaladas; cada terminal usa la suya. `default` solo afecta a las terminales nuevas.
+- **Astro genera HTML estático:** la página llega hecha; JavaScript solo en las "islas" interactivas.
+- **Rutas por archivos:** `src/pages/compress-pdf.astro` → `/compress-pdf`.
+- **Tailwind (utility-first):** clases pequeñas en el HTML en vez de CSS a medida. Quitar los valores por defecto hace que la herramienta obligue a usar los tokens.
+- **`@theme inline reference`:** las utilidades leen la variable en tiempo real (siguen el tema) y Tailwind no redeclara las variables (evita autorreferencias).
+- **Capas de CSS:** los estilos sin capa ganan a los que están dentro de una (`@layer`).
+- **Puente de fuentes:** Astro renombra las fuentes (`Bungee-e406…`), así que `--font-sign` apunta a `--font-bungee`.
+- **FOUC (parpadeo):** si el tema se decide tarde, la página aparece en claro y salta a oscuro. Solución: script en línea (`is:inline`) al inicio del `<head>`.
+- **`define:vars`:** Astro escribe valores de TypeScript dentro de un script en línea; así las horas viven en un solo lugar (`theme.ts`).
+- **Script normal de Astro:** se procesa (TypeScript, `import`), se minimiza y, si es pequeño, se incrusta en la página.
+- **Eventos del navegador:** `addEventListener("visibilitychange", …)` avisa cuando vuelves a la pestaña.
+- **Tests de bordes y tautologías:** probar con valores fijos en los límites (6, 7, 18, 19); un test que copia la fórmula de la función no protege nada.
+
+**Comandos que aprendí:**
+- `nvm install --lts` / `nvm alias default 'lts/*'` / `nvm use default` → instalar, fijar y activar una versión de Node.
+- `npm create astro@latest web -- --template minimal --install --no-git --no-ai --skip-houston` → crear el proyecto Astro.
+- `npx astro add tailwind` → instalar una integración de Astro.
+- `npm run dev` / `npm run check` / `npm run build` / `npm run preview` / `npm test` → desarrollo, tipos, sitio final, vista previa y tests.
+
+**Errores y cómo los resolvimos:**
+- `Node.js v22.19.0 is not supported by Astro!` → Causa: Astro 7 pide ≥ 22.23.4. → Solución: Node 24 LTS con nvm.
+- `zsh: no matches found: lts/*` → Causa: en zsh el `*` es un comodín de archivos. → Solución: comillas: `'lts/*'`.
+- El mismo error de versión en otra terminal → Causa: esa terminal se abrió antes de cambiar el `default`. → Solución: `nvm use default` o abrir una nueva.
+- Fuentes con nombre cambiado (`Bungee-e406…`) → Causa: la Fonts API renombra las familias. → Solución: puente de variables en `global.css`.
+- `git push` desde Claude: `could not read Username` → Causa: su terminal no puede pedir credenciales. → Solución: push con `! git push` (o configurar `gh auth login`).
+
+**Dudas pendientes:**
+- Ver el cambio en vivo a las 19:00 con la página abierta (o probarlo con el truco de la consola + cambiar de pestaña).
+- `<meta name="theme-color">` que cambie con el tema: va en la etapa 6 (PWA).
+- `docs/SETUP.md` dice "Node.js LTS": hoy es la 24; quizá anotar la versión.
 
 ## 2026-10-22 — Etapa 3: protecciones y Google Cloud Run
 
