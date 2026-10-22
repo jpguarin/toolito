@@ -13,9 +13,9 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Objetivo:** tener todas las herramientas instaladas y el repositorio en GitHub.
 **Aprendes:** Git básico, estructura de un monorepo.
 
-- [ ] Instalar herramientas (ver `docs/SETUP.md`) y verificar versiones
-- [ ] Crear el repositorio `toolito` en GitHub y clonarlo
-- [ ] Primer commit con estos documentos (`docs: add project documentation`)
+- [x] Instalar herramientas (ver `docs/SETUP.md`) y verificar versiones
+- [x] Crear el repositorio `toolito` en GitHub y clonarlo
+- [x] Primer commit con estos documentos (`docs: add project documentation`)
 - [ ] Repasar comandos Git: `status`, `add`, `commit`, `push`, `log`
 
 **Terminado cuando:** los documentos están en GitHub y todos los comandos de verificación de `docs/SETUP.md` responden.
