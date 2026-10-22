@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pikepdf
 import pytest
+from PIL import ImageCms
 
 from app.compressor import LEVELS, compress_pdf
 from tests.conftest import SAMPLE_TEXT
@@ -68,3 +69,21 @@ def test_already_optimized_returns_identical_original(photo_pdf: Path) -> None:
     assert result.already_optimized
     assert result.compressed_size == result.original_size
     assert twice.read_bytes() == once.read_bytes()
+
+
+def test_icc_color_profile_is_kept(photo_pdf: Path) -> None:
+    # Give the photo an ICC profile, like iPhone photos (Display P3) have.
+    with pikepdf.open(photo_pdf, allow_overwriting_input=True) as pdf:
+        image = next(iter(pdf.pages[0].get_images().values()))
+        profile = ImageCms.ImageCmsProfile(ImageCms.createProfile("sRGB")).tobytes()
+        icc = pdf.make_stream(profile, N=3)
+        image.ColorSpace = pikepdf.Array([pikepdf.Name.ICCBased, icc])
+        pdf.save(photo_pdf)
+    output = photo_pdf.with_name("out.pdf")
+
+    compress_pdf(photo_pdf, output)
+
+    with pikepdf.open(output) as pdf:
+        image = next(iter(pdf.pages[0].get_images().values()))
+        assert image.Filter == "/DCTDecode"  # It was recompressed...
+        assert image.ColorSpace[0] == "/ICCBased"  # ...and kept its profile.

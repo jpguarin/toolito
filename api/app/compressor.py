@@ -111,9 +111,22 @@ def _recompress_image(image: pikepdf.Stream, max_side: int, quality: int) -> Non
 
     image.write(data, filter=pikepdf.Name.DCTDecode)
     image.Width, image.Height = pil_image.size
-    image.ColorSpace = pikepdf.Name(
-        "/DeviceRGB" if pil_image.mode == "RGB" else "/DeviceGray"
-    )
+    # Pixels are not color-converted, so an ICC profile (e.g. an iPhone's
+    # Display P3) stays valid; dropping it would make colors look duller.
+    if not _has_icc_profile(image, channels=len(pil_image.getbands())):
+        image.ColorSpace = pikepdf.Name(
+            "/DeviceRGB" if pil_image.mode == "RGB" else "/DeviceGray"
+        )
     image.BitsPerComponent = 8
     if "/DecodeParms" in image:
         del image.DecodeParms
+
+
+def _has_icc_profile(image: pikepdf.Stream, channels: int) -> bool:
+    color_space = image.get("/ColorSpace")
+    return (
+        isinstance(color_space, pikepdf.Array)
+        and len(color_space) == 2
+        and color_space[0] == "/ICCBased"
+        and int(color_space[1].get("/N", 0)) == channels
+    )
