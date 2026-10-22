@@ -113,6 +113,17 @@
     color: var(--ink);
     font-family: var(--font-sans);
   }
+
+  /* "Lights off" fade while the clock switches the theme (docs/THEMES.md §3). */
+  @media (prefers-reduced-motion: no-preference) {
+    :root[data-theme-changing],
+    :root[data-theme-changing] * {
+      transition:
+        background-color 0.4s,
+        color 0.4s,
+        border-color 0.4s;
+    }
+  }
 }
 
 /* Border widths from the tokens (BRAND-BOOK §6): machines, rows, small parts. */
