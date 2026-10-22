@@ -1,0 +1,8 @@
+# Runtime dependencies (installed in the Docker image).
+# Pinned with == so every install is identical. Licenses checked: see docs/DECISIONS.md D-005.
+fastapi==0.160.0          # MIT
+uvicorn==0.54.0           # BSD-3-Clause
+python-multipart==0.0.32  # Apache-2.0 (file uploads)
+pikepdf==10.17.0          # MPL-2.0
+pillow==13.0.0            # MIT-CMU (HPND, permissive)
+slowapi==0.1.10           # MIT (rate limiting)

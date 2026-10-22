@@ -104,7 +104,7 @@ toolito/
 # API
 cd api
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt          # includes requirements.txt + pytest, ruff
 uvicorn app.main:app --reload          # http://localhost:8000/docs
 pytest
 ruff check . && ruff format .
