@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 3 (Etapas 0, 1 y 2 completadas)
+**Estado actual:** Etapa 4 (Etapas 0 a 3 completadas; API en Cloud Run)
 
 ---
 
@@ -61,13 +61,13 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Objetivo:** la API publicada en internet con costo controlado.
 **Aprendes:** proyectos de Google Cloud, facturación y alertas, `gcloud`, despliegue serverless, logs.
 
-- [ ] Crear cuenta y proyecto en Google Cloud
-- [ ] **Antes que nada:** alerta de presupuesto (p. ej. 5 USD)
-- [ ] Instalar e iniciar sesión con `gcloud`
-- [ ] Primer despliegue: `gcloud run deploy --source .` en `us-central1`
-- [ ] Configurar memoria, timeout, `max-instances` y concurrencia
-- [ ] Variables de entorno (`ALLOWED_ORIGINS`, límites)
-- [ ] Probar la URL pública y revisar los logs
+- [x] Crear cuenta y proyecto en Google Cloud
+- [x] **Antes que nada:** alerta de presupuesto (p. ej. 5 USD)
+- [x] Instalar e iniciar sesión con `gcloud`
+- [x] Primer despliegue: `gcloud run deploy --source .` en `us-central1`
+- [x] Configurar memoria, timeout, `max-instances` y concurrencia
+- [x] Variables de entorno (`ALLOWED_ORIGINS`, límites)
+- [x] Probar la URL pública y revisar los logs
 
 **Terminado cuando:** puedes comprimir un PDF usando la URL de Cloud Run y la alerta de presupuesto está activa.
 

@@ -57,11 +57,79 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Capa** | Cada paso del Dockerfile; Docker guarda en caché las que no cambian. |
 | **Mapeo de puertos** | Conectar un puerto del computador con uno del contenedor (`-p 8000:8000`). |
 | **Cold start** | El tiempo que tarda un contenedor en arrancar antes de poder responder. |
+| **Rate limiting** | Límite de peticiones por visitante en un tiempo (20 por minuto); al pasarlo, `429`. |
+| **Proceso vs. hilo** | Un hilo comparte el programa y no se puede matar desde fuera; un proceso es otro Python aparte que sí se puede detener. |
+| **Preflight** | Petición `OPTIONS` que el navegador hace antes de un envío para preguntar si el origen tiene permiso (CORS). |
+| **X-Forwarded-For** | Cabecera con la lista de IPs por las que pasó la petición; Google añade la IP real al final. |
+| **Proyecto (Google Cloud)** | El "apartamento" donde viven todos los recursos y costos de Toolito (`toolito-api`). |
+| **Cuenta de servicio** | Usuario "robot" que usan los servicios de Google para actuar en tu nombre. |
+| **IAM** | Sistema de roles y permisos de Google Cloud: quién puede hacer qué. |
+| **Revisión** | Cada versión desplegada de un servicio de Cloud Run; se puede volver a una anterior. |
+| **Concurrencia** | Cuántas peticiones atiende una instancia al mismo tiempo. |
+| **Escalar a cero** | Sin tráfico, Cloud Run apaga el contenedor y no cobra nada. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-22 — Etapa 3: protecciones y Google Cloud Run
+
+**Qué hicimos:**
+- Proyecto `toolito-api` en Google Cloud (borramos el primero, `toolito-512418`, para tener un ID claro). Facturación vinculada y presupuesto de 5 USD/mes con alertas al 50/90/100/150 %, sin descontar créditos.
+- Instalamos `gcloud` (Homebrew) e iniciamos sesión; región por defecto `us-central1`.
+- Antes de publicar, añadimos protecciones a la API (adelantamos parte de la etapa 6):
+  - Rate limiting por IP con slowapi: 20/min → `429 rate_limited` + `Retry-After`.
+  - Timeout de 60 s con la compresión en un **proceso aparte** → `504 processing_timeout`.
+  - `500 internal_error` sin detalles internos (el traceback solo va a los logs).
+  - CORS restringido a `ALLOWED_ORIGINS`, exponiendo las cabeceras de tamaño y `Retry-After`.
+  - 27 tests en total.
+- Primer despliegue con `gcloud run deploy --source api`. URL: https://toolito-api-352538375764.us-central1.run.app
+- Configuración: 2Gi, 1 CPU, concurrencia 2, timeout 90 s, máximo 2 instancias; variables de entorno explícitas. Todo documentado en `docs/DEPLOY.md`.
+- Revisamos los logs y comprobamos que el rate limiting no se puede saltar falsificando `X-Forwarded-For`.
+
+**Mediciones:**
+- Una compresión de mi PDF usa ~241 MB de memoria; la app en reposo, 62 MB.
+- El proceso aparte suma ~0,18 s por petición.
+- En Cloud Run, de los ~6 s totales con mi PDF de 13 MB, casi todo es la **subida** (~2,2 MB/s); comprimir tarda menos de medio segundo.
+
+**Conceptos nuevos:**
+- **Cuenta → cuenta de facturación → proyecto:** inquilino, medidor de luz con la tarjeta, y apartamento donde vive todo.
+- **La alerta de presupuesto avisa, no frena:** el freno real es `--max-instances`.
+- **Hilo vs. proceso:** un hilo no se puede matar desde fuera; un proceso sí (`terminate`). Por eso el timeout usa un proceso.
+- **`spawn` vuelve a importar el archivo principal:** los scripts con `multiprocessing` necesitan `if __name__ == "__main__":`.
+- **IP detrás de un proxy:** en Cloud Run la conexión llega desde el proxy de Google (`169.254.x.x`); la IP real va al final de `X-Forwarded-For`.
+- **CORS protege en el navegador, no frente a `curl` o bots.** El navegador pregunta antes con un *preflight* (`OPTIONS`).
+- **Serverless y escalar a cero:** Google enciende el contenedor cuando llega una petición y lo apaga tras unos minutos sin uso (en los logs: `Shutting down`).
+- **Revisión:** cada despliegue o cambio de configuración crea una versión nueva (`00001`, `00002`, `00003`…).
+- **Concurrencia:** cuántas peticiones atiende una instancia a la vez; para trabajo pesado de CPU conviene un número bajo.
+- **En Cloud Run `/tmp` vive en la RAM:** los archivos temporales cuentan para el límite de memoria.
+- **Cuenta de servicio e IAM:** "usuarios robot" con roles (tarjetas de acceso). Principio de mínimo privilegio: darles solo lo que necesitan.
+
+**Comandos que aprendí:**
+- `brew install --cask gcloud-cli` → instalar la CLI de Google Cloud.
+- `gcloud init` / `gcloud config list` / `gcloud config set run/region us-central1` → iniciar sesión, ver y fijar la configuración.
+- `gcloud run deploy toolito-api --source api --allow-unauthenticated --max-instances 2` → construir en la nube y publicar.
+- `gcloud run services update ... --memory --concurrency --timeout` → cambiar la configuración sin reconstruir.
+- `--set-env-vars` (reemplaza todas) vs. `--update-env-vars` (solo las nombradas).
+- `gcloud run services describe` / `gcloud run services logs read --limit 20` → ver la configuración / leer los logs.
+- `gcloud billing projects describe toolito-api` → ver si la facturación está activa.
+- `for i in {1..21}; do ...; done` → repetir un comando en zsh.
+
+**Errores y cómo los resolvimos:**
+- `ModuleNotFoundError: No module named 'pikepdf'` → Causa: la terminal no tenía el venv activado y se usó el `uvicorn` global (se veía en las rutas `/Library/Frameworks/...` del traceback). → Solución: `source .venv/bin/activate`.
+- `curl: option -F: requires parameter` + `zsh: no such file or directory: file=@...` → Causa: el comando se partió en dos líneas al copiarlo. → Solución: versión más corta en una sola línea.
+- `FileNotFoundError: .../<stdin>` al probar el timeout → Causa: `spawn` intenta reimportar el archivo principal y yo pasaba el script por stdin. → Solución: script en un archivo con `if __name__ == "__main__":`.
+- El budget no mostraba "Projects" → Causa: ningún proyecto estaba vinculado a la cuenta de facturación. → Solución: así el presupuesto cubre toda la cuenta, que es suficiente.
+- `PERMISSION_DENIED ... service account ...-compute@developer` en el primer despliegue → Causa: permisos IAM de un proyecto nuevo aún propagándose (la cuenta ya tenía `roles/editor`). → Solución: reintentar unos minutos después.
+
+**Dudas pendientes:**
+- Cambiar `roles/editor` de la cuenta de servicio por solo `roles/run.builder`.
+- Pillow lanza `DecompressionBombError` con imágenes gigantes: hoy saldría como `500`; convertirlo en un `422` claro.
+- slowapi usa una función que Python 3.16 eliminará (aviso en pytest); vigilar si sale una versión nueva.
+- Las respuestas `500` no llevan cabeceras CORS: el frontend las verá como "error de red" (tenerlo en cuenta en la etapa 6).
+- "Spend cap enforcement" del presupuesto aparece deshabilitado; revisar más adelante si se puede activar para Cloud Run.
+- Probar con un PDF con texto real y con un escaneo.
 
 ## 2026-10-22 — Etapa 2: Docker
 
