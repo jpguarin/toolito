@@ -71,6 +71,7 @@ curl https://toolito-api-352538375764.us-central1.run.app/health
 - Configuración: directorio raíz `web`, comando `npm run build` (incluye el service worker), carpeta de salida `dist`, variable `NODE_VERSION=24`.
 - Dominio: `toolito.jpgstudio.net`, con un registro **CNAME** hacia el proyecto de Pages (decisión D-012).
 - `PUBLIC_SITE_URL` y `PUBLIC_API_URL` no se configuran: sus valores por defecto ya son el dominio y la API de Cloud Run.
+- `PUBLIC_CF_ANALYTICS_TOKEN` (Cloudflare Web Analytics) está **solo en Production**: los previews y el desarrollo local no cuentan visitas. Tras cambiar una variable hay que volver a desplegar.
 
 ```bash
 curl -sI https://toolito.jpgstudio.net/          # 200 desde Cloudflare
