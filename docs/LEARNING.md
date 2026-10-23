@@ -100,11 +100,49 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Unión discriminada** | Tipo de TypeScript con varias formas distinguidas por un campo (`phase`). |
 | **Mock** | Pieza falsa que reemplaza a una real durante un test (`vi.mock`). |
 | **Contraste WCAG** | Relación de luminancia entre texto y fondo; 4,5:1 es el mínimo para texto pequeño. |
+| **Service worker** | Script entre la página y la red que guarda copias para funcionar sin conexión. |
+| **Precaché** | Archivos que el service worker descarga de antemano, en la primera visita. |
+| **Manifest** | Archivo con el nombre, colores e íconos que permite instalar el sitio como app. |
+| **Ícono maskable** | Ícono con fondo hasta los bordes que Android puede recortar con cualquier forma. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-23 — Etapa 6: PWA instalable y sin conexión
+
+**Qué hicimos:**
+- Probamos la secadora en **Dark** y con **reducir movimiento**: todo bien.
+- **Service worker** con Workbox (`web/scripts/build-sw.mjs`, se ejecuta en `npm run build`): precaché de 18 páginas, JS, CSS, fuentes, íconos y los códecs comunes (~3 MB); los códecs AVIF (~8 MB) se guardan al primer uso; la API nunca se guarda.
+- En `npm run dev` el service worker se desinstala solo (para no servir copias viejas).
+- **Ícono de la app** (`design/icons/app-icon.svg`): el ojo de buey con ropa; `npm run icons` genera favicon, 192, 512, maskable y el de Apple. Reemplazó el logo de Astro.
+- **Manifest** (`public/manifest.webmanifest`) y `theme-color` que cambia con el tema (antes de pintar y en vivo). Toolito se instala como app.
+- Decisión D-011 en `docs/DECISIONS.md` y `CLAUDE.md` actualizado.
+
+**Conceptos nuevos:**
+- **Service worker:** un script entre la página y la red, como un conserje que guarda copias en un almacén (caché) y las entrega sin internet.
+- **Precaché vs. caché al primer uso:** lo esencial se baja de antemano; lo pesado y poco usado, solo cuando hace falta (justo con quien tiene datos móviles).
+- **Hash de archivo:** la "huella" de cada archivo; si cambia, el service worker sabe que debe actualizarlo.
+- **Manifest:** la cédula de la app (nombre, colores, íconos) que permite instalarla.
+- **Ícono maskable:** fondo hasta los bordes y lo importante dentro del círculo central del 80 %, para que Android lo recorte con cualquier forma.
+- **Mirar qué empaqueta un paquete:** `sharp` es Apache, pero incluye libvips (LGPL); `@vite-pwa/astro` no declara soporte para Astro 7.
+- **Licencias de herramientas de construcción:** BlueOak-1.0.0 (permisiva) y CC-BY-4.0 (`caniuse-lite`, datos) solo se usan al construir y no llegan al navegador.
+- **Un test que compara con los tokens:** `theme-color` se verifica contra `--panel` en `tokens.css`, para que nunca se separen.
+- **`npm run preview`:** sirve `dist/` tal como se publicará (sin recarga en vivo).
+
+**Comandos que aprendí:**
+- `npm run build && npm run preview` → construir y ver el sitio final (necesario para probar el service worker).
+- `npm run icons` → regenerar los PNG del ícono desde `design/icons/`.
+- DevTools → Application → Service workers / Cache storage / Manifest → inspeccionar la PWA.
+
+**Errores y cómo los resolvimos:**
+- `ts(2591): Cannot find name 'node:fs'` en un test → Causa: TypeScript no conocía los tipos de Node (el sitio corre en el navegador). → Solución: `@types/node@24`.
+- Riesgo detectado antes de que pasara: un service worker de `preview` en `localhost:4321` habría servido copias viejas en `dev`. → Solución: desinstalarlo automáticamente en desarrollo.
+
+**Dudas pendientes:**
+- Revisar con Lighthouse el puntaje PWA (etapa 6, última tarea).
+- Si AVIF multihilo hace falta, necesita cabeceras COOP/COEP en Cloudflare Pages.
 
 ## 2026-10-23 — Etapa 6: la secadora (`/compress-pdf`)
 
