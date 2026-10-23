@@ -7,6 +7,12 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   vite: {
     plugins: [tailwindcss()],
+    // jSquash finds its .wasm files next to its own modules (import.meta.url);
+    // Vite's dev pre-bundling would move the code and break those paths.
+    optimizeDeps: {
+      exclude: ["@jsquash/avif", "@jsquash/jpeg", "@jsquash/oxipng", "@jsquash/png", "@jsquash/resize", "@jsquash/webp"],
+    },
+    worker: { format: "es" },
   },
   // Brand fonts (BRAND-BOOK §5), downloaded at build time and served from our
   // own site: visitors never connect to Google, and fonts work offline.
