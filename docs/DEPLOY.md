@@ -49,7 +49,7 @@ gcloud run services update toolito-api --region us-central1 \
 
 - `--set-env-vars` reemplaza la lista completa; `--update-env-vars` solo cambia las que nombres.
 - `PORT` lo define Cloud Run; no se configura.
-- `ALLOWED_ORIGINS` solo permite el sitio local mientras no haya dominio (etapa 7). Con varios dominios, la coma choca con el separador de gcloud; usa otro separador: `"^##^ALLOWED_ORIGINS=https://toolito.app,http://localhost:4321##MAX_FILE_MB=30##..."`.
+- `ALLOWED_ORIGINS` solo permite el sitio local mientras no haya dominio (etapa 7). Con varios dominios, la coma choca con el separador de gcloud; usa otro separador: `"^##^ALLOWED_ORIGINS=https://toolito.jpgstudio.net,http://localhost:4321##MAX_FILE_MB=30##..."`.
 
 ## Permisos (IAM)
 

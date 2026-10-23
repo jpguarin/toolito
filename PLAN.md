@@ -141,9 +141,9 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Objetivo:** Toolito en internet.
 **Aprendes:** dominios y DNS, despliegue continuo, analítica, Search Console.
 
-- [ ] Registrar el dominio (Cloudflare Registrar)
+- [ ] Subdominio `toolito.jpgstudio.net`: registro DNS (CNAME) hacia Cloudflare Pages (no hace falta comprar dominio)
 - [ ] Publicar `web/` en Cloudflare Pages conectado a GitHub
-- [ ] Conectar el dominio y actualizar `ALLOWED_ORIGINS` en Cloud Run
+- [ ] Conectar `toolito.jpgstudio.net` en Cloudflare Pages y añadirlo a `ALLOWED_ORIGINS` en Cloud Run
 - [ ] Cloudflare Web Analytics (gratis y sin cookies)
 - [ ] Google Search Console y envío del sitemap
 - [ ] Solicitar Google AdSense cuando haya contenido y algo de tráfico

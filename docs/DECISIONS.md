@@ -87,3 +87,9 @@ Formato: **Decisión · Contexto · Alternativas descartadas · Consecuencias**.
 - **Íconos:** `design/icons/app-icon.svg` (ojo de buey con ropa) es la fuente; `npm run icons` genera los PNG con `@resvg/resvg-js` (MPL-2.0). Se descartó `sharp` porque incluye libvips (LGPL).
 - **Consecuencias:** no depende de la versión de Astro. En `npm run dev` el service worker se desinstala solo, para no servir copias viejas.
 
+## D-012 · Dominio: subdominio `toolito.jpgstudio.net`
+
+- **Contexto:** el plan preveía registrar un dominio nuevo en Cloudflare Registrar; el sitemap, las URL canónicas y Open Graph necesitan la dirección completa desde ya.
+- **Decisión:** usar el subdominio **`toolito.jpgstudio.net`** de un dominio que el dueño ya tiene. Es el valor por defecto de `site` en `web/astro.config.mjs` (se puede cambiar con `PUBLIC_SITE_URL`).
+- **Consecuencias:** no hay que comprar dominio. En la etapa 7: un registro **CNAME** del subdominio hacia el proyecto de Cloudflare Pages, y añadir `https://toolito.jpgstudio.net` a `ALLOWED_ORIGINS` en Cloud Run (con el separador `^##^`, ver `docs/DEPLOY.md`).
+
