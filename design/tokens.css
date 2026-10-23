@@ -30,6 +30,10 @@
   --note: #FFFDF8;
   --on-note: #12233D;
   --tape: #FFF3B0;
+  --cloth-1: #FFD7B5;
+  --cloth-2: #D4CCFF;
+  --cloth-3: #FFF6F0;
+  --cloth-line: #12233D;
   --wood: #C99E6E;
   --cork: #C89F6B;
   --cork-frame: #6B4A28;
@@ -85,6 +89,10 @@
   --note: #FFFDF8;
   --on-note: #0F1630;
   --tape: #FFF3B0;
+  --cloth-1: #FFD7B5;
+  --cloth-2: #D4CCFF;
+  --cloth-3: #FFF6F0;
+  --cloth-line: #12233D;
   --wood: #3A2A1C;
   --cork: #B88D5A;
   --cork-frame: #5E3F1E;
@@ -144,6 +152,9 @@
   --clothesline-page-height: 136px;
   --pin-width: 12px;
   --pin-height: 26px;
+  --porthole-lg: 230px;
+  --porthole-rim-lg: 18px;
+  --file-thumb: 60px;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
