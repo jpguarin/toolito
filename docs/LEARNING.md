@@ -109,11 +109,43 @@ Se va llenando a medida que aparecen términos nuevos.
 | **URL canónica** | La dirección "oficial" de una página, para no contar contenido duplicado. |
 | **Open Graph** | Etiquetas que definen la tarjeta de vista previa al compartir un enlace. |
 | **Origen** | Protocolo + dominio + puerto; el navegador aísla cada origen (service worker, almacenamiento, CORS). |
+| **Responsable del tratamiento** | Quien decide qué se hace con los datos personales (el dueño del sitio). |
+| **Encargado del tratamiento** | Quien procesa datos por cuenta del responsable (Google Cloud, el hosting). |
+| **Lighthouse** | Auditoría automática de Chrome: rendimiento, accesibilidad, buenas prácticas y SEO. |
+| **Core Web Vitals** | Métricas de Google sobre la experiencia al cargar: LCP, CLS e INP. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-23 — Etapa 6: páginas legales y Lighthouse (cierre de la etapa)
+
+**Qué hicimos:**
+- Páginas **Privacy**, **Terms** y **About** con un marco común (`LegalPage.astro`, fecha de "Last updated"). Todo lo que dicen sale del código: herramientas locales, la secadora borra el PDF, qué registra Google Cloud, sin cookies ni anuncios ni analítica.
+- **About** incluye los créditos de código abierto y la frase exigida por la licencia IJG.
+- Sin contacto, sin responsable y sin jurisdicción, por decisión propia; "Contact" salió del pie y quedó una tarea en la etapa 7 **antes de AdSense** (contacto, responsable, jurisdicción, revisión legal).
+- **Lighthouse:** 100 en rendimiento, accesibilidad, buenas prácticas y SEO, en 6 páginas × 2 temas, en modo móvil.
+- **Etapa 6 completada.**
+
+**Conceptos nuevos:**
+- **Responsable y encargado del tratamiento:** quien decide qué se hace con los datos y quien los procesa por encargo (Google Cloud, el hosting).
+- **Créditos de licencias:** BSD e IJG piden mostrar el aviso de copyright cuando se distribuye su código compilado (los `.wasm` llegan al navegador).
+- **Lighthouse:** inspector automático de Chrome con 4 notas de 0 a 100.
+- **Core Web Vitals:** LCP (cuánto tarda lo principal en aparecer), CLS (cuánto salta la página) y TBT/INP (cuánto se bloquea al tocar).
+- **Los límites de la prueba automática:** 100 en accesibilidad significa "nada que una máquina detecte"; el teclado, el orden del foco y el sentido de los textos hay que revisarlos a mano.
+- **Verificar la medición:** antes de celebrar, comprobar que se midió la URL correcta, con su tema y sus peticiones reales.
+
+**Comandos que aprendí:**
+- `npx lighthouse URL --output=json` → auditar desde la terminal (o DevTools → pestaña Lighthouse).
+- `npx astro preview stop` → detener el servidor de vista previa.
+
+**Errores y cómo los resolvimos:**
+- Ninguno en esta parte.
+
+**Dudas pendientes:**
+- Revisión legal, contacto público y responsable antes de AdSense (tarea en la etapa 7).
+- Volver a pasar Lighthouse ya publicado (con CDN y HTTPS reales) y cuando haya anuncios.
 
 ## 2026-10-23 — Etapa 6: textos, FAQ y SEO
 
