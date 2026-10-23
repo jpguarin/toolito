@@ -7,6 +7,7 @@ import DownloadIcon from "../icons/download.svg";
 import PlayIcon from "../icons/play.svg";
 import { CYCLES, DEFAULT_CYCLE } from "../lib/dryer";
 import Dropzone from "./Dropzone.astro";
+import OutOfOrder from "./OutOfOrder.astro";
 
 // CycleOption.md: estimates are ranges, never promises.
 const cycleCopy = {
@@ -19,7 +20,7 @@ const bigBar = "relative h-4 overflow-hidden rounded-pill border-md border-line 
 ---
 
 <div data-dryer class="mx-auto grid w-full max-w-page items-start gap-6 px-5 pt-5 pb-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-  <section aria-label="Dryer No.3" class="overflow-hidden rounded-xl border-thick border-hot bg-paper shadow-hot">
+  <section aria-label="Dryer No.3" data-dryer-machine class="overflow-hidden rounded-xl border-thick border-hot bg-paper shadow-hot">
     <div class="flex items-center justify-between gap-3 bg-panel px-5 py-4 text-panel-ink">
       <span class="sign-md">No.3</span>
       <!-- Visible LED; screen readers hear phase changes from the live region instead (§9). -->
@@ -54,9 +55,13 @@ const bigBar = "relative h-4 overflow-hidden rounded-pill border-md border-line 
     </div>
   </section>
 
-  <div class="flex flex-col gap-5">
-    <!-- empty -->
-    <div data-panel="empty">
+  <!-- error: the dryer is out of order; the card takes the machine's place,
+       and the dropzone stays on the right to try another PDF. -->
+  <OutOfOrder machine="No.3 · Dryer" />
+
+  <div class="flex flex-col gap-5" data-dryer-panels>
+    <!-- empty (and error: drop another PDF) -->
+    <div data-panel="empty error">
       <Dropzone title="Drop your PDF in the dryer" hint="or tap to choose · up to 30 MB" accept="application/pdf" />
     </div>
 
@@ -145,14 +150,6 @@ const bigBar = "relative h-4 overflow-hidden rounded-pill border-md border-line 
       </div>
     </div>
 
-    <!-- error: simple for now; the full OutOfOrder card comes next -->
-    <section aria-labelledby="dryer-error-title" class="flex flex-col gap-3 rounded-lg border-thick border-error bg-paper p-6" data-panel="error" hidden>
-      <p class="sign-sm text-error" data-dryer-error-led></p>
-      <h2 id="dryer-error-title" tabindex="-1" class="heading" data-dryer-error-title></h2>
-      <p class="body text-muted" data-dryer-error-body></p>
-      <a class="label flex min-h-tap items-center self-start rounded-pill bg-btn px-5 text-on-btn no-underline" data-dryer-error-link hidden></a>
-      <button type="button" class={secondary} data-dryer-error-button hidden></button>
-    </section>
   </div>
 
   <p class="sr-only" aria-live="polite" data-dryer-announce></p>

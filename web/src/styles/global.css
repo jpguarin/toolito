@@ -74,6 +74,11 @@
   --color-glass-dryer: var(--glass-dryer);
   --color-glass-fold: var(--glass-fold);
   --color-glass-sort: var(--glass-sort);
+  --color-led-error: var(--led-error);
+  --color-led-warn: var(--led-warn);
+  --color-glass-dead: var(--glass-dead);
+  --color-glass-cool: var(--glass-cool);
+  --color-glass-off: var(--glass-off);
   --color-icon-image: var(--icon-image);
   --color-icon-convert: var(--icon-convert);
   --color-icon-dryer: var(--icon-dryer);

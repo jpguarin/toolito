@@ -59,6 +59,8 @@ test("every error card has an LED code, a title, a body and one action", () => {
     expect(card.title.length).toBeGreaterThan(0);
     expect(card.body.length).toBeGreaterThan(0);
     expect(card.action.label.length).toBeGreaterThan(0);
+    // OutOfOrder.md: the glass shows either an icon or a taped note.
+    expect(Boolean(card.icon) !== Boolean(card.note)).toBe(true);
   }
 });
 

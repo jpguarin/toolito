@@ -19,7 +19,13 @@ import { formatBytes, savingsLabel } from "../lib/format";
 import { DROPZONE_EVENT, type DropzoneFilesEvent } from "./dropzone";
 
 // Step shown for each phase (StepIndicator: 1 Load · 2 Cycle · 3 Dry · 4 Take home).
-const STEP: Record<DryerState["phase"], number> = { empty: 0, loaded: 1, uploading: 2, drying: 2, done: 3, error: 1 };
+const STEP: Record<Exclude<DryerState["phase"], "error">, number> = { empty: 0, loaded: 1, uploading: 2, drying: 2, done: 3 };
+
+// §2: an error "stays on the step where it failed". The browser rejects a file
+// while loading it; everything else fails while drying.
+const LOAD_ERRORS: DryerErrorCode[] = ["file_too_large", "not_a_pdf"];
+const stepOf = (state: DryerState): number =>
+  state.phase === "error" ? (LOAD_ERRORS.includes(state.code) ? 0 : 2) : STEP[state.phase];
 
 // Full class names, so Tailwind (which reads this file as text) generates them.
 const GLASS: Record<DryerState["phase"], string> = {
@@ -30,6 +36,9 @@ const GLASS: Record<DryerState["phase"], string> = {
   done: "bg-glass-sort",
   error: "bg-surface",
 };
+
+// Porthole tint of the out-of-order card (full class names for Tailwind).
+const OOO_GLASS = { dead: "bg-glass-dead", cool: "bg-glass-cool", off: "bg-glass-off" } as const;
 
 const cycleName = (cycle: Cycle) => CYCLES.find((item) => item.value === cycle)?.name ?? "Normal";
 
@@ -46,12 +55,16 @@ export function initDryer(root: HTMLElement): void {
   let cycle: Cycle = DEFAULT_CYCLE;
   let abort: (() => void) | undefined;
   let clock: number | undefined;
+  let coolUntil = 0; // COOLING: when the API lets us send again (Retry-After).
+  let coolTimer: number | undefined;
 
   // ---------- Painting ----------
 
   const render = (): void => {
     const { phase } = state;
-    for (const panel of root.querySelectorAll<HTMLElement>("[data-panel]")) panel.hidden = panel.dataset.panel !== phase;
+    for (const panel of root.querySelectorAll<HTMLElement>("[data-panel]")) {
+      panel.hidden = !(panel.dataset.panel ?? "").split(" ").includes(phase);
+    }
 
     // Machine: LED, lamp and glass.
     led.textContent =
@@ -72,10 +85,11 @@ export function initDryer(root: HTMLElement): void {
     $<HTMLElement>("[data-dryer-check]").hidden = phase !== "done";
 
     // Steps.
+    const current = stepOf(state);
     steps.forEach((step, index) => {
-      if (index === STEP[phase]) step.setAttribute("aria-current", "step");
+      if (index === current) step.setAttribute("aria-current", "step");
       else step.removeAttribute("aria-current");
-      step.toggleAttribute("data-done", index < STEP[phase] || phase === "done");
+      step.toggleAttribute("data-done", index < current || phase === "done");
     });
 
     if (phase === "loaded") {
@@ -116,23 +130,51 @@ export function initDryer(root: HTMLElement): void {
       }
       $<HTMLElement>("[data-dryer-care-cycle]").textContent = cycleName(state.cycle);
     }
-    if (phase === "error") {
-      const card = OUT_OF_ORDER[state.code];
-      $<HTMLElement>("[data-dryer-error-led]").textContent = card.led;
-      $<HTMLElement>("[data-dryer-error-title]").textContent = card.title;
-      $<HTMLElement>("[data-dryer-error-body]").textContent = card.body;
-      const link = $<HTMLAnchorElement>("[data-dryer-error-link]");
-      const button = $<HTMLButtonElement>("[data-dryer-error-button]");
-      const isLink = "href" in card.action;
-      link.hidden = !isLink;
-      button.hidden = isLink;
-      if ("href" in card.action) {
-        link.href = card.action.href;
-        link.textContent = card.action.label;
-      } else {
-        button.textContent = card.action.label;
-        button.dataset.kind = card.action.kind;
-      }
+    // error: the dryer is out of order and the card takes the machine's place.
+    $<HTMLElement>("[data-dryer-machine]").hidden = phase === "error";
+    const card = $<HTMLElement>("[data-ooo]");
+    card.hidden = phase !== "error";
+    if (phase === "error") renderOutOfOrder(state.code);
+  };
+
+  // ---------- Out of order card ----------
+
+  const renderOutOfOrder = (code: DryerErrorCode): void => {
+    const look = OUT_OF_ORDER[code];
+    const ledTag = $<HTMLElement>("[data-ooo-led]");
+    ledTag.textContent = look.led;
+    ledTag.toggleAttribute("data-warn", look.tone === "warn");
+    const glassTint = $<HTMLElement>("[data-ooo-glass]");
+    glassTint.classList.remove(...Object.values(OOO_GLASS));
+    glassTint.classList.add(OOO_GLASS[look.glass]);
+    const icon = $<SVGSVGElement>("[data-ooo-icon]");
+    icon.style.display = look.icon ? "" : "none";
+    icon.querySelector("path")!.setAttribute("d", look.icon ?? "");
+    const note = $<HTMLElement>("[data-ooo-note]");
+    note.hidden = !look.note;
+    note.textContent = look.note ?? "";
+    note.style.rotate = `${look.tilt ?? 0}deg`;
+    $<HTMLElement>("[data-ooo-title]").textContent = look.title;
+    $<HTMLElement>("[data-ooo-body]").textContent = look.body;
+
+    const link = $<HTMLAnchorElement>("[data-ooo-link]");
+    const button = $<HTMLButtonElement>("[data-ooo-button]");
+    link.hidden = !("href" in look.action);
+    button.hidden = "href" in look.action;
+    if ("href" in look.action) {
+      link.href = look.action.href;
+      link.textContent = look.action.label;
+      return;
+    }
+    button.dataset.kind = look.action.kind;
+    if (look.action.kind === "cooldown") {
+      const left = Math.max(0, Math.ceil((coolUntil - Date.now()) / 1000));
+      button.disabled = left > 0;
+      // Button.md: a disabled button says why ("Ready again in 0:42").
+      button.textContent = left > 0 ? `Ready again in ${elapsedLabel(left * 1000)}` : "Try again";
+    } else {
+      button.disabled = false;
+      button.textContent = look.action.label;
     }
   };
 
@@ -150,12 +192,23 @@ export function initDryer(root: HTMLElement): void {
     };
     announce.textContent = next.phase === "error" ? OUT_OF_ORDER[next.code].title : (messages[next.phase] ?? "");
     if (next.phase === "done") $<HTMLAnchorElement>("[data-dryer-download]").focus();
-    if (next.phase === "error") $<HTMLElement>("[data-dryer-error-title]").focus();
+    if (next.phase === "error") $<HTMLElement>("[data-ooo-title]").focus();
   };
 
   // ---------- Transitions ----------
 
-  const fail = (file: File | null, code: DryerErrorCode, retryAfter?: number): void => go({ phase: "error", file, cycle, code, retryAfter });
+  const fail = (file: File | null, code: DryerErrorCode, retryAfter?: number): void => {
+    window.clearInterval(coolTimer);
+    if (code === "rate_limited") {
+      coolUntil = Date.now() + (retryAfter ?? 60) * 1000;
+      // Count down once a second; at zero the button becomes "Try again".
+      coolTimer = window.setInterval(() => {
+        render();
+        if (Date.now() >= coolUntil) window.clearInterval(coolTimer);
+      }, 1000);
+    }
+    go({ phase: "error", file, cycle, code, retryAfter });
+  };
 
   const load = async (file: File): Promise<void> => {
     if (state.phase === "uploading" || state.phase === "drying") return; // §7: no swapping mid-cycle.
@@ -223,15 +276,15 @@ export function initDryer(root: HTMLElement): void {
   for (const stop of root.querySelectorAll<HTMLButtonElement>("[data-dryer-stop]")) stop.addEventListener("click", () => abort?.());
   $<HTMLButtonElement>("[data-dryer-swap]").addEventListener("click", reset);
   $<HTMLButtonElement>("[data-dryer-again]").addEventListener("click", reset);
-  $<HTMLButtonElement>("[data-dryer-error-button]").addEventListener("click", (event) => {
+  $<HTMLButtonElement>("[data-ooo-button]").addEventListener("click", (event) => {
     const kind = (event.currentTarget as HTMLButtonElement).dataset.kind;
     if (state.phase !== "error") return;
-    // "Try again" resends the same file and cycle without asking for it again (§5).
-    if (kind === "retry" && state.file) {
+    // "Try again" (and a finished cool-down) resend the same file and cycle (§5).
+    if ((kind === "retry" || kind === "cooldown") && state.file) {
       go({ phase: "loaded", file: state.file, cycle: state.cycle });
       void start();
     } else {
-      reset();
+      reset(); // "Choose another file".
     }
   });
 

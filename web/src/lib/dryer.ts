@@ -56,16 +56,30 @@ export async function checkBeforeUpload(file: Blob): Promise<DryerErrorCode | nu
 
 export interface OutOfOrderCard {
   led: string;
+  tone: "error" | "warn"; // LED colour: led-error or led-warn.
+  glass: "dead" | "cool" | "off"; // Porthole tint (mockups/TlErrors.dc.html).
+  icon?: string; // SVG path on the glass (24 x 24, stroke), when there is no note.
   title: string;
   body: string;
   note?: string; // Handwritten note taped on the machine (aria-hidden).
+  tilt?: number; // Note rotation in degrees (OutOfOrder.md: ±3–4°).
   action: { label: string; href: string } | { label: string; kind: "retry" | "choose" | "cooldown" };
 }
+
+// Icons drawn on the dead glass, from the mockup.
+const ICON = {
+  lock: "M7 11h10a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2z M8 11V8a4 4 0 0 1 8 0v3",
+  cup: "M6 4h12l-2 16H8z M10 9h4",
+  snow: "M12 2v20 M4 6l16 12 M20 6L4 18",
+  torn: "M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M9 11l2 2-2 2 2 2",
+  clock: "M12 3a9 9 0 1 0 0 18a9 9 0 1 0 0-18z M12 7v5l3 2",
+};
 
 /** §5 and design/mockups/TlErrors.dc.html. Never blame the user, never show technical details. */
 export const OUT_OF_ORDER: Record<DryerErrorCode, OutOfOrderCard> = {
   file_too_large: {
     led: "E-413",
+    tone: "error", glass: "dead", tilt: -4,
     title: "This load is too heavy",
     body: "The dryer takes up to 30 MB per load. Split your PDF on the clothesline first, then dry each part.",
     note: "Too heavy!",
@@ -73,6 +87,7 @@ export const OUT_OF_ORDER: Record<DryerErrorCode, OutOfOrderCard> = {
   },
   too_many_pages: {
     led: "E-413",
+    tone: "error", glass: "dead", tilt: -4,
     title: "This load is too heavy",
     body: `The dryer takes up to ${MAX_PDF_PAGES} pages per load. Split your PDF on the clothesline first, then dry each part.`,
     note: "Too heavy!",
@@ -80,36 +95,42 @@ export const OUT_OF_ORDER: Record<DryerErrorCode, OutOfOrderCard> = {
   },
   not_a_pdf: {
     led: "E-415",
+    tone: "error", glass: "dead", icon: ICON.cup,
     title: "That's not laundry",
     body: "The dryer only takes PDFs. Got a photo instead? Washer No.1 handles images.",
     action: { label: "Go to Washer No.1", href: "/compress-image" },
   },
   encrypted_pdf: {
     led: "LOCKED",
+    tone: "error", glass: "dead", icon: ICON.lock,
     title: "This basket is locked",
     body: "Your PDF has a password. Remove it in your PDF reader, then drop the file in again.",
     action: { label: "Choose another file", kind: "choose" },
   },
   corrupted_pdf: {
     led: "E-422",
+    tone: "error", glass: "dead", icon: ICON.torn,
     title: "This one's torn",
     body: "We couldn't open this PDF. It may be damaged. Try saving it again from the app that made it.",
     action: { label: "Choose another file", kind: "choose" },
   },
   rate_limited: {
     led: "COOLING",
+    tone: "warn", glass: "cool", icon: ICON.snow,
     title: "Machine cooling down",
     body: "You've run a lot of loads in a row. Give it a minute and try again.",
     action: { label: "Ready again in", kind: "cooldown" },
   },
   processing_timeout: {
     led: "E-504",
+    tone: "warn", glass: "cool", icon: ICON.clock,
     title: "This load took too long",
     body: "Big, photo-heavy PDFs can take more than a minute to dry. Split it on the clothesline and dry each part.",
     action: { label: "Go to Split PDF", href: "/split-pdf" },
   },
   offline: {
     led: "NO POWER",
+    tone: "error", glass: "off", tilt: 3,
     title: "You're offline",
     body: "The dryer needs internet. The washers, folding table and clothesline still work offline.",
     note: "Back soon",
@@ -117,6 +138,7 @@ export const OUT_OF_ORDER: Record<DryerErrorCode, OutOfOrderCard> = {
   },
   internal_error: {
     led: "E-500",
+    tone: "error", glass: "dead", tilt: -3,
     title: "Something jammed the drum",
     body: "That one's on us, not you. Your file wasn't kept. Give it a moment and run the load again.",
     note: "Jammed!",

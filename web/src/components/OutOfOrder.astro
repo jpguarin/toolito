@@ -1,0 +1,39 @@
+---
+// An error as a machine with an "out of order" note (design/components/OutOfOrder.md,
+// mockups/TlErrors.dc.html). One shell; scripts/dryer-machine.ts fills it from
+// OUT_OF_ORDER in lib/dryer.ts. Never blame the user; never show technical details.
+interface Props {
+  machine: string; // "No.3 · Dryer"
+}
+
+const { machine } = Astro.props;
+---
+
+<article aria-labelledby="ooo-title" class="flex w-full flex-col overflow-hidden rounded-lg border-thick border-line bg-surface" data-ooo hidden>
+  <div class="flex items-center justify-between border-b-md border-line bg-panel px-4 py-3">
+    <span class="sign-sm text-panel-ink">{machine}</span>
+    <span class="sign-sm rounded-sm bg-led-bg px-2 py-1 data-warn:text-led-warn text-led-error" data-ooo-led></span>
+  </div>
+  <div class="relative flex flex-1 flex-col items-center gap-4 px-5 pt-6 pb-5 text-center">
+    <div
+      aria-hidden="true"
+      class="flex size-porthole-sm items-center justify-center rounded-pill border-[length:var(--porthole-rim-sm)] border-rim [box-shadow:0_0_0_var(--border-thick)_var(--line)]"
+      data-ooo-glass
+    >
+      <svg width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="text-ink" data-ooo-icon>
+        <path d=""></path>
+      </svg>
+    </div>
+    <!-- The taped note repeats the heading, so screen readers skip it. -->
+    <p aria-hidden="true" class="note absolute inset-x-7 top-7 bg-tape px-3 py-2 text-on-note" data-ooo-note hidden></p>
+    <h2 id="ooo-title" tabindex="-1" class="card-title" data-ooo-title></h2>
+    <p class="body text-muted" data-ooo-body></p>
+    <a class="label mt-auto flex min-h-tap items-center rounded-pill bg-btn px-5 text-on-btn no-underline" data-ooo-link hidden></a>
+    <button
+      type="button"
+      class="label mt-auto min-h-tap rounded-pill border-md border-line px-5 text-ink disabled:cursor-default disabled:border-rim disabled:bg-rim disabled:text-muted"
+      data-ooo-button
+      hidden
+    ></button>
+  </div>
+</article>
