@@ -117,11 +117,42 @@ Se va llenando a medida que aparecen términos nuevos.
 | **CDN** | Red de servidores en muchas ciudades que entrega copias del sitio desde el más cercano. |
 | **CNAME** | Registro DNS que hace de un nombre un alias de otro. |
 | **Redirección 308** | Redirección permanente: la dirección buena es la nueva, para siempre. |
+| **Analítica sin cookies** | Medición que cuenta visitas sin identificar ni seguir a las personas. |
+| **Indexación** | Cuando un buscador guarda una página en su catálogo para mostrarla en resultados. |
+| **Verificación de propiedad** | Prueba (etiqueta, archivo o DNS) de que un sitio es tuyo, para ver sus datos en Search Console. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-23 — Etapa 7: analítica sin cookies y Google Search Console
+
+**Qué hicimos:**
+- **Cloudflare Web Analytics:** script de Cloudflare en `BaseLayout`, solo si existe `PUBLIC_CF_ANALYTICS_TOKEN` (puesto únicamente en *Production* de Pages). Comprobado en vivo: aparece una vez por página y el sitio no pone ninguna cookie.
+- Antes de activarla, publicamos los textos: **regla nueva en House rules** ("We count visits, not people") y **§5 "Counting visits"** en la Privacy Policy.
+- **Google Search Console:** propiedad de prefijo de URL `https://toolito.jpgstudio.net/`, verificada con una etiqueta `<meta>` en el `<head>`; sitemap enviado (21 URL).
+- `docs/DEPLOY.md` documenta el token de analítica y Search Console.
+
+**Conceptos nuevos:**
+- **Analítica sin cookies:** cuenta visitas, no personas; no reconoce a nadie cuando vuelve, así que no hace falta el aviso de cookies.
+- **Primero el texto, después la función:** la política se publica antes de activar lo que describe, para no prometer nunca menos de lo que hace el sitio.
+- **Plantillas `.env.example`:** muestran qué variables existen, nunca sus valores; los valores reales van en el panel del proveedor (o en `.env`, que no se sube).
+- **Rastreo e indexación:** Googlebot recorre el sitio (rastreo) y guarda lo que encuentra en su catálogo (indexación); el sitemap acelera el descubrimiento, pero Google decide el ritmo.
+- **Verificar la propiedad:** Google pide una prueba de que el sitio es tuyo (etiqueta `<meta>`, archivo o registro TXT) antes de mostrar sus datos.
+
+**Comandos que aprendí:**
+- `git restore archivo` → descartar los cambios sin commitear de un archivo.
+- `curl -s URL | grep -o '<meta name="google-site-verification"[^>]*>'` → comprobar una etiqueta en el sitio publicado.
+
+**Errores y cómo los resolvimos:**
+- `Failed to add property … (Invalid site URL)` en Search Console → Causa: la URL con `https://` va en el recuadro **URL prefix**, no en **Domain**. → Solución: recuadro de la derecha, con barra final.
+- El token real quedó en `.env.example` → no era secreto (está en el HTML), pero una plantilla va vacía. → Solución: deshacer el cambio antes del commit.
+
+**Dudas pendientes:**
+- Revisar en unos días Search Console → *Pages* para ver cuántas páginas indexó Google (criterio de "terminado" de la etapa 7).
+- Probar el *Rich Results Test* con una página de herramienta (debería detectar el FAQ).
+- Decidir contacto público, responsable, jurisdicción y revisión legal antes de AdSense.
 
 ## 2026-10-23 — Etapa 7: Toolito publicado
 
