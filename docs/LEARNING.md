@@ -82,11 +82,49 @@ Se va llenando a medida que aparecen términos nuevos.
 | **XSS** | Ataque que mete código en una página a través de datos del usuario; se evita con `textContent`. |
 | **Evento personalizado** | Aviso propio (`dropzone:files`) que un componente lanza para que otros reaccionen. |
 | **Atributo booleano** | Atributo de HTML que se activa solo con estar presente (`multiple`, `disabled`, `hidden`). |
+| **ArrayBuffer** | Los bytes en bruto de un archivo en memoria; se leen con una vista como `Uint8Array`. |
+| **Web Worker** | Un segundo hilo de JavaScript para trabajo pesado, sin congelar la página. |
+| **Code splitting** | Separar el código pesado en archivos que se descargan solo cuando hacen falta (`import()`). |
+| **Blob** | Un "archivo" creado en memoria del navegador, listo para descargar. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-22 — Etapa 5: `/merge-pdf` (Folding table No.4)
+
+**Qué hicimos:**
+- `lib/pdf.ts` con pdf-lib (MIT): `mergePdfs` y `countPages`, con los mismos códigos de error que la API (`not_a_pdf`, `encrypted_pdf`, `corrupted_pdf`) y 6 tests.
+- Página `/merge-pdf`: `ToolIntro` (Badge + título), mesa de madera `FoldStack` con filas de toalla, ↑/↓/× y teclado, "The pile", **FOLD INTO ONE** y descarga **Take it home**.
+- La unión corre en un **Web Worker**; la página solo carga 5 KB y pdf-lib (≈420 KB) llega con el primer PDF.
+- `lib/format.ts` (`formatBytes`, `plural`) con tests. 15 tests en total en `web/`.
+- Borramos la página temporal `/dev/dropzone`. Probé una unión real: el orden de las páginas es el correcto.
+
+**Conceptos nuevos:**
+- **`ArrayBuffer` vs `Uint8Array`:** el primero es la memoria en bruto; el segundo, una "vista" para leerla. `file.arrayBuffer()` abre la bolsa de la ropa.
+- **Unir PDF:** documento vacío + copiar las páginas de cada archivo en orden.
+- **Los tests descubren cómo se comporta una librería:** pdf-lib lanza un `Error` genérico con PDFs cifrados (mejor preguntar `isEncrypted`) y "abre" basura sin quejarse (hay que tocar las páginas dentro del `try`).
+- **`<template>`:** HTML que el navegador lee pero no muestra; el script clona el molde y lo rellena con `textContent`.
+- **Importación dinámica (code splitting):** `import()` dentro de una función separa el código pesado en otro archivo que se descarga solo cuando hace falta.
+- **Web Worker:** un segundo hilo para el trabajo pesado; la página no se congela. Se habla con `postMessage` y un `id` por petición.
+- **Transferir en vez de copiar:** pasar un `ArrayBuffer` como *transferable* lo entrega sin copiarlo (el que lo envía ya no puede usarlo).
+- **`Blob` + `URL.createObjectURL`:** archivo en memoria con una URL `blob:` para `<a download>`; liberarla con `revokeObjectURL`.
+- **Resultados viejos fuera:** si la mesa cambia, el PDF unido anterior se oculta y se libera.
+
+**Comandos que aprendí:**
+- `git rm -r carpeta` → borrar archivos y dejar el borrado listo para el commit.
+
+**Errores y cómo los resolvimos:**
+- `ts(2769): No overload matches this call` en `new Uint8Array(bytes, 0, 5)` → Causa: `bytes` podía ser una vista, no memoria en bruto (bug real). → Solución: usar la vista o crear una, y `subarray`.
+- Tests rojos de cifrado y de PDF dañado → Causa: comportamiento de pdf-lib (ver arriba). → Solución: `ignoreEncryption` + `isEncrypted`, y contar páginas dentro del `try`.
+- 424 KB de JavaScript al abrir la página → Causa: pdf-lib incluido en el script de la página. → Solución: moverlo a un Worker que se crea con el primer PDF.
+- El cliente del worker añadía un `listener` en cada llamada → Causa: `addEventListener` fuera del "solo al crear". → Solución: registrarlo una vez.
+
+**Dudas pendientes:**
+- Arrastrar filas con el ratón (la especificación pide arrastrar **y** teclado; hoy hay ↑/↓ y teclado).
+- Mostrar los errores con tarjetas OutOfOrder en vez de una lista roja.
+- pdf-lib no se actualiza desde 2021: si aparece un PDF que falle, probar el fork `@pdfme/pdf-lib` (solo hay que tocar `lib/pdf.ts`).
 
 ## 2026-10-22 — Etapa 4: Dropzone (cierre de la etapa)
 
