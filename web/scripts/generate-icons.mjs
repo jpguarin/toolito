@@ -21,5 +21,10 @@ for (const { source, name, size } of targets) {
   console.log(`${name.padEnd(22)} ${size}×${size}  ${(png.length / 1024).toFixed(1)} KB`);
 }
 
+// Social card for link previews (Open Graph): 1200 x 630.
+const card = new Resvg(design("social-card.svg"), { fitTo: { mode: "width", value: 1200 } }).render().asPng();
+writeFileSync(new URL("../public/social-card.png", import.meta.url), card);
+console.log(`${"social-card.png".padEnd(22)} 1200×630  ${(card.length / 1024).toFixed(1)} KB`);
+
 // The SVG favicon is the icon itself (sharp at any size).
 writeFileSync(new URL("../public/favicon.svg", import.meta.url), design("app-icon.svg"));

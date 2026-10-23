@@ -6,9 +6,9 @@ if ("serviceWorker" in navigator) {
       navigator.serviceWorker.register("/sw.js").catch(() => undefined);
     });
   } else {
-    // `npm run dev` shares localhost:4321 with `npm run preview`: a service worker
-    // left over from testing the build would serve stale copies and hide your
-    // changes. In development, always remove it.
+    // `npm run preview` now runs on port 4322, so its service worker can no longer
+    // reach the dev server (4321). This cleanup stays for anyone who tested the
+    // build on 4321 before that change.
     void navigator.serviceWorker.getRegistrations().then((registrations) => {
       for (const registration of registrations) void registration.unregister();
     });

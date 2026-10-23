@@ -3,8 +3,20 @@ import { defineConfig, envField, fontProviders } from "astro/config";
 
 import tailwindcss from "@tailwindcss/vite";
 
+import sitemap from "@astrojs/sitemap";
+
+// Public address of the site: canonical URLs, sitemap and Open Graph need it
+// complete. Can be overridden from the build environment (PUBLIC_SITE_URL).
+const site = process.env.PUBLIC_SITE_URL ?? "https://toolito.jpgstudio.net";
+
 // https://astro.build/config
 export default defineConfig({
+  site,
+  // One URL per page, without a trailing slash: /merge-pdf, like every link on the
+  // site. Pages are built as merge-pdf.html, which Cloudflare Pages serves at
+  // /merge-pdf. (Folders would mean /merge-pdf/ and a redirect on every click.)
+  trailingSlash: "never",
+  build: { format: "file" },
   // Typed environment variables: a typo fails the build instead of the site.
   env: {
     schema: {
@@ -19,6 +31,7 @@ export default defineConfig({
       }),
     },
   },
+
   vite: {
     plugins: [tailwindcss()],
     // jSquash finds its .wasm files next to its own modules (import.meta.url);
@@ -28,6 +41,7 @@ export default defineConfig({
     },
     worker: { format: "es" },
   },
+
   // Brand fonts (BRAND-BOOK §5), downloaded at build time and served from our
   // own site: visitors never connect to Google, and fonts work offline.
   fonts: [
@@ -56,4 +70,6 @@ export default defineConfig({
       subsets: ["latin"],
     },
   ],
+
+  integrations: [sitemap()],
 });

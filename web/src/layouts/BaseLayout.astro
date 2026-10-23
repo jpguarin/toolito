@@ -18,6 +18,13 @@ interface Props {
 }
 
 const { title, description, section, storefront = false, noindex = false } = Astro.props;
+
+// Complete URLs for search engines and link previews (site comes from astro.config.mjs).
+// Pages are built as files (merge-pdf.html) but served at /merge-pdf: drop the
+// extension (and "index") so the canonical matches the sitemap and the links.
+const path = Astro.url.pathname.replace(/(index)?\.html$/, "");
+const canonical = new URL(path, Astro.site).href;
+const socialImage = new URL("/social-card.png", Astro.site).href;
 ---
 
 <!doctype html>
@@ -43,6 +50,18 @@ const { title, description, section, storefront = false, noindex = false } = Ast
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonical} />
+    <!-- Link previews (Open Graph, also read by X/Twitter). -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Toolito Laundromat" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="The Toolito laundromat: a striped awning over a washing machine porthole full of laundry." />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />

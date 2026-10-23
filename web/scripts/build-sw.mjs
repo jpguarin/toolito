@@ -16,7 +16,8 @@ const { count, size, warnings } = await generateSW({
   skipWaiting: true,
   clientsClaim: true,
   cleanupOutdatedCaches: true,
-  // "/compress-pdf" is stored as "/compress-pdf/index.html".
+  // Pages are files (merge-pdf.html) served at clean URLs (/merge-pdf); Workbox's
+  // precache route already maps /merge-pdf to merge-pdf.html (cleanURLs, on by default).
   directoryIndex: "index.html",
   runtimeCaching: [
     {
