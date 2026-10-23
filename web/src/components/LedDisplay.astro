@@ -1,0 +1,19 @@
+---
+// Small dark LED display (design/components/LedDisplay.md). This version is the
+// machine tag (IMG, DRYER…); states like LOADING 42% come with the tools.
+interface Props {
+  text: string;
+  tone?: "led" | "hot";
+}
+
+const { text, tone = "led" } = Astro.props;
+---
+
+<span
+  class:list={[
+    "sign-sm rounded-sm bg-led-bg px-2 py-1 uppercase [text-shadow:var(--glow-led)]",
+    tone === "hot" ? "text-hot" : "text-led",
+  ]}
+>
+  {text}
+</span>

@@ -130,6 +130,9 @@
   --tracking-sign-lg: 6px;
   --container-headline: 820px;
   --container-lead: 600px;
+  --porthole-sm: 132px;
+  --porthole-rim-sm: 12px;
+  --machine-card-min: 200px;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
@@ -186,6 +189,12 @@
   font-family: var(--font-sans);
   font-size: 28px;
   line-height: 34px;
+  font-weight: 800;
+}
+.card-title {
+  font-family: var(--font-sans);
+  font-size: 19px;
+  line-height: 24px;
   font-weight: 800;
 }
 .lead {

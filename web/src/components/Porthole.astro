@@ -1,0 +1,39 @@
+---
+// Round machine window (design/components/Porthole.md): chrome rim, tinted
+// glass and the machine's stroke icon. Decorative, so hidden from screen readers.
+import type { MachineId } from "../lib/machines";
+import ConvertIcon from "../icons/convert.svg";
+import ImageIcon from "../icons/image.svg";
+import MergeIcon from "../icons/merge.svg";
+import PdfCompressIcon from "../icons/pdf-compress.svg";
+import SplitIcon from "../icons/split.svg";
+
+interface Props {
+  machine: MachineId;
+}
+
+const { machine } = Astro.props;
+
+// Full class names on purpose: Tailwind only generates classes it can read
+// in the source, so `bg-glass-${machine}` would never be generated.
+const looks = {
+  image: { glass: "bg-glass-image text-icon-image", Icon: ImageIcon },
+  convert: { glass: "bg-glass-convert text-icon-convert", Icon: ConvertIcon },
+  dryer: { glass: "bg-glass-dryer text-icon-dryer", Icon: PdfCompressIcon },
+  fold: { glass: "bg-glass-fold text-icon-fold", Icon: MergeIcon },
+  sort: { glass: "bg-glass-sort text-icon-sort", Icon: SplitIcon },
+} as const;
+
+const { glass, Icon } = looks[machine];
+---
+
+<div
+  class:list={[
+    "flex size-porthole-sm shrink-0 items-center justify-center rounded-pill border-rim",
+    "border-[length:var(--porthole-rim-sm)] [box-shadow:0_0_0_var(--border-thick)_var(--line)]",
+    glass,
+  ]}
+  aria-hidden="true"
+>
+  <Icon width="48" height="48" stroke="currentColor" />
+</div>

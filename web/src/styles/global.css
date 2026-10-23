@@ -113,6 +113,8 @@
   --tracking-sign-lg: var(--tracking-sign-lg);
   --container-headline: var(--container-headline);
   --container-lead: var(--container-lead);
+  --spacing-porthole-sm: var(--porthole-sm);
+  --spacing-machine-card-min: var(--machine-card-min);
 
   /* Media queries cannot read CSS variables: keep equal to the
      breakpoint-wide token in design/tokens.json. */
