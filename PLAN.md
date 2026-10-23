@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 6 — 14 de 16 tareas (faltan las páginas legales y Lighthouse)
+**Estado actual:** Etapa 7 (Etapas 0 a 6 completadas; sitio listo para publicar)
 
 ---
 
@@ -128,8 +128,8 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] PWA: manifest, íconos, funcionamiento offline de las herramientas locales
 - [x] Texto de cada página: instrucciones y FAQ (con datos estructurados FAQPage)
 - [x] `sitemap.xml`, `robots.txt`, etiquetas Open Graph (y URL canónica; dominio `toolito.jpgstudio.net`)
-- [ ] Páginas legales: Privacy Policy, Terms, About (Contact queda fuera hasta tener un canal público)
-- [ ] Revisión con Lighthouse (objetivo: 90+ en todo), **en ambos temas**
+- [x] Páginas legales: Privacy Policy, Terms, About (Contact queda fuera hasta tener un canal público)
+- [x] Revisión con Lighthouse (objetivo: 90+ en todo), **en ambos temas** — 100 en las 4 categorías, 6 páginas × 2 temas, móvil
 - [x] `theme-color` de la PWA que cambia con el tema
 
 **Terminado cuando:** el flujo completo funciona en local apuntando a la API de Cloud Run.
