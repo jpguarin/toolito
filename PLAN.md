@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 5 — 1 de 7 tareas (`/merge-pdf` lista)
+**Estado actual:** Etapa 5 — 2 de 7 tareas (`/merge-pdf` y `/split-pdf` listas; el ZIP ya funciona para split)
 
 ---
 
@@ -99,7 +99,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Aprendes:** archivos en el navegador (`File`, `Blob`), Web Workers, WebAssembly, pdf-lib, jSquash, rutas dinámicas.
 
 - [x] `/merge-pdf` con pdf-lib (reordenar antes de unir; arrastrar con el ratón pendiente)
-- [ ] `/split-pdf` (por rangos y "cada página por separado")
+- [x] `/split-pdf` (por rangos y "cada página por separado")
 - [ ] `/compress-image` con jSquash en un Web Worker, con control de calidad
 - [ ] Conversión de formatos (JPG, PNG, WebP, AVIF)
 - [ ] Páginas de conversión con `getStaticPaths` (`/jpg-to-webp`, `/png-to-webp`, `/webp-to-jpg`, `/png-to-jpg`…)
