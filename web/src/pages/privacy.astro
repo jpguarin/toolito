@@ -55,14 +55,28 @@ const maxMb = MAX_PDF_BYTES / (1024 * 1024);
     <h2 class={h2}>4. No cookies, no tracking, no accounts</h2>
     <ul class={list}>
       <li>Toolito does not use cookies, does not ask you to sign up, and does not track you across sites.</li>
-      <li>There are no ads and no analytics today. If that changes, this policy and the House rules will be updated first.</li>
-      <li>Fonts and every other file are served from our own site, so no third party learns that you visited.</li>
+      <li>There are no ads today. If that changes, this policy and the House rules will be updated first.</li>
+      <li>Fonts and the site's own files are served from our own site.</li>
       <li>To work offline, your browser stores a copy of the site (not your files). You can remove it by clearing this site's data in your browser.</li>
     </ul>
   </section>
 
   <section class="flex flex-col gap-2">
-    <h2 class={h2}>5. Changes</h2>
+    <h2 class={h2}>5. Counting visits</h2>
+    <p class={p}>
+      To know which machines people use, we count visits with Cloudflare Web Analytics. When a page opens, your browser loads a small script from
+      Cloudflare (<code>static.cloudflareinsights.com</code>) and sends it the page address, the page you came from, your browser and device type, your
+      approximate country, and how fast the page loaded.
+    </p>
+    <ul class={list}>
+      <li>Cloudflare says this counter uses no cookies, does not fingerprint your device and does not follow you to other sites.</li>
+      <li>We only see totals, such as page views per day or per country — never who you are.</li>
+      <li>It never sees your files: they are not part of what the counter sends.</li>
+    </ul>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>6. Changes</h2>
     <p class={p}>If we change how Toolito handles data, we will update this page and the date at the top.</p>
   </section>
 </LegalPage>

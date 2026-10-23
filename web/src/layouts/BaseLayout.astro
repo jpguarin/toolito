@@ -2,6 +2,7 @@
 // Minimal shell: styles, fonts and metadata. Header, footer and full SEO
 // tags come in the "BaseLayout" task of PLAN.md (stage 4).
 import { Font } from "astro:assets";
+import { PUBLIC_CF_ANALYTICS_TOKEN } from "astro:env/client";
 import Footer from "../components/Footer.astro";
 import ShopHeader from "../components/ShopHeader.astro";
 import StorefrontHeader from "../components/StorefrontHeader.astro";
@@ -66,6 +67,18 @@ const socialImage = new URL("/social-card.png", Astro.site).href;
     <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
+    {
+      // Cookie-free visit counter (Privacy Policy §5, House rules). Only when the
+      // production token is set; is:inline keeps Cloudflare's tag exactly as is.
+      PUBLIC_CF_ANALYTICS_TOKEN && (
+        <script
+          is:inline
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon={JSON.stringify({ token: PUBLIC_CF_ANALYTICS_TOKEN })}
+        />
+      )
+    }
     <!-- Self-hosted brand fonts (configured in astro.config.mjs). -->
     <Font cssVariable="--font-bungee" preload />
     <Font cssVariable="--font-work-sans" preload />

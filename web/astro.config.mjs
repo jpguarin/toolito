@@ -23,6 +23,10 @@ export default defineConfig({
       // Where the dryer sends PDFs. "client" + "public" = it ships in the
       // browser's JavaScript, so it must never hold a secret (a URL is fine).
       // Local API: PUBLIC_API_URL=http://localhost:8000 in web/.env
+      // Cloudflare Web Analytics site token (public, it ships in the HTML).
+      // Set only in the production environment, so local and preview visits
+      // are never counted. Without it, no analytics script is loaded at all.
+      PUBLIC_CF_ANALYTICS_TOKEN: envField.string({ context: "client", access: "public", optional: true }),
       PUBLIC_API_URL: envField.string({
         context: "client",
         access: "public",
