@@ -3,20 +3,11 @@
 // Pure functions without DOM access, so they can move into a Web Worker.
 import { PDFDocument } from "pdf-lib";
 
+import { PdfError } from "./pdf-errors";
+
+export { PdfError, type PdfErrorCode } from "./pdf-errors";
+
 export type PdfBytes = ArrayBuffer | Uint8Array;
-
-// Same codes as the API (docs/API.md), so every tool shows errors the same way.
-export type PdfErrorCode = "not_a_pdf" | "encrypted_pdf" | "corrupted_pdf";
-
-export class PdfError extends Error {
-  constructor(
-    readonly code: PdfErrorCode,
-    message: string,
-  ) {
-    super(message);
-    this.name = "PdfError";
-  }
-}
 
 const PDF_MAGIC = "%PDF-"; // Every real PDF starts with these bytes.
 

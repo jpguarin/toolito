@@ -5,6 +5,7 @@
 import ArrowDownIcon from "../icons/arrow-down.svg";
 import ArrowUpIcon from "../icons/arrow-up.svg";
 import CloseIcon from "../icons/close.svg";
+import DownloadIcon from "../icons/download.svg";
 import Dropzone from "./Dropzone.astro";
 
 const iconButton =
@@ -45,6 +46,17 @@ const iconButton =
       Fold into one
     </button>
     <p class="caption text-muted" data-fold-why>Add at least two PDFs to fold them.</p>
+    <div class="flex flex-col gap-3" data-fold-result hidden>
+      <p class="body"><strong>Folded!</strong> <span class="text-muted" data-fold-result-meta></span></p>
+      <a
+        class="label flex min-h-tap items-center justify-center gap-3 rounded-pill bg-btn px-5 py-3 text-on-btn no-underline"
+        download="merged.pdf"
+        data-fold-download
+      >
+        <DownloadIcon width="20" height="20" stroke="currentColor" aria-hidden="true" />
+        Take it home
+      </a>
+    </div>
     <p class="caption text-muted">Nothing is uploaded. The table is in your browser.</p>
   </aside>
 

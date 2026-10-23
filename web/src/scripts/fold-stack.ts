@@ -3,9 +3,10 @@
 import { formatBytes, plural } from "../lib/format";
 import { DROPZONE_EVENT, type DropzoneFilesEvent } from "./dropzone";
 
-// pdf-lib is big (~400 KB): load it only when the first PDF arrives, so
-// visitors who just read the page never download it.
-const loadPdfTools = () => import("../lib/pdf");
+// pdf-lib runs in a Web Worker that starts with the first PDF: the page itself
+// never downloads it and never freezes while folding.
+import { PdfError } from "../lib/pdf-errors";
+import { countPagesInWorker, mergeInWorker } from "../lib/pdf-worker-client";
 
 export interface Load {
   id: number;
@@ -29,8 +30,22 @@ export function initFoldStack(root: HTMLElement, template: HTMLTemplateElement):
   const errors = $<HTMLUListElement>("[data-fold-errors]");
   const announce = $<HTMLElement>("[data-fold-announce]");
 
+  const result = $<HTMLElement>("[data-fold-result]");
+  const resultMeta = $<HTMLElement>("[data-fold-result-meta]");
+  const download = $<HTMLAnchorElement>("[data-fold-download]");
+  const idleLabel = button.textContent?.trim() ?? "Fold into one";
+
   let loads: Load[] = [];
   let nextId = 1;
+  let resultUrl: string | undefined;
+
+  // Any change to the table makes an old result stale: hide it and free its memory.
+  const clearResult = (): void => {
+    if (resultUrl) URL.revokeObjectURL(resultUrl);
+    resultUrl = undefined;
+    download.removeAttribute("href");
+    result.hidden = true;
+  };
 
   const move = (id: number, offset: -1 | 1, part: FocusTarget["part"]): void => {
     const from = loads.findIndex((load) => load.id === id);
@@ -86,6 +101,7 @@ export function initFoldStack(root: HTMLElement, template: HTMLTemplateElement):
   };
 
   const render = (focus?: FocusTarget): void => {
+    clearResult();
     list.replaceChildren(...loads.map(renderRow));
 
     pile.replaceChildren(
@@ -100,6 +116,7 @@ export function initFoldStack(root: HTMLElement, template: HTMLTemplateElement):
     const pages = loads.reduce((total, load) => total + load.pages, 0);
     summary.textContent = loads.length ? `${plural(loads.length, "file")} · ${plural(pages, "page")}` : "The table is empty";
     button.disabled = loads.length < 2;
+    button.hidden = false;
     why.hidden = loads.length >= 2;
 
     const hasLoads = loads.length > 0;
@@ -126,12 +143,39 @@ export function initFoldStack(root: HTMLElement, template: HTMLTemplateElement):
     errors.hidden = messages.length === 0;
   };
 
+  const fold = async (): Promise<void> => {
+    button.disabled = true;
+    button.setAttribute("aria-busy", "true");
+    button.textContent = "Folding…";
+    announce.textContent = "Folding the pile…";
+    try {
+      // Read fresh copies: buffers sent to the worker are handed over, not copied.
+      const sources = await Promise.all(loads.map((load) => load.file.arrayBuffer()));
+      const bytes = await mergeInWorker(sources);
+      const pages = loads.reduce((total, load) => total + load.pages, 0);
+      resultUrl = URL.createObjectURL(new Blob([bytes as BlobPart], { type: "application/pdf" }));
+      download.href = resultUrl;
+      resultMeta.textContent = `${plural(pages, "page")} · ${formatBytes(bytes.byteLength)}`;
+      result.hidden = false;
+      button.hidden = true;
+      announce.textContent = `Folded into one PDF: ${plural(pages, "page")}. Ready to take home.`;
+      download.focus();
+    } catch (error) {
+      showErrors([error instanceof PdfError ? error.message : "The PDFs could not be folded. Please try again."]);
+    } finally {
+      button.removeAttribute("aria-busy");
+      button.textContent = idleLabel;
+      button.disabled = loads.length < 2;
+    }
+  };
+
+  button.addEventListener("click", fold);
+
   root.addEventListener(DROPZONE_EVENT, async (event) => {
-    const { countPages, PdfError } = await loadPdfTools();
     const problems: string[] = [];
     for (const file of (event as DropzoneFilesEvent).detail) {
       try {
-        const pages = await countPages(await file.arrayBuffer());
+        const pages = await countPagesInWorker(await file.arrayBuffer());
         const towel = TOWELS[(nextId - 1) % TOWELS.length];
         loads = [...loads, { id: nextId++, file, pages, towel }];
       } catch (error) {
