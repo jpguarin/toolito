@@ -1,9 +1,11 @@
 // State of the split tool (SplitLine.astro). The pins and the "Pages" field
 // always say the same thing: tapping pins rewrites the field, typing in the
 // field moves the pins (Clothesline.md).
-import { plural } from "../lib/format";
+import { DownloadLink } from "../lib/download";
+import { splitFileNames, zipName } from "../lib/filenames";
+import { formatBytes, plural } from "../lib/format";
 import { PdfError } from "../lib/pdf-errors";
-import { countPagesInWorker } from "../lib/pdf-worker-client";
+import { countPagesInWorker, splitInWorker } from "../lib/pdf-worker-client";
 import { formatRanges, pagesOf, parseRanges, type RangesResult } from "../lib/ranges";
 import { DROPZONE_EVENT, type DropzoneFilesEvent } from "./dropzone";
 import { TABS_EVENT, type TabsChangeEvent } from "./tabs";
@@ -40,6 +42,11 @@ export function initSplitLine(root: HTMLElement, template: HTMLTemplateElement):
   const error = $<HTMLElement>("[data-split-error]");
   const announce = $<HTMLElement>("[data-split-announce]");
   const idleHint = hint.textContent ?? "";
+  const idleLabel = button.textContent?.trim() ?? "Take down & split";
+  const result = $<HTMLElement>("[data-split-result]");
+  const resultMeta = $<HTMLElement>("[data-split-result-meta]");
+  const downloadLabel = $<HTMLElement>("[data-split-download-label]");
+  const download = new DownloadLink($<HTMLAnchorElement>("[data-split-download]"));
 
   const state: SplitState = { pageCount: 0, pinned: new Set(), mode: "pick", parsed: { ok: false, error: "" } };
   let lastClicked: number | undefined;
@@ -58,6 +65,10 @@ export function initSplitLine(root: HTMLElement, template: HTMLTemplateElement):
   };
 
   const renderBasket = (): void => {
+    // Any change makes an earlier result stale: hide it and free its memory.
+    download.clear();
+    result.hidden = true;
+    button.hidden = false;
     const loaded = Boolean(state.file);
     field.disabled = !loaded || state.mode === "every";
     $<HTMLElement>("[data-split-picker]").hidden = state.mode === "every";
@@ -145,6 +156,52 @@ export function initSplitLine(root: HTMLElement, template: HTMLTemplateElement):
     setFieldFromPins();
     announce.textContent = `${file.name} is on the line: ${plural(state.pageCount, "page")}.`;
   };
+
+  /** Several PDFs travel in one ZIP; JSZip is only downloaded when needed. */
+  const pack = async (parts: Uint8Array[], names: string[], file: File): Promise<{ blob: Blob; name: string }> => {
+    if (parts.length === 1) return { blob: new Blob([parts[0] as BlobPart], { type: "application/pdf" }), name: names[0] };
+    const { default: JSZip } = await import("jszip");
+    const zip = new JSZip();
+    parts.forEach((part, i) => zip.file(names[i], part));
+    // PDFs are already compressed inside: STORE just boxes them, almost instantly.
+    const blob = await zip.generateAsync({ type: "blob", compression: "STORE" });
+    return { blob, name: zipName(file.name) };
+  };
+
+  const split = async (): Promise<void> => {
+    const file = state.file;
+    const groups = splitGroups(state, output());
+    if (!file || groups.length === 0) {
+      showFieldError = true;
+      renderBasket();
+      return;
+    }
+    button.disabled = true;
+    button.setAttribute("aria-busy", "true");
+    button.textContent = "Taking down…";
+    announce.textContent = "Taking the pages down…";
+    try {
+      const parts = await splitInWorker(await file.arrayBuffer(), groups);
+      const { blob, name } = await pack(parts, splitFileNames(file.name, groups, state.pageCount), file);
+      download.set(blob, name);
+      const zipped = parts.length > 1;
+      resultMeta.textContent = `${plural(parts.length, "PDF")}${zipped ? " in one ZIP" : ""} · ${formatBytes(blob.size)}`;
+      downloadLabel.textContent = zipped ? "Take all home (ZIP)" : "Take it home";
+      result.hidden = false;
+      button.hidden = true;
+      announce.textContent = `Ready: ${plural(parts.length, "PDF")}${zipped ? " in one ZIP" : ""}.`;
+      $<HTMLAnchorElement>("[data-split-download]").focus();
+    } catch (problem) {
+      error.textContent = problem instanceof PdfError ? problem.message : "The PDF could not be split. Please try again.";
+      error.hidden = false;
+    } finally {
+      button.removeAttribute("aria-busy");
+      button.textContent = idleLabel;
+      button.disabled = splitGroups(state, output()).length === 0;
+    }
+  };
+
+  button.addEventListener("click", split);
 
   root.addEventListener(DROPZONE_EVENT, (event) => {
     const [file] = (event as DropzoneFilesEvent).detail;

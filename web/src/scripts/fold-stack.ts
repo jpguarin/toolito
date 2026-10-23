@@ -1,5 +1,6 @@
 // State and rendering of the folding table (FoldStack.astro). The list of loads
 // is the single source of truth; every change re-renders the rows and the pile.
+import { DownloadLink } from "../lib/download";
 import { formatBytes, plural } from "../lib/format";
 import { DROPZONE_EVENT, type DropzoneFilesEvent } from "./dropzone";
 
@@ -32,18 +33,16 @@ export function initFoldStack(root: HTMLElement, template: HTMLTemplateElement):
 
   const result = $<HTMLElement>("[data-fold-result]");
   const resultMeta = $<HTMLElement>("[data-fold-result-meta]");
-  const download = $<HTMLAnchorElement>("[data-fold-download]");
+  const downloadAnchor = $<HTMLAnchorElement>("[data-fold-download]");
+  const download = new DownloadLink(downloadAnchor);
   const idleLabel = button.textContent?.trim() ?? "Fold into one";
 
   let loads: Load[] = [];
   let nextId = 1;
-  let resultUrl: string | undefined;
 
   // Any change to the table makes an old result stale: hide it and free its memory.
   const clearResult = (): void => {
-    if (resultUrl) URL.revokeObjectURL(resultUrl);
-    resultUrl = undefined;
-    download.removeAttribute("href");
+    download.clear();
     result.hidden = true;
   };
 
@@ -153,13 +152,12 @@ export function initFoldStack(root: HTMLElement, template: HTMLTemplateElement):
       const sources = await Promise.all(loads.map((load) => load.file.arrayBuffer()));
       const bytes = await mergeInWorker(sources);
       const pages = loads.reduce((total, load) => total + load.pages, 0);
-      resultUrl = URL.createObjectURL(new Blob([bytes as BlobPart], { type: "application/pdf" }));
-      download.href = resultUrl;
+      download.set(new Blob([bytes as BlobPart], { type: "application/pdf" }), "merged.pdf");
       resultMeta.textContent = `${plural(pages, "page")} · ${formatBytes(bytes.byteLength)}`;
       result.hidden = false;
       button.hidden = true;
       announce.textContent = `Folded into one PDF: ${plural(pages, "page")}. Ready to take home.`;
-      download.focus();
+      downloadAnchor.focus();
     } catch (error) {
       showErrors([error instanceof PdfError ? error.message : "The PDFs could not be folded. Please try again."]);
     } finally {
