@@ -214,3 +214,20 @@
   background-image: radial-gradient(color-mix(in srgb, var(--cork-frame) 45%, transparent) 1px, transparent 1.5px);
   background-size: 7px 7px;
 }
+
+/* Folding table (FoldStack.md): wood with faint plank lines. */
+@utility wood-table {
+  background-color: var(--wood);
+  background-image: repeating-linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--panel) 8%, transparent) 0 var(--border-thin),
+    transparent var(--border-thin) var(--space-5)
+  );
+}
+
+/* Striped towel edge of a folding-table row; set --towel to a glass colour. */
+@utility towel {
+  width: var(--towel-width);
+  border-right: var(--border-md) solid var(--line);
+  background-image: repeating-linear-gradient(0deg, var(--towel) 0 var(--space-2), var(--paper) var(--space-2) calc(var(--space-2) + 6px));
+}

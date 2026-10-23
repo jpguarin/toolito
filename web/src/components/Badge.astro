@@ -1,0 +1,18 @@
+---
+// Small non-interactive label (design/components/Badge.md). Machine name above
+// a page title; the hot variant is for the dryer only.
+interface Props {
+  variant?: "machine" | "hot";
+}
+
+const { variant = "machine" } = Astro.props;
+---
+
+<span
+  class:list={[
+    "sign-sm self-start rounded-sm border-thin border-line px-3 py-1 uppercase",
+    variant === "hot" ? "bg-hot text-on-hot" : "bg-panel text-led [text-shadow:var(--glow-led)]",
+  ]}
+>
+  <slot />
+</span>
