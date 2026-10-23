@@ -1,0 +1,53 @@
+---
+// The washer's control panel (design/components/WasherControls.md): output
+// format, quality and resize, echoed on the LED. Defaults: WebP, 75, no resize.
+import { DEFAULT_SETTINGS, settingsLabel } from "../lib/image";
+
+const formats = [
+  { value: "same", label: "Same" },
+  { value: "webp", label: "WebP" },
+  { value: "avif", label: "AVIF" },
+  { value: "jpeg", label: "JPG" },
+  { value: "png", label: "PNG" },
+];
+---
+
+<div class="flex flex-col gap-4 bg-panel px-5 py-4 text-panel-ink" data-washer-controls>
+  <div class="flex items-center justify-between gap-3">
+    <span class="sign-md">No.1</span>
+    <span role="status" class="sign-sm rounded-sm bg-led-bg px-3 py-2 tracking-sign text-led [text-shadow:var(--glow-led)]" data-washer-led>
+      {settingsLabel(DEFAULT_SETTINGS)}
+    </span>
+  </div>
+
+  <fieldset>
+    <legend class="caption mb-2 tracking-sign uppercase">Output format</legend>
+    <div class="flex flex-wrap gap-2">
+      {formats.map(({ value, label }) => (
+        <button
+          type="button"
+          aria-pressed={value === DEFAULT_SETTINGS.format ? "true" : "false"}
+          data-format={value}
+          class="label min-h-tap rounded-pill border-thin border-panel-ink px-3 text-panel-ink aria-pressed:border-led aria-pressed:bg-led aria-pressed:text-on-accent-2"
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  </fieldset>
+
+  <div class="flex flex-col gap-1">
+    <div class="flex justify-between">
+      <label for="washer-quality" class="caption tracking-sign uppercase">Quality</label>
+      <span class="sign-sm text-led" data-washer-quality-value>{DEFAULT_SETTINGS.quality}</span>
+    </div>
+    <input id="washer-quality" type="range" min="10" max="100" value={DEFAULT_SETTINGS.quality} class="w-full accent-accent" data-washer-quality />
+    <div class="caption flex justify-between"><span>Smaller load</span><span>Crisper colors</span></div>
+    <p class="caption text-led" data-washer-lossless hidden>PNG is lossless: quality does not apply.</p>
+  </div>
+
+  <label class="body flex min-h-tap cursor-pointer items-center gap-3">
+    <input type="checkbox" class="size-5 accent-accent" data-washer-resize />
+    Resize to fit 1920 px
+  </label>
+</div>

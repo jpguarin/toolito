@@ -122,6 +122,8 @@
   --spacing-clothesline-page: var(--clothesline-page-height);
   --spacing-pin-w: var(--pin-width);
   --spacing-pin-h: var(--pin-height);
+  --spacing-porthole-lg: var(--porthole-lg);
+  --spacing-thumb: var(--file-thumb);
 
   /* Media queries cannot read CSS variables: keep equal to the
      breakpoint-wide token in design/tokens.json. */
@@ -249,4 +251,31 @@
 @utility border-t-thick {
   border-top-style: solid;
   border-top-width: var(--border-thick);
+}
+
+/* The drum turns while a machine works (Porthole.md); still for reduced motion. */
+@keyframes drum-spin {
+  to {
+    rotate: 1turn;
+  }
+}
+@utility drum-spin {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: drum-spin 2.4s linear infinite;
+  }
+}
+
+/* Indeterminate progress (ProgressBar.md): a stripe slides while there is no percentage. */
+@keyframes progress-slide {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 250% 0;
+  }
+}
+@utility progress-slide {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: progress-slide 1.2s ease-in-out infinite;
+  }
 }

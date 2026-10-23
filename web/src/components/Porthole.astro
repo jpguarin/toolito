@@ -10,9 +10,12 @@ import SplitIcon from "../icons/split.svg";
 
 interface Props {
   machine: MachineId;
+  size?: "sm" | "lg"; // sm: home cards (132px) · lg: tool page (230px)
+  laundry?: boolean; // Big washer drum: tumbling pieces of laundry instead of the icon.
 }
 
-const { machine } = Astro.props;
+const { machine, size = "sm", laundry = false } = Astro.props;
+const big = size === "lg";
 
 // Full class names on purpose: Tailwind only generates classes it can read
 // in the source, so `bg-glass-${machine}` would never be generated.
@@ -25,15 +28,53 @@ const looks = {
 } as const;
 
 const { glass, Icon } = looks[machine];
+
+// Positions and angles from the washer mockup, in the glass's 194 x 194 box
+// (the cream piece is nudged left and up so the pile sits centred in the drum).
+const pieces = [
+  { x: 40, y: 70, w: 64, h: 50, angle: -18, color: "cloth-1" },
+  { x: 100, y: 40, w: 56, h: 56, angle: 12, color: "cloth-2" },
+  { x: 86, y: 106, w: 70, h: 52, angle: -6, color: "cloth-3" },
+];
 ---
 
 <div
   class:list={[
-    "flex size-porthole-sm shrink-0 items-center justify-center rounded-pill border-rim",
-    "border-[length:var(--porthole-rim-sm)] [box-shadow:0_0_0_var(--border-thick)_var(--line)]",
+    "flex shrink-0 items-center justify-center overflow-hidden rounded-pill border-rim",
+    big
+      ? "size-porthole-lg border-[length:var(--porthole-rim-lg)] [box-shadow:0_0_0_var(--border-thick)_var(--line),inset_0_0_0_var(--border-thick)_var(--line)]"
+      : "size-porthole-sm border-[length:var(--porthole-rim-sm)] [box-shadow:0_0_0_var(--border-thick)_var(--line)]",
     glass,
   ]}
   aria-hidden="true"
 >
-  <Icon width="48" height="48" stroke="currentColor" />
+  <!--
+    laundry: three pieces placed as in mockups/TlWasher.dc.html. Tools can show
+    real thumbnails on them (data-cloth-image) and spin the whole drum
+    (data-drum + drum-spin), as Porthole.md asks: "rotate the content".
+  -->
+  {
+    laundry ? (
+      <svg viewBox="0 0 194 194" class="size-full" data-drum>
+        <defs>
+          {pieces.map((piece, i) => (
+            <clipPath id={`cloth-clip-${i}`}>
+              <rect x={piece.x} y={piece.y} width={piece.w} height={piece.h} rx="8" />
+            </clipPath>
+          ))}
+        </defs>
+        {pieces.map((piece, i) => (
+          <g transform={`rotate(${piece.angle} ${piece.x + piece.w / 2} ${piece.y + piece.h / 2})`}>
+            <rect x={piece.x} y={piece.y} width={piece.w} height={piece.h} rx="8" fill={`var(--${piece.color})`} />
+            <image clip-path={`url(#cloth-clip-${i})`} x={piece.x} y={piece.y} width={piece.w} height={piece.h} preserveAspectRatio="xMidYMid slice" data-cloth-image />
+            <rect x={piece.x} y={piece.y} width={piece.w} height={piece.h} rx="8" fill="none" stroke="var(--cloth-line)" stroke-width="3" />
+          </g>
+        ))}
+      </svg>
+    ) : (
+      <span class="flex" data-drum>
+        <Icon width={big ? 96 : 48} height={big ? 96 : 48} stroke="currentColor" />
+      </span>
+    )
+  }
 </div>
