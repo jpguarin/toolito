@@ -104,11 +104,50 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Precaché** | Archivos que el service worker descarga de antemano, en la primera visita. |
 | **Manifest** | Archivo con el nombre, colores e íconos que permite instalar el sitio como app. |
 | **Ícono maskable** | Ícono con fondo hasta los bordes que Android puede recortar con cualquier forma. |
+| **JSON-LD** | Datos estructurados en un `<script>` que los buscadores leen (por ejemplo, un FAQPage). |
+| **Sitemap** | Lista de todas las URL del sitio para los buscadores. |
+| **URL canónica** | La dirección "oficial" de una página, para no contar contenido duplicado. |
+| **Open Graph** | Etiquetas que definen la tarjeta de vista previa al compartir un enlace. |
+| **Origen** | Protocolo + dominio + puerto; el navegador aísla cada origen (service worker, almacenamiento, CORS). |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-23 — Etapa 6: textos, FAQ y SEO
+
+**Qué hicimos:**
+- `lib/content.ts`: 3 pasos y 5–7 preguntas por herramienta, y `conversionGuide()` que escribe el FAQ de cada par de formatos. Tests que vigilan que no prometamos más que el código (solo la secadora sube archivos, límites reales, nada de "offline" en la secadora).
+- `ToolGuide.astro`: "How the machine works" y "Questions at the counter" con `<details>` nativo, en las 17 páginas de herramientas, más datos estructurados **FAQPage** (JSON-LD).
+- `@astrojs/sitemap` (MIT): `sitemap-index.xml` con las 18 páginas; `robots.txt` como endpoint; URL canónica y etiquetas Open Graph con tarjeta 1200 × 630 (`design/icons/social-card.svg`).
+- Dominio: **`toolito.jpgstudio.net`** (subdominio propio, decisión D-012); el plan de la etapa 7 ahora habla de un CNAME, no de comprar dominio.
+- URLs sin barra final: páginas construidas como archivos (`merge-pdf.html`) servidas en `/merge-pdf`.
+- `npm run preview` pasó al puerto **4322**.
+
+**Conceptos nuevos:**
+- **Contenido como datos:** los textos viven en un solo archivo y un componente los pinta; las páginas de conversión los generan.
+- **JSON-LD / FAQPage:** las mismas preguntas en el idioma de Google (schema.org). Hay que escapar `<` para que ningún texto cierre el `<script>`.
+- **`<details>`/`<summary>`:** acordeón nativo, accesible con teclado y sin JavaScript. Lo nativo gana a lo casero cuando alcanza.
+- **sitemap, robots.txt, canonical, Open Graph:** directorio de URLs, cartel de "se puede pasar", dirección oficial y vitrina al compartir un enlace.
+- **Barra final:** `/merge-pdf` y `/merge-pdf/` son dos URLs para Google; hay que elegir una y usarla en todas partes.
+- **Origen = protocolo + dominio + puerto:** `localhost:4321` y `localhost:4322` son orígenes distintos; un service worker solo controla el suyo.
+- **CNAME:** un "alias" de DNS (`toolito.jpgstudio.net` = el proyecto de Cloudflare Pages).
+
+**Comandos que aprendí:**
+- `npx astro add sitemap` → integración oficial de sitemap.
+- DevTools → Application → Storage → **Clear site data** + `Cmd+Shift+R` → limpiar service worker y caché de un origen.
+
+**Errores y cómo los resolvimos:**
+- Canonical y sitemap con `/merge-pdf/` y enlaces con `/merge-pdf` → Causa: Astro construye carpetas por defecto. → Solución: `trailingSlash: "never"` + `build.format: "file"`.
+- Canonical `merge-pdf.html` → Causa: con formato archivo, la ruta incluye `.html`. → Solución: quitar la extensión (y `index`) al calcularla.
+- `'cleanURLs' property is not expected to be here` → Causa: no es una opción de `generateSW`; ya viene activado por defecto. → Solución: quitar la línea.
+- La portada se veía con Arial y las etiquetas LED grandes → Causa: el service worker de `preview` (en 4321) servía copias viejas a `dev`, y la limpieza automática nunca llegaba a ejecutarse. → Solución: `preview` en el puerto 4322 y limpiar los datos del sitio una vez.
+
+**Dudas pendientes:**
+- La secadora en `preview` (4322) da `E-500` por CORS: probarla en `dev`, o añadir `http://localhost:4322` a `ALLOWED_ORIGINS`.
+- La vista previa real en WhatsApp/X y el *Rich Results Test* de Google necesitan URL pública (etapa 7).
+- La tarjeta social no tiene texto; se podría añadir más adelante.
 
 ## 2026-10-23 — Etapa 6: PWA instalable y sin conexión
 
