@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 6 — 2 de 16 tareas (lógica de la secadora lista; falta la página `/compress-pdf`)
+**Estado actual:** Etapa 6 — 7 de 16 tareas (la secadora funciona; faltan las tarjetas OutOfOrder)
 
 ---
 
@@ -117,12 +117,12 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 - [x] Leer `docs/DRYER-FLOW.md` (fases, progreso, errores, cancelación)
 - [x] Estado de la secadora como tipo `DryerState` y validación previa (≤ 30 MB, cabecera `%PDF-`)
-- [ ] `/compress-pdf` envía el PDF con `XMLHttpRequest`: progreso real de subida (`LOADING n%`)
-- [ ] Fase de secado: barra indeterminada, tiempo transcurrido (`DRYING 0:12`) y aviso a los 8 s
-- [ ] Resultado: cabeceras de tamaño, caso "already optimized", descarga y `revokeObjectURL`
+- [x] `/compress-pdf` envía el PDF con `XMLHttpRequest`: progreso real de subida (`LOADING n%`)
+- [x] Fase de secado: barra indeterminada, tiempo transcurrido (`DRYING 0:12`) y aviso a los 8 s
+- [x] Resultado: cabeceras de tamaño, caso "already optimized", descarga y `revokeObjectURL`
 - [ ] Errores de la API → tarjetas OutOfOrder (incluidos timeout, offline y `Retry-After`)
-- [ ] Botón "Stop the dryer" con `abort()` y protección contra doble clic
-- [ ] Precalentar Cloud Run con `GET /health` al soltar el PDF
+- [x] Botón "Stop the dryer" con `abort()` y protección contra doble clic
+- [x] Precalentar Cloud Run con `GET /health` al soltar el PDF
 - [ ] Probar los escenarios de `docs/DRYER-FLOW.md` §10 en Light y Dark
 - [ ] CORS correcto, incluido `Access-Control-Expose-Headers` (tamaños, `X-Already-Optimized`, `Retry-After`)
 - [ ] PWA: manifest, íconos, funcionamiento offline de las herramientas locales
