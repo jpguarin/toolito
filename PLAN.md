@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 6 — 10 de 16 tareas (secadora completa y probada; faltan PWA, textos, SEO, páginas legales y Lighthouse)
+**Estado actual:** Etapa 6 — 12 de 16 tareas (PWA instalable; faltan textos y FAQ, SEO, páginas legales y Lighthouse)
 
 ---
 
@@ -125,12 +125,12 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] Precalentar Cloud Run con `GET /health` al soltar el PDF
 - [x] Probar los escenarios de `docs/DRYER-FLOW.md` §10 en Light y Dark (y con reducir movimiento)
 - [x] CORS correcto, incluido `Access-Control-Expose-Headers` (tamaños, `X-Already-Optimized`, `Retry-After`)
-- [ ] PWA: manifest, íconos, funcionamiento offline de las herramientas locales
+- [x] PWA: manifest, íconos, funcionamiento offline de las herramientas locales
 - [ ] Texto de cada página: instrucciones y FAQ
 - [ ] `sitemap.xml`, `robots.txt`, etiquetas Open Graph
 - [ ] Páginas legales: Privacy Policy, Terms, About, Contact
 - [ ] Revisión con Lighthouse (objetivo: 90+ en todo), **en ambos temas**
-- [ ] `theme-color` de la PWA que cambia con el tema
+- [x] `theme-color` de la PWA que cambia con el tema
 
 **Terminado cuando:** el flujo completo funciona en local apuntando a la API de Cloud Run.
 
