@@ -45,6 +45,11 @@
   --glass-dryer: #FFD166;
   --glass-fold: #A99BFF;
   --glass-sort: #7DE3B2;
+  --led-error: #FF8FA0;
+  --led-warn: #FFD166;
+  --glass-dead: #B9C4C8;
+  --glass-cool: #C8E9F2;
+  --glass-off: #7E8C92;
   --icon-image: #12233D;
   --icon-convert: #12233D;
   --icon-dryer: #12233D;
@@ -104,6 +109,11 @@
   --glass-dryer: #3D3714;
   --glass-fold: #2A2356;
   --glass-sort: #163D33;
+  --led-error: #FF5E6C;
+  --led-warn: #FFE45E;
+  --glass-dead: #2B3456;
+  --glass-cool: #12304A;
+  --glass-off: #0A0F22;
   --icon-image: #3DE8F5;
   --icon-convert: #FF5E6C;
   --icon-dryer: #FFE45E;
