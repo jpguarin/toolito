@@ -1,0 +1,30 @@
+---
+// One static page per format pair: /jpg-to-webp, /png-to-jpg… (12 in total).
+// getStaticPaths() lists them; Astro builds one HTML file for each.
+import ToolIntro from "../components/ToolIntro.astro";
+import Washer from "../components/Washer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { type Conversion, CONVERSIONS, TARGET_REASON } from "../lib/conversions";
+import { FORMAT_LABEL } from "../lib/image";
+
+export function getStaticPaths() {
+  return CONVERSIONS.map((conversion) => ({ params: { conversion: conversion.slug }, props: conversion }));
+}
+
+const { from, to, title } = Astro.props as Conversion;
+const fromLabel = FORMAT_LABEL[from];
+const toLabel = FORMAT_LABEL[to];
+---
+
+<BaseLayout
+  title={`${title} converter — free, in your browser · Toolito`}
+  description={`Convert ${fromLabel} images to ${toLabel} in seconds, in batches. Free, no sign-up, and nothing is uploaded: the conversion runs on your device.`}
+  section="images"
+>
+  <ToolIntro
+    machine="Washer No.2"
+    title={`${title}`}
+    lead={`Turn ${fromLabel} images into ${toLabel}: ${TARGET_REASON[to]}. Dyed right here on your device.`}
+  />
+  <Washer machine="convert" accepts={[from]} format={to} />
+</BaseLayout>
