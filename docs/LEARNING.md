@@ -96,11 +96,56 @@ Se va llenando a medida que aparecen términos nuevos.
 | **clipPath** | Forma de SVG que recorta lo que se dibuja dentro, como un esténcil. |
 | **Ruta dinámica** | Archivo como `[conversion].astro` que genera muchas páginas desde una lista (`getStaticPaths`). |
 | **Atributo `data-*`** | Atributo propio en el HTML para pasarle datos al JavaScript (`data-default-format="webp"`). |
+| **Máquina de estados** | Un solo estado con fases y transiciones; la pantalla se pinta a partir de él. |
+| **Unión discriminada** | Tipo de TypeScript con varias formas distinguidas por un campo (`phase`). |
+| **Mock** | Pieza falsa que reemplaza a una real durante un test (`vi.mock`). |
+| **Contraste WCAG** | Relación de luminancia entre texto y fondo; 4,5:1 es el mínimo para texto pequeño. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-23 — Etapa 6: la secadora (`/compress-pdf`)
+
+**Qué hicimos:**
+- `lib/dryer.ts`: `DryerState` (6 fases), ciclos Delicate/Normal/Heavy duty, `checkBeforeUpload` (≤ 30 MB y `%PDF-` leyendo solo 5 bytes) y el catálogo de las 9 tarjetas "Out of order".
+- `lib/dryer-request.ts`: la petición con `XMLHttpRequest` (progreso real de subida), `warmUp()` con `GET /health`, y funciones puras para leer la respuesta y los errores.
+- `PUBLIC_API_URL` declarada con `astro:env` (por defecto, la API de Cloud Run; `web/.env.example` explica cómo usar la local).
+- Página `/compress-pdf`: máquina caliente con LED y lámpara, `StepIndicator`, 3 `CycleOption`, START DRYER, barra real (`LOADING n%`), franjas + `DRYING 0:12`, papeles girando, resultado con CARE LABEL, **Stop the dryer**, aviso al salir de la página.
+- Tarjetas `OutOfOrder` con nota pegada, LED rojo o amarillo, ojo de buey apagado, cuenta regresiva de `COOLING` con el `Retry-After` real y **Try again** con el mismo PDF; la Dropzone sigue disponible.
+- Tokens hasta la versión 13 (ojo de buey de la secadora, LED de error y aviso, vidrios apagado/frío/sin corriente). 110 tests en `web/`.
+- Probado contra la API real en Cloud Run: subida, secado, resultado, Stop y todos los errores.
+
+**Conceptos nuevos:**
+- **No inventar porcentajes:** solo la subida se puede medir; el secado se muestra con una franja y el tiempo transcurrido.
+- **`XMLHttpRequest` vs `fetch`:** solo XHR informa del progreso de subida (`xhr.upload.onprogress`).
+- **Variables con `astro:env`:** declaradas con tipo y valor por defecto; `PUBLIC_`/`client` significa que viajan al navegador, así que nunca secretos.
+- **Unión discriminada:** un estado con un campo `phase` que distingue cada forma; TypeScript impide combinaciones imposibles.
+- **Máquina de estados:** un solo estado, transiciones por eventos y un único `render()` que pinta todo a partir del estado.
+- **Promesa que nunca falla:** todos los finales vuelven como `DryerOutcome`, y la página los maneja en un solo lugar.
+- **Mock (`vi.mock`):** reemplazar `astro:env` por un valor fijo para poder probar en Vitest.
+- **Contraste WCAG:** medido con la fórmula, no a ojo (`error` sobre el LED daba 3,31:1; `led-error`, 8,68:1).
+- **Accesibilidad de estados:** el LED va `aria-hidden` y una zona `aria-live` anuncia solo los cambios de fase; el foco va a "Take it home" o al título del error.
+- **`file.slice(0, 5)`:** leer solo los bytes que hacen falta, no los 30 MB.
+
+**Comandos que aprendí:**
+- DevTools → Network → *Slow 4G* / *Offline* → probar la subida lenta y el modo sin conexión.
+- `npx astro dev status` → saber si hay un servidor de desarrollo corriendo (Astro 7 no deja abrir dos en el mismo proyecto).
+
+**Errores y cómo los resolvimos:**
+- Las barras de progreso no se veían → Causa: al quitar la escala de espaciado de Tailwind también desapareció el cero (`inset-0`, `left-0`, `w-0`). → Solución: `--spacing-0: 0px`.
+- `hidden` en un SVG daba error de tipos → Causa: `hidden` es un atributo de HTML, no de SVG. → Solución: envolver el dibujo en un `<span>`.
+- El papel girando se cortaba en una esquina → Causa: el SVG recorta lo que sale de su caja. → Solución: `overflow="visible"`.
+- Un `<p>` dentro de un `<dl>` → HTML inválido. → Solución: título fuera de la lista.
+- Mis pruebas en un segundo servidor (puerto 4399) no medían nada → Causa: Astro 7 se negó a arrancarlo. → Lección: comprobar que la herramienta de medida funciona antes de sacar conclusiones.
+- La clase nueva no aparece en `npm run dev` (pasó varias veces tras crear archivos nuevos) → Solución práctica: reiniciar el servidor.
+
+**Dudas pendientes:**
+- Probar los escenarios de §10 en **Dark** y con **reducir movimiento** (tarea abierta en `PLAN.md`).
+- Por qué el servidor de desarrollo a veces no genera las clases de archivos nuevos (reproducirlo antes de tocar la configuración).
+- El banner de anuncio 728 × 90 bajo la secadora (anuncios, etapa 7).
+- Las respuestas `500` siguen sin cabeceras CORS: hoy se tratan como `E-500` gracias a `navigator.onLine`.
 
 ## 2026-10-23 — Etapa 5: `/convert-image` y páginas de conversión (cierre de la etapa)
 
