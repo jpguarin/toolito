@@ -3,7 +3,9 @@
 // tags come in the "BaseLayout" task of PLAN.md (stage 4).
 import { Font } from "astro:assets";
 import Footer from "../components/Footer.astro";
-import ShopHeader, { type Section } from "../components/ShopHeader.astro";
+import ShopHeader from "../components/ShopHeader.astro";
+import StorefrontHeader from "../components/StorefrontHeader.astro";
+import type { Section } from "../lib/nav";
 import { DAY_START, NIGHT_START } from "../lib/theme";
 import "../styles/global.css";
 
@@ -11,9 +13,10 @@ interface Props {
   title: string; // Becomes "<title> · Toolito" unless it is the home page.
   description: string; // Meta description for search results.
   section?: Section; // Highlights the current link in the header.
+  storefront?: boolean; // Home page only: full awning instead of ShopHeader.
 }
 
-const { title, description, section } = Astro.props;
+const { title, description, section, storefront = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -48,7 +51,7 @@ const { title, description, section } = Astro.props;
     >
       Skip to content
     </a>
-    <ShopHeader current={section} />
+    {storefront ? <StorefrontHeader /> : <ShopHeader current={section} />}
     <main id="main" class="flex-1">
       <slot />
     </main>

@@ -1,0 +1,20 @@
+---
+// Home page header (design/components/Storefront.md + mockups/TlHome.dc.html):
+// the full awning with its scalloped edge, then the navigation and shop signs
+// on the tiled floor. Inner pages use ShopHeader instead.
+import { MAIN_LINKS } from "../lib/nav";
+---
+
+<div aria-hidden="true">
+  <div class="awning awning-full"></div>
+  <div class="awning-scallop"></div>
+</div>
+<header class="mx-auto flex w-full max-w-page flex-wrap items-center justify-between gap-4 px-5 pt-2">
+  <nav aria-label="Main" class="label flex flex-wrap gap-5">
+    {MAIN_LINKS.map(({ label, href }) => <a href={href} class="text-ink no-underline">{label}</a>)}
+  </nav>
+  <div class="sign-sm flex gap-3" aria-hidden="true">
+    <span class="rounded-sm border-thin border-line bg-panel px-3 py-2 text-led [text-shadow:var(--glow-led)]">OPEN 24/7</span>
+    <span class="rounded-sm border-thin border-line bg-paper px-3 py-2 text-ink">SELF-SERVICE</span>
+  </div>
+</header>

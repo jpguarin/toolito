@@ -1,6 +1,10 @@
 @import "tailwindcss";
-/* Design tokens, copied verbatim from design/tokens.css (do not edit here). */
-@import "./tokens.css";
+/* Design tokens, copied verbatim from design/tokens.css (do not edit here).
+   Imported into the base layer so Tailwind utilities (and their variants)
+   win over its plain type classes. */
+@import "./tokens.css" layer(base);
+/* Type styles as utilities (generated from design/tokens.json). */
+@import "./typography.css";
 
 /*
  * Font bridge: tokens.css names the families ("Bungee", "Work Sans"...),
@@ -55,6 +59,7 @@
   --color-awning-a: var(--awning-a);
   --color-awning-b: var(--awning-b);
   --color-sign-sub: var(--sign-sub);
+  --color-sign-border: var(--sign-border);
   --color-note: var(--note);
   --color-on-note: var(--on-note);
   --color-tape: var(--tape);
@@ -97,6 +102,7 @@
 
   --shadow-press: var(--shadow-press);
   --shadow-hot: var(--shadow-hot);
+  --shadow-sign: var(--shadow-sign);
   --shadow-glow-accent: var(--glow-accent);
   --shadow-glow-led: var(--glow-led);
   --shadow-glow-sign: var(--glow-sign);
@@ -104,6 +110,9 @@
   --spacing-tap: var(--tap-target);
   --container-page: var(--container-page);
   --tracking-sign: var(--tracking-sign);
+  --tracking-sign-lg: var(--tracking-sign-lg);
+  --container-headline: var(--container-headline);
+  --container-lead: var(--container-lead);
 
   /* Media queries cannot read CSS variables: keep equal to the
      breakpoint-wide token in design/tokens.json. */
@@ -175,4 +184,19 @@
     --awning-stripe: var(--tile);
     height: var(--awning-height);
   }
+}
+
+/* Home page awning (Storefront.md): tall stripes plus a scalloped edge made of
+   half-discs, one coral and one cream every two tiles. */
+@utility awning-full {
+  --awning-stripe: var(--tile);
+  height: var(--awning-height-lg);
+}
+@utility awning-scallop {
+  height: var(--awning-scallop);
+  background-image:
+    radial-gradient(circle at calc(var(--tile) / 2) 0, var(--awning-a) 0 var(--awning-scallop), transparent calc(var(--awning-scallop) + 1px)),
+    radial-gradient(circle at calc(var(--tile) * 1.5) 0, var(--awning-b) 0 var(--awning-scallop), transparent calc(var(--awning-scallop) + 1px));
+  background-size: calc(var(--tile) * 2) var(--awning-scallop);
+  background-repeat: repeat-x;
 }

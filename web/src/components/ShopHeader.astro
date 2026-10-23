@@ -4,30 +4,20 @@
 // Below 600px the navigation and signs collapse behind a menu button.
 // There is never a theme switch here: the theme follows the local time.
 
-export type Section = "images" | "pdfs" | "house-rules";
+import { MAIN_LINKS as links, type Section } from "../lib/nav";
 
 interface Props {
   current?: Section;
 }
 
-const { current } = Astro.props;
-
-const links: { section: Section; label: string; href: string }[] = [
-  { section: "images", label: "Images", href: "/#images" },
-  { section: "pdfs", label: "PDFs", href: "/#pdfs" },
-  { section: "house-rules", label: "House rules", href: "/#house-rules" },
-];
----
+const { current } = Astro.props;---
 
 <div>
   <div class="awning awning-strip" aria-hidden="true"></div>
   <header class="border-b-md border-line bg-panel text-panel-ink">
     <div class="mx-auto flex max-w-page items-center justify-between gap-4 px-4 py-2 wide:px-5 wide:py-3">
       <a href="/" class="flex items-baseline gap-3 no-underline">
-        <!-- sign-md/sign-lg are plain token classes, so they cannot take `wide:`;
-             one logo per size instead (hidden ones are not read aloud). -->
-        <span class="sign-md text-accent [text-shadow:var(--glow-sign)] wide:hidden">TOOLITO</span>
-        <span class="sign-lg hidden text-accent [text-shadow:var(--glow-sign)] wide:inline">TOOLITO</span>
+        <span class="sign-md text-accent [text-shadow:var(--glow-sign)] wide:sign-lg">TOOLITO</span>
         <span class="sign-sm hidden tracking-sign text-sign-sub [text-shadow:var(--glow-led)] wide:inline">LAUNDROMAT</span>
       </a>
 
@@ -112,7 +102,7 @@ const links: { section: Section; label: string; href: string }[] = [
       }
     });
 
-    // Links jump to sections of the same page, so close the menu after a tap.
+    // Close after a tap, so a link to a section of the same page does not leave it open.
     menu.addEventListener("click", (event) => {
       if (event.target instanceof Element && event.target.closest("a")) setOpen(false);
     });
