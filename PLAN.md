@@ -85,7 +85,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] Script en línea en el `<head>` que elige el tema antes de pintar (sin parpadeo)
 - [x] Cambio automático en vivo: reevaluar la hora cada minuto y al volver a la pestaña (sin interruptor de tema)
 - [x] Función `resolveTheme(hour)` con tests de las horas límite (6, 7, 18, 19)
-- [ ] `BaseLayout.astro` con cabecera (toldo + letrero), pie y metadatos SEO
+- [x] `BaseLayout.astro` con cabecera (toldo + letrero), pie y metadatos SEO (título y descripción; Open Graph y canonical en la etapa 6)
 - [ ] Página de inicio con la lista de herramientas
 - [ ] Componente `Dropzone` reutilizable (arrastrar y soltar archivos)
 

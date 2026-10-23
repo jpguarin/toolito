@@ -48,17 +48,73 @@ const links: { section: Section; label: string; href: string }[] = [
         <span class="rounded-sm border-thin border-panel-ink px-3 py-2">SELF-SERVICE</span>
       </div>
 
-      <!-- Opens the phone menu (wired up in the next step). -->
+      <!-- Phone menu toggle (MobileHeader.md). The icon swaps via aria-expanded. -->
       <button
         type="button"
-        class="flex size-tap items-center justify-center rounded-md text-panel-ink wide:hidden"
+        class="group flex size-tap items-center justify-center rounded-md text-panel-ink wide:hidden"
         aria-label="Open menu"
         aria-expanded="false"
+        aria-controls="shop-menu"
+        data-menu-button
       >
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+        <svg class="group-aria-expanded:hidden" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
           <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+        <svg class="hidden group-aria-expanded:block" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6 6 18" />
         </svg>
       </button>
     </div>
+
+    <!-- Phone menu panel: full width under the bar, 56px rows, signs at the bottom. -->
+    <nav id="shop-menu" aria-label="Main" class="label wide:hidden" hidden data-menu>
+      <ul>
+        {links.map(({ section, label, href }) => (
+          <li>
+            <a
+              href={href}
+              aria-current={section === current ? "page" : undefined}
+              class="flex h-tile items-center px-5 text-panel-ink no-underline aria-[current=page]:text-accent-2"
+            >
+              {label}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <div class="sign-sm flex gap-2 px-5 pt-3 pb-5" aria-hidden="true">
+        <span class="rounded-sm border-thin border-led px-3 py-2 text-led [text-shadow:var(--glow-led)]">OPEN 24/7</span>
+        <span class="rounded-sm border-thin border-panel-ink px-3 py-2">SELF-SERVICE</span>
+      </div>
+    </nav>
   </header>
 </div>
+
+<script>
+  const button = document.querySelector<HTMLButtonElement>("[data-menu-button]");
+  const menu = document.querySelector<HTMLElement>("[data-menu]");
+
+  if (button && menu) {
+    // aria-expanded is the single source of truth (the CSS reads it too).
+    const isOpen = (): boolean => button.getAttribute("aria-expanded") === "true";
+
+    const setOpen = (open: boolean): void => {
+      button.setAttribute("aria-expanded", String(open));
+      menu.hidden = !open;
+    };
+
+    button.addEventListener("click", () => setOpen(!isOpen()));
+
+    // Escape closes the menu and hands focus back to the button.
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && isOpen()) {
+        setOpen(false);
+        button.focus();
+      }
+    });
+
+    // Links jump to sections of the same page, so close the menu after a tap.
+    menu.addEventListener("click", (event) => {
+      if (event.target instanceof Element && event.target.closest("a")) setOpen(false);
+    });
+  }
+</script>
