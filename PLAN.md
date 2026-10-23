@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 6 — 12 de 16 tareas (PWA instalable; faltan textos y FAQ, SEO, páginas legales y Lighthouse)
+**Estado actual:** Etapa 6 — 13 de 16 tareas (faltan sitemap/robots/Open Graph, páginas legales y Lighthouse)
 
 ---
 
@@ -126,7 +126,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] Probar los escenarios de `docs/DRYER-FLOW.md` §10 en Light y Dark (y con reducir movimiento)
 - [x] CORS correcto, incluido `Access-Control-Expose-Headers` (tamaños, `X-Already-Optimized`, `Retry-After`)
 - [x] PWA: manifest, íconos, funcionamiento offline de las herramientas locales
-- [ ] Texto de cada página: instrucciones y FAQ
+- [x] Texto de cada página: instrucciones y FAQ (con datos estructurados FAQPage)
 - [ ] `sitemap.xml`, `robots.txt`, etiquetas Open Graph
 - [ ] Páginas legales: Privacy Policy, Terms, About, Contact
 - [ ] Revisión con Lighthouse (objetivo: 90+ en todo), **en ambos temas**
