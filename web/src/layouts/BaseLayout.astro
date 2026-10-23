@@ -14,9 +14,10 @@ interface Props {
   description: string; // Meta description for search results.
   section?: Section; // Highlights the current link in the header.
   storefront?: boolean; // Home page only: full awning instead of ShopHeader.
+  noindex?: boolean; // Keep search engines away (dev and test pages).
 }
 
-const { title, description, section, storefront = false } = Astro.props;
+const { title, description, section, storefront = false, noindex = false } = Astro.props;
 ---
 
 <!doctype html>
@@ -38,6 +39,7 @@ const { title, description, section, storefront = false } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <!-- Self-hosted brand fonts (configured in astro.config.mjs). -->
     <Font cssVariable="--font-bungee" preload />

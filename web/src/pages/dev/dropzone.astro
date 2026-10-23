@@ -1,0 +1,38 @@
+---
+// TEMPORARY playground to try the Dropzone before the real tools exist.
+// Delete it when the first tool page uses the Dropzone (stage 5).
+import Dropzone from "../../components/Dropzone.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="Dropzone playground · Toolito" description="Developer test page." noindex>
+  <div class="mx-auto flex w-full max-w-page flex-col gap-5 p-5">
+    <h1 class="title">Dropzone playground</h1>
+    <div class="grid gap-4 wide:grid-cols-2">
+      <Dropzone title="Drop your PDF in the dryer" hint="or tap to choose · up to 30 MB" accept="application/pdf" />
+      <Dropzone title="Drop images in the washer" hint="or tap to choose · JPG, PNG, WebP, AVIF" accept="image/*" multiple />
+      <div class="wide:col-span-2">
+        <Dropzone title="Add more to the drum" hint="JPG, PNG, WebP, AVIF" accept="image/*" multiple compact />
+      </div>
+    </div>
+    <section class="rounded-md border-md border-line bg-card p-5">
+      <h2 class="label">Received files (nothing is uploaded)</h2>
+      <ul id="received" class="body mt-3 flex flex-col gap-1"></ul>
+    </section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { DROPZONE_EVENT, type DropzoneFilesEvent } from "../../scripts/dropzone";
+
+  const list = document.querySelector<HTMLUListElement>("#received");
+
+  document.addEventListener(DROPZONE_EVENT, (event) => {
+    for (const file of (event as DropzoneFilesEvent).detail) {
+      const item = document.createElement("li");
+      // textContent, never innerHTML: a file name could contain HTML.
+      item.textContent = `${file.name} · ${(file.size / 1024).toFixed(1)} KB · ${file.type || "unknown type"}`;
+      list?.append(item);
+    }
+  });
+</script>

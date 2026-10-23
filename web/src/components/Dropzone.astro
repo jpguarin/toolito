@@ -1,0 +1,48 @@
+---
+// Where files go in (design/components/Dropzone.md): drop files on it, or
+// click / press Enter to open the picker. It only collects File objects and
+// announces them with a "dropzone:files" event; nothing is uploaded here.
+// Each tool listens for the event and checks size and type itself.
+import PlusIcon from "../icons/plus.svg";
+import UploadIcon from "../icons/upload.svg";
+
+interface Props {
+  title: string; // "Drop images in the washer"
+  hint: string; // Accepted formats and limit, e.g. "or tap to choose · up to 30 MB"
+  accept: string; // <input accept>, e.g. "application/pdf" or "image/*"
+  multiple?: boolean; // Every tool except the dryer
+  compact?: boolean; // One row: "Add more to the drum"
+}
+
+const { title, hint, accept, multiple = false, compact = false } = Astro.props;
+---
+
+<label
+  data-dropzone
+  class:list={[
+    "group relative flex cursor-pointer items-center justify-center rounded-lg border-md border-dashed border-line bg-paper p-5 text-center",
+    "data-over:border-solid data-over:border-accent data-over:bg-card data-over:shadow-press",
+    "has-focus-visible:outline-[length:var(--border-thick)] has-focus-visible:outline-offset-[var(--border-thin)] has-focus-visible:outline-accent",
+    compact ? "min-h-8 flex-row gap-3" : "min-h-dropzone flex-col gap-2",
+  ]}
+>
+  {compact ? (
+    <PlusIcon width="20" height="20" stroke="currentColor" aria-hidden="true" />
+  ) : (
+    <span class="flex size-7 items-center justify-center rounded-pill bg-accent text-on-accent" aria-hidden="true">
+      <PlusIcon class="group-data-over:hidden" width="26" height="26" stroke="currentColor" />
+      <UploadIcon class="hidden group-data-over:block" width="26" height="26" stroke="currentColor" />
+    </span>
+  )}
+  <span class="label" data-title>{title}</span>
+  <span class="caption text-muted" data-hint>{hint}</span>
+  <!-- `multiple={false}` would render multiple="false", which HTML treats as ON
+       (boolean attributes only check presence). undefined omits it. -->
+  <input type="file" class="sr-only" accept={accept} multiple={multiple || undefined} />
+</label>
+
+<script>
+  import { initDropzone } from "../scripts/dropzone";
+
+  document.querySelectorAll<HTMLLabelElement>("[data-dropzone]").forEach(initDropzone);
+</script>

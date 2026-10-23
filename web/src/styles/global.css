@@ -117,6 +117,7 @@
   --spacing-machine-card-min: var(--machine-card-min);
   --spacing-ad-rect-width: var(--ad-rect-width);
   --spacing-ad-rect-height: var(--ad-rect-height);
+  --spacing-dropzone: var(--dropzone-min-height);
 
   /* Media queries cannot read CSS variables: keep equal to the
      breakpoint-wide token in design/tokens.json. */

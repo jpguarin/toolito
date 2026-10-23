@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 4 — 9 de 10 tareas (falta el Dropzone)
+**Estado actual:** Etapa 5 (Etapas 0 a 4 completadas; sitio base en Astro listo)
 
 ---
 
@@ -87,7 +87,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] Función `resolveTheme(hour)` con tests de las horas límite (6, 7, 18, 19)
 - [x] `BaseLayout.astro` con cabecera (toldo + letrero), pie y metadatos SEO (título y descripción; Open Graph y canonical en la etapa 6)
 - [x] Página de inicio con la lista de herramientas
-- [ ] Componente `Dropzone` reutilizable (arrastrar y soltar archivos)
+- [x] Componente `Dropzone` reutilizable (arrastrar y soltar archivos)
 
 **Terminado cuando:** el sitio corre en local con la portada y el diseño base.
 
