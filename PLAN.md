@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 7 — 4 de 7 tareas (publicado y con analítica; faltan Search Console y AdSense)
+**Estado actual:** Etapa 7 — 5 de 7 tareas (en Search Console; falta que Google indexe las páginas y lo previo a AdSense)
 
 ---
 
@@ -145,7 +145,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] Publicar `web/` en Cloudflare Pages conectado a GitHub
 - [x] Conectar `toolito.jpgstudio.net` en Cloudflare Pages y añadirlo a `ALLOWED_ORIGINS` en Cloud Run
 - [x] Cloudflare Web Analytics (gratis y sin cookies; regla nueva en House rules y §5 en la Privacy Policy)
-- [ ] Google Search Console y envío del sitemap
+- [x] Google Search Console y envío del sitemap (propiedad de prefijo de URL, verificada con etiqueta HTML)
 - [ ] Antes de AdSense: canal de contacto público, responsable en la Privacy Policy, jurisdicción en Terms y revisión legal
 - [ ] Solicitar Google AdSense cuando haya contenido y algo de tráfico
 

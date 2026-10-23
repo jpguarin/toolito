@@ -78,3 +78,8 @@ curl -sI https://toolito.jpgstudio.net/          # 200 desde Cloudflare
 curl -s https://toolito.jpgstudio.net/robots.txt  # apunta al sitemap
 ```
 
+## Google Search Console
+
+- Propiedad de **prefijo de URL** `https://toolito.jpgstudio.net/`, verificada con la etiqueta `<meta name="google-site-verification">` del `BaseLayout`. **No borrarla**: Google la vuelve a comprobar.
+- Sitemap enviado: `sitemap-index.xml` (21 URL). Para acelerar una página importante: *URL inspection* → *Request indexing*.
+
