@@ -1,0 +1,58 @@
+---
+// Terms of use. Draft: no jurisdiction clause on purpose (decided 2026-10-23);
+// review it before ads are added (PLAN.md, stage 7).
+import LegalPage from "../components/LegalPage.astro";
+import { MAX_PDF_BYTES, MAX_PDF_PAGES } from "../lib/dryer";
+
+const h2 = "card-title text-heading";
+const p = "body";
+const list = "body flex list-disc flex-col gap-2 pl-5";
+const maxMb = MAX_PDF_BYTES / (1024 * 1024);
+---
+
+<LegalPage
+  title="Terms of Use · Toolito"
+  description="The rules of the laundromat: what Toolito offers, how you may use it and what we cannot promise."
+  heading="Terms of Use"
+  updated="2026-10-23"
+>
+  <p class={p}>By using Toolito you agree to these terms. If you do not agree, please do not use the site.</p>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>1. The service</h2>
+    <p class={p}>
+      Toolito offers free tools to compress and convert images and to merge, split and compress PDF files. No account is needed. Features may change, and a
+      tool may be unavailable at times.
+    </p>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>2. Your files stay yours</h2>
+    <p class={p}>
+      You keep all rights to the files you process. You are responsible for having the right to use them. How we handle files is described in the
+      <a class="underline" href="/privacy">Privacy Policy</a>.
+    </p>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>3. Fair use</h2>
+    <ul class={list}>
+      <li>Do not use Toolito for anything illegal, or to process content you have no right to use.</li>
+      <li>Do not try to overload, attack or bypass the limits of the service.</li>
+      <li>The PDF compressor takes up to {maxMb} MB and {MAX_PDF_PAGES} pages per load and limits how many loads can be run per minute.</li>
+    </ul>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>4. No guarantees</h2>
+    <p class={p}>
+      Toolito is provided “as is”, without warranties of any kind. Results depend on your files, and we cannot promise a particular size or quality. Always
+      keep your original files. To the extent the law allows, we are not liable for any loss or damage from using the service.
+    </p>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>5. Changes</h2>
+    <p class={p}>We may update these terms. The date at the top shows the latest version; using Toolito after a change means you accept it.</p>
+  </section>
+</LegalPage>

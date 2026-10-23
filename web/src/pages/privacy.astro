@@ -1,0 +1,68 @@
+---
+// Privacy policy. Rule from HouseRules.md: never promise more than the code does.
+// Update it (and HouseRules) when analytics or ads are added (PLAN.md, stage 7).
+import LegalPage from "../components/LegalPage.astro";
+import { MAX_PDF_BYTES } from "../lib/dryer";
+
+const h2 = "card-title text-heading";
+const p = "body";
+const list = "body flex list-disc flex-col gap-2 pl-5";
+const maxMb = MAX_PDF_BYTES / (1024 * 1024);
+---
+
+<LegalPage
+  title="Privacy Policy · Toolito"
+  description="How Toolito handles your files: most tools run on your device, and the PDF compressor deletes your file right after each load."
+  heading="Privacy Policy"
+  updated="2026-10-23"
+>
+  <p class={p}>
+    The short version is posted on the wall as our <a class="underline" href="/#house-rules">House rules</a>. This page says the same thing in more detail.
+  </p>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>1. Most machines never see your files</h2>
+    <p class={p}>
+      Compress image, Convert image, Merge PDF and Split PDF run entirely in your browser. Your files are opened, processed and saved on your own device.
+      They are never sent to us or to anyone else.
+    </p>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>2. The dryer (Compress PDF) is the exception</h2>
+    <p class={p}>Compressing a PDF needs our server, so that one tool works differently:</p>
+    <ul class={list}>
+      <li>Your PDF (up to {maxMb} MB) is sent over an encrypted connection (HTTPS) to our server, which runs on Google Cloud Run.</li>
+      <li>It is compressed in a temporary folder and deleted as soon as the compressed file is sent back to you — also if something goes wrong.</li>
+      <li>We never store your PDF, and we never record its name or its content.</li>
+    </ul>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>3. What our hosting providers record</h2>
+    <ul class={list}>
+      <li>
+        <strong>Google Cloud</strong> runs the server. Like most hosting, it keeps a request log for each call to the dryer: your IP address, the time, the
+        address requested, the response size and status, and your browser's user agent. We use it only to keep the service working and safe. Google
+        keeps these logs for about 30 days.
+      </li>
+      <li>To stop abuse, the server counts requests per IP address for one minute, in memory only. The count is not stored.</li>
+      <li>The website itself is a set of static pages served by a hosting provider, which may keep similar technical logs.</li>
+    </ul>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>4. No cookies, no tracking, no accounts</h2>
+    <ul class={list}>
+      <li>Toolito does not use cookies, does not ask you to sign up, and does not track you across sites.</li>
+      <li>There are no ads and no analytics today. If that changes, this policy and the House rules will be updated first.</li>
+      <li>Fonts and every other file are served from our own site, so no third party learns that you visited.</li>
+      <li>To work offline, your browser stores a copy of the site (not your files). You can remove it by clearing this site's data in your browser.</li>
+    </ul>
+  </section>
+
+  <section class="flex flex-col gap-2">
+    <h2 class={h2}>5. Changes</h2>
+    <p class={p}>If we change how Toolito handles data, we will update this page and the date at the top.</p>
+  </section>
+</LegalPage>

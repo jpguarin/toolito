@@ -1,0 +1,73 @@
+---
+// About Toolito + open-source credits. The BSD and IJG licenses of the image
+// codecs ask for this notice because their compiled code ships to the browser.
+import LegalPage from "../components/LegalPage.astro";
+
+const h2 = "card-title text-heading";
+const p = "body";
+
+// Software that ships to your browser (it runs on your device).
+const inBrowser = [
+  { name: "MozJPEG / libjpeg-turbo", use: "JPG codec", license: "IJG, BSD-3-Clause, zlib" },
+  { name: "libwebp (Google)", use: "WebP codec", license: "BSD-3-Clause" },
+  { name: "libavif and libaom (AOMedia)", use: "AVIF codec", license: "BSD-2-Clause" },
+  { name: "Squoosh PNG codec (Google)", use: "PNG codec", license: "BSD-3-Clause" },
+  { name: "OxiPNG", use: "lossless PNG optimizer", license: "MIT" },
+  { name: "resize, magic-kernel, hqx", use: "image resizing", license: "MIT, Apache-2.0" },
+  { name: "jSquash", use: "codec packaging (from Squoosh)", license: "Apache-2.0" },
+  { name: "pdf-lib", use: "merge and split PDFs", license: "MIT" },
+  { name: "JSZip", use: "ZIP downloads", license: "MIT (dual MIT or GPL-3.0; used under MIT)" },
+  { name: "Workbox (Google)", use: "offline support", license: "MIT" },
+  { name: "Bungee, Work Sans, Caveat", use: "fonts", license: "SIL Open Font License 1.1" },
+];
+
+// Software that builds the site or runs on our server (it never reaches your device).
+const behind = [
+  { name: "Astro", license: "MIT" },
+  { name: "Tailwind CSS", license: "MIT" },
+  { name: "FastAPI and Uvicorn", license: "MIT, BSD-3-Clause" },
+  { name: "pikepdf and qpdf", license: "MPL-2.0, Apache-2.0" },
+  { name: "Pillow", license: "MIT-CMU" },
+];
+---
+
+<LegalPage
+  title="About · Toolito"
+  description="Toolito is a free, self-service laundromat for files: little tools, big results. Most of it runs on your own device."
+  heading="About Toolito"
+  updated="2026-10-23"
+>
+  <p class={p}>
+    <strong>Little tools, big results.</strong> Toolito is a self-service laundromat for files: drop your images and PDFs in a machine and take them home
+    lighter, converted, folded or sorted. Every machine is free, day or night.
+  </p>
+  <p class={p}>
+    Four of the five machines run entirely on your device, so your files never leave it. Only the dryer, which compresses PDFs, uses our server — and it
+    empties itself after every load. The details are in the <a class="underline" href="/privacy">Privacy Policy</a>.
+  </p>
+
+  <section aria-labelledby="credits-title" class="flex flex-col gap-3">
+    <h2 id="credits-title" class={h2}>Built with open source</h2>
+    <p class={p}>Toolito stands on the work of many open-source projects. Thank you.</p>
+
+    <h3 class="label">Runs in your browser</h3>
+    <ul class="body flex flex-col gap-1">
+      {inBrowser.map(({ name, use, license }) => (
+        <li><strong>{name}</strong> — {use} <span class="text-muted">({license})</span></li>
+      ))}
+    </ul>
+
+    <h3 class="label mt-2">Builds the site or runs on the server</h3>
+    <ul class="body flex flex-col gap-1">
+      {behind.map(({ name, license }) => (
+        <li><strong>{name}</strong> <span class="text-muted">({license})</span></li>
+      ))}
+    </ul>
+
+    <!-- Required wording of the IJG license (libjpeg). -->
+    <p class="caption text-muted">
+      This software is based in part on the work of the Independent JPEG Group. Copyright notices and license texts of each project are included with
+      their source code.
+    </p>
+  </section>
+</LegalPage>

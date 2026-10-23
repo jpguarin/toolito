@@ -128,7 +128,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] PWA: manifest, íconos, funcionamiento offline de las herramientas locales
 - [x] Texto de cada página: instrucciones y FAQ (con datos estructurados FAQPage)
 - [x] `sitemap.xml`, `robots.txt`, etiquetas Open Graph (y URL canónica; dominio `toolito.jpgstudio.net`)
-- [ ] Páginas legales: Privacy Policy, Terms, About, Contact
+- [ ] Páginas legales: Privacy Policy, Terms, About (Contact queda fuera hasta tener un canal público)
 - [ ] Revisión con Lighthouse (objetivo: 90+ en todo), **en ambos temas**
 - [x] `theme-color` de la PWA que cambia con el tema
 
@@ -146,6 +146,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [ ] Conectar `toolito.jpgstudio.net` en Cloudflare Pages y añadirlo a `ALLOWED_ORIGINS` en Cloud Run
 - [ ] Cloudflare Web Analytics (gratis y sin cookies)
 - [ ] Google Search Console y envío del sitemap
+- [ ] Antes de AdSense: canal de contacto público, responsable en la Privacy Policy, jurisdicción en Terms y revisión legal
 - [ ] Solicitar Google AdSense cuando haya contenido y algo de tráfico
 
 **Terminado cuando:** toolito está publicado con su dominio y Google indexa las páginas.

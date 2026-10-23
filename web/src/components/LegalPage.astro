@@ -1,0 +1,27 @@
+---
+// Shell for Privacy, Terms and About: a paper sheet like HouseRules, with the
+// date the text was last changed. Content comes from each page (slot).
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  heading: string;
+  updated: string; // ISO date, e.g. "2026-10-23"
+}
+
+const { title, description, heading, updated } = Astro.props;
+const updatedLabel = new Date(`${updated}T12:00:00Z`).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="mx-auto flex w-full max-w-headline flex-col gap-5 px-5 pt-7 pb-8">
+    <header class="flex flex-col gap-2">
+      <h1 class="heading wide:title">{heading}</h1>
+      <p class="caption text-muted">Last updated: <time datetime={updated}>{updatedLabel}</time></p>
+    </header>
+    <div class="flex flex-col gap-5 rounded-md border-thick border-line bg-paper p-6 text-ink">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>
