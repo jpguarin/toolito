@@ -49,3 +49,13 @@ export function settingsLabel({ format, quality }: WashSettings): string {
   const name = format === "same" ? "SAME" : EXTENSION[format].toUpperCase();
   return format === "png" ? `LOSSLESS · ${name}` : `Q${quality} · ${name}`;
 }
+
+/** How formats are named in the interface: "JPG", "PNG", "WebP", "AVIF". */
+export const FORMAT_LABEL: Record<ImageFormat, string> = { jpeg: "JPG", png: "PNG", webp: "WebP", avif: "AVIF" };
+
+export const ALL_FORMATS: ImageFormat[] = ["jpeg", "png", "webp", "avif"];
+
+/** "JPG, PNG, WebP, AVIF" for hints and error messages. */
+export function formatList(formats: ImageFormat[]): string {
+  return formats.map((format) => FORMAT_LABEL[format]).join(", ");
+}

@@ -1,7 +1,16 @@
 ---
 // The washer's control panel (design/components/WasherControls.md): output
 // format, quality and resize, echoed on the LED. Defaults: WebP, 75, no resize.
-import { DEFAULT_SETTINGS, settingsLabel } from "../lib/image";
+import { DEFAULT_SETTINGS, type OutputFormat, settingsLabel } from "../lib/image";
+
+interface Props {
+  number: number; // Machine number on the panel: 1 compress, 2 convert.
+  includeSame?: boolean; // "Same" keeps the input format (compress only).
+  format?: OutputFormat; // Selected when the page opens.
+}
+
+const { number, includeSame = true, format = DEFAULT_SETTINGS.format } = Astro.props;
+const initial = { ...DEFAULT_SETTINGS, format };
 
 const formats = [
   { value: "same", label: "Same" },
@@ -9,14 +18,14 @@ const formats = [
   { value: "avif", label: "AVIF" },
   { value: "jpeg", label: "JPG" },
   { value: "png", label: "PNG" },
-];
+].filter(({ value }) => includeSame || value !== "same");
 ---
 
 <div class="flex flex-col gap-4 bg-panel px-5 py-4 text-panel-ink" data-washer-controls>
   <div class="flex items-center justify-between gap-3">
-    <span class="sign-md">No.1</span>
+    <span class="sign-md">No.{number}</span>
     <span role="status" class="sign-sm rounded-sm bg-led-bg px-3 py-2 tracking-sign text-led [text-shadow:var(--glow-led)]" data-washer-led>
-      {settingsLabel(DEFAULT_SETTINGS)}
+      {settingsLabel(initial)}
     </span>
   </div>
 
@@ -26,7 +35,7 @@ const formats = [
       {formats.map(({ value, label }) => (
         <button
           type="button"
-          aria-pressed={value === DEFAULT_SETTINGS.format ? "true" : "false"}
+          aria-pressed={value === format ? "true" : "false"}
           data-format={value}
           class="label min-h-tap rounded-pill border-thin border-panel-ink px-3 text-panel-ink aria-pressed:border-led aria-pressed:bg-led aria-pressed:text-on-accent-2"
         >

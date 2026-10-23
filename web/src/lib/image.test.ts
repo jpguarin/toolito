@@ -47,3 +47,9 @@ test("settingsLabel matches the LED on the washer", () => {
   expect(settingsLabel({ format: "png", quality: 75, resize: false })).toBe("LOSSLESS · PNG");
   expect(settingsLabel({ format: "same", quality: 60, resize: true })).toBe("Q60 · SAME");
 });
+
+test("formatList names formats the way the interface does", async () => {
+  const { formatList } = await import("./image");
+  expect(formatList(["jpeg", "png", "webp", "avif"])).toBe("JPG, PNG, WebP, AVIF");
+  expect(formatList(["jpeg"])).toBe("JPG");
+});

@@ -1,0 +1,18 @@
+---
+import ToolIntro from "../components/ToolIntro.astro";
+import Washer from "../components/Washer.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Convert image — JPG, PNG, WebP and AVIF converter, free · Toolito"
+  description="Convert images between JPG, PNG, WebP and AVIF in batches. Free, no sign-up, and nothing is uploaded: images are converted on your device."
+  section="images"
+>
+  <ToolIntro
+    machine="Washer No.2"
+    title="Convert image"
+    lead="Change colors… er, formats. JPG, PNG, WebP and AVIF, dyed right here on your device."
+  />
+  <Washer machine="convert" />
+</BaseLayout>

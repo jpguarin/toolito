@@ -6,6 +6,7 @@ import { formatBytes, plural, savingsLabel } from "../lib/format";
 import {
   DEFAULT_SETTINGS,
   EXTENSION,
+  formatList,
   formatFromMime,
   type ImageFormat,
   MIME,
@@ -46,7 +47,10 @@ export function initWasher(root: HTMLElement, template: HTMLTemplateElement): vo
   const announce = $<HTMLElement>("[data-washer-announce]");
   const downloadAll = new DownloadLink($<HTMLAnchorElement>("[data-washer-download-all]"));
 
-  const settings: WashSettings = { ...DEFAULT_SETTINGS };
+  // Machine set-up comes from Washer.astro (compress, convert, or /jpg-to-webp pages).
+  const converting = root.dataset.machine === "convert";
+  const accepts = (root.dataset.accepts ?? "").split(",").filter(Boolean) as ImageFormat[];
+  const settings: WashSettings = { ...DEFAULT_SETTINGS, format: (root.dataset.defaultFormat as OutputFormat) ?? DEFAULT_SETTINGS.format };
   let loads: Load[] = [];
   let nextId = 1;
   let running = false;
@@ -108,7 +112,9 @@ export function initWasher(root: HTMLElement, template: HTMLTemplateElement): vo
     const before = done.reduce((total, load) => total + load.file.size, 0);
     const after = done.reduce((total, load) => total + load.result!.blob.size, 0);
     const saved = Math.max(0, before - after);
-    $<HTMLElement>("[data-washer-saved]").textContent = saved > 0 ? `You saved ${formatBytes(saved)}` : "Already as light as it gets";
+    // Converting to PNG often grows a file: that is normal for the dye machine.
+    $<HTMLElement>("[data-washer-saved]").textContent =
+      saved > 0 ? `You saved ${formatBytes(saved)}` : converting ? `${plural(done.length, "image")} dyed` : "Already as light as it gets";
     const lighter = savingsLabel(before, after).replace("−", "");
     $<HTMLElement>("[data-washer-totals]").textContent =
       `${formatBytes(before)} in · ${formatBytes(after)} out${saved > 0 ? ` · ${lighter} lighter` : ""}`;
@@ -205,14 +211,15 @@ export function initWasher(root: HTMLElement, template: HTMLTemplateElement): vo
 
   const addFiles = (files: File[]): void => {
     for (const file of files) {
-      const input = formatFromMime(file.type);
+      const detected = formatFromMime(file.type);
+      const input = detected && accepts.includes(detected) ? detected : null;
       loads.push({
         id: nextId++,
         file,
         input,
         thumbUrl: URL.createObjectURL(file),
         status: input ? "waiting" : "failed",
-        error: input ? undefined : "Not a JPG, PNG, WebP or AVIF image.",
+        error: input ? undefined : `This machine takes ${formatList(accepts)} images.`,
       });
     }
     render();

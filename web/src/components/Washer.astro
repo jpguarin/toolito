@@ -1,27 +1,41 @@
 ---
-// Washer No.1 (mockups/TlWasher.dc.html): the machine with its controls, drum
-// and dropzone on one side; the clean loads and the summary on the other.
-// Rows are built in the browser from the <template> below (FileRow.md).
+// Washer No.1 (compress) and No.2 (convert), from mockups/TlWasher.dc.html: the
+// machine with its controls, drum and dropzone on one side; the loads and the
+// summary on the other. Rows are built from the <template> below (FileRow.md).
+// The /jpg-to-webp style pages reuse it with a fixed input and output.
 import CloseIcon from "../icons/close.svg";
 import DownloadIcon from "../icons/download.svg";
+import { ALL_FORMATS, FORMAT_LABEL, formatList, type ImageFormat, MIME, type OutputFormat } from "../lib/image";
 import Dropzone from "./Dropzone.astro";
 import Porthole from "./Porthole.astro";
 import WasherControls from "./WasherControls.astro";
 
-const accept = "image/jpeg,image/png,image/webp,image/avif";
+interface Props {
+  machine?: "image" | "convert";
+  format?: OutputFormat; // Output selected when the page opens.
+  accepts?: ImageFormat[]; // Input formats this page takes.
+}
+
+const { machine = "image", accepts = ALL_FORMATS } = Astro.props;
+const converting = machine === "convert";
+const format = Astro.props.format ?? "webp";
+const number = converting ? 2 : 1;
+const accept = accepts.map((type) => MIME[type]).join(",");
+const formats = formatList(accepts);
+const noun = accepts.length === 1 ? `${FORMAT_LABEL[accepts[0]]} images` : "images";
 const iconButton = "flex size-tap shrink-0 items-center justify-center rounded-pill border-thin border-line text-ink";
 ---
 
-<div data-washer class="mx-auto grid w-full max-w-page items-start gap-6 px-5 pt-5 pb-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
-  <section aria-label="Washer No.1" class="overflow-hidden rounded-xl border-thick border-line bg-surface">
-    <WasherControls />
+<div data-washer data-machine={machine} data-accepts={accepts.join(",")} data-default-format={format} class="mx-auto grid w-full max-w-page items-start gap-6 px-5 pt-5 pb-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+  <section aria-label={`Washer No.${number}`} class="overflow-hidden rounded-xl border-thick border-line bg-surface">
+    <WasherControls number={number} includeSame={!converting} format={format} />
     <div class="flex flex-col items-center gap-5 p-6">
-      <Porthole machine="image" size="lg" laundry />
+      <Porthole machine={machine} size="lg" laundry />
       <div class="w-full" data-washer-empty>
-        <Dropzone title="Drop images in the washer" hint="or tap to choose · JPG, PNG, WebP, AVIF" accept={accept} multiple />
+        <Dropzone title={`Drop ${noun} in the washer`} hint={`or tap to choose · ${formats}`} accept={accept} multiple />
       </div>
       <div class="w-full" data-washer-more hidden>
-        <Dropzone title="Add more to the drum" hint="JPG, PNG, WebP, AVIF" accept={accept} multiple compact />
+        <Dropzone title="Add more to the drum" hint={formats} accept={accept} multiple compact />
       </div>
       <button type="button" class="label min-h-tap w-full rounded-pill border-md border-line px-5 text-ink" data-washer-rewash hidden>
         Rewash with new settings
@@ -32,7 +46,7 @@ const iconButton = "flex size-tap shrink-0 items-center justify-center rounded-p
   <div class="flex flex-col gap-4">
     <section aria-labelledby="washer-summary-title" class="flex flex-wrap items-center justify-between gap-4 rounded-lg border-thick border-ok bg-paper p-5" data-washer-summary hidden>
       <div>
-        <p class="sign-sm text-heading">Clean load</p>
+        <p class="sign-sm text-heading">{converting ? "Freshly dyed" : "Clean load"}</p>
         <h2 id="washer-summary-title" class="heading" data-washer-saved></h2>
         <p class="label text-muted" data-washer-totals></p>
       </div>
@@ -43,7 +57,7 @@ const iconButton = "flex size-tap shrink-0 items-center justify-center rounded-p
     </section>
 
     <p class="body rounded-md border-md border-dashed border-line bg-paper p-5 text-muted" data-washer-placeholder>
-      Clean loads come out here. Everything is washed on your device — nothing leaves the building.
+      {converting ? "Dyed loads" : "Clean loads"} come out here. Everything is washed on your device — nothing leaves the building.
     </p>
     <ul class="flex flex-col gap-3" data-washer-list></ul>
   </div>
