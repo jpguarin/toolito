@@ -1,10 +1,24 @@
 // @ts-check
-import { defineConfig, fontProviders } from "astro/config";
+import { defineConfig, envField, fontProviders } from "astro/config";
 
 import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
+  // Typed environment variables: a typo fails the build instead of the site.
+  env: {
+    schema: {
+      // Where the dryer sends PDFs. "client" + "public" = it ships in the
+      // browser's JavaScript, so it must never hold a secret (a URL is fine).
+      // Local API: PUBLIC_API_URL=http://localhost:8000 in web/.env
+      PUBLIC_API_URL: envField.string({
+        context: "client",
+        access: "public",
+        url: true,
+        default: "https://toolito-api-352538375764.us-central1.run.app",
+      }),
+    },
+  },
   vite: {
     plugins: [tailwindcss()],
     // jSquash finds its .wasm files next to its own modules (import.meta.url);
