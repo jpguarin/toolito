@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 6 — 13 de 16 tareas (faltan sitemap/robots/Open Graph, páginas legales y Lighthouse)
+**Estado actual:** Etapa 6 — 14 de 16 tareas (faltan las páginas legales y Lighthouse)
 
 ---
 
@@ -127,7 +127,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] CORS correcto, incluido `Access-Control-Expose-Headers` (tamaños, `X-Already-Optimized`, `Retry-After`)
 - [x] PWA: manifest, íconos, funcionamiento offline de las herramientas locales
 - [x] Texto de cada página: instrucciones y FAQ (con datos estructurados FAQPage)
-- [ ] `sitemap.xml`, `robots.txt`, etiquetas Open Graph
+- [x] `sitemap.xml`, `robots.txt`, etiquetas Open Graph (y URL canónica; dominio `toolito.jpgstudio.net`)
 - [ ] Páginas legales: Privacy Policy, Terms, About, Contact
 - [ ] Revisión con Lighthouse (objetivo: 90+ en todo), **en ambos temas**
 - [x] `theme-color` de la PWA que cambia con el tema
