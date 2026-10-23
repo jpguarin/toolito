@@ -86,11 +86,48 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Web Worker** | Un segundo hilo de JavaScript para trabajo pesado, sin congelar la página. |
 | **Code splitting** | Separar el código pesado en archivos que se descargan solo cuando hacen falta (`import()`). |
 | **Blob** | Un "archivo" creado en memoria del navegador, listo para descargar. |
+| **Parsear** | Convertir texto que escribe el usuario en datos que el programa entiende (o en un error claro). |
+| **Roving tabindex** | Patrón de teclado: un grupo es una sola parada de `Tab` y se recorre con flechas. |
+| **Licencia dual** | El autor ofrece dos licencias ("MIT OR GPL"); tú eliges una. |
+| **Slot** | Hueco de un componente Astro donde la página inserta su propio contenido. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-22 — Etapa 5: `/split-pdf` (Clothesline No.5)
+
+**Qué hicimos:**
+- `lib/ranges.ts`: leer y escribir rangos de páginas ("1-3, 8") con errores amables; `splitPdf` en `lib/pdf.ts` y un mensaje `split` en el worker.
+- Página `/split-pdf`: `SegmentedTabs` reutilizable (Pick pages · Ranges · Every page), tendedero con páginas que se pinzan (clic, Espacio, Mayús+clic), cesta con el campo "Pages" sincronizado con las pinzas, radios y resumen.
+- **TAKE DOWN & SPLIT:** un PDF se descarga directo; varios van en un ZIP con JSZip (cargado solo cuando hace falta).
+- `lib/filenames.ts` (nombres de descarga) y `lib/download.ts` (`DownloadLink`, ahora también usado por `/merge-pdf`).
+- Tokens versión 9: tamaños del tendedero y `shadow-pinned`. 49 tests en `web/`.
+
+**Conceptos nuevos:**
+- **Parsear la entrada del usuario:** convertir texto libre en datos o en un mensaje claro que nunca culpa al usuario.
+- **Test de ida y vuelta:** `formatRanges` y luego `parseRanges` deben devolver lo mismo.
+- **Roving tabindex:** una fila de pestañas es una sola parada de `Tab`; dentro se usan las flechas.
+- **Dos vistas, un estado:** las pinzas y el campo se actualizan mutuamente a partir de los mismos datos.
+- **Errores tras salir del campo:** se valida mientras escribes, pero el error se muestra al hacer blur (FormField.md).
+- **Licencia dual "MIT OR GPL":** con "OR" uno elige; usamos JSZip bajo MIT.
+- **ZIP con `STORE`:** solo agrupa, sin volver a comprimir (los PDF ya vienen comprimidos).
+- **Ceros a la izquierda en los nombres** (`page-02`) para que el explorador de archivos los ordene bien.
+- **Slot de Astro:** hueco en un componente donde la página mete su propio contenido (las pestañas al lado del título).
+- **Código compartido entre páginas:** Vite separa en archivos comunes lo que usan varias páginas, y el navegador lo cachea.
+
+**Comandos que aprendí:**
+- (Ninguno nuevo: `npm test`, `npm run check` y `npm run build` siguen siendo la rutina antes de cada commit).
+
+**Errores y cómo los resolvimos:**
+- La barra de pestañas ocupaba todo el ancho → Causa: `self-start` solo funciona dentro de un flex. → Solución: `w-fit`.
+- La tarjeta del tendedero se estiraba hasta la altura de la cesta → Causa: el grid estira las celdas por defecto. → Solución: `self-start`.
+
+**Dudas pendientes:**
+- "TAKE DOWN & SPLIT" ocupa dos líneas (20 px en una columna de 300 px; el mockup usa 17 px).
+- Miniaturas reales de las páginas en el tendedero (hoy son hojas rayadas).
+- Arrastrar filas con el ratón en `/merge-pdf` y las tarjetas OutOfOrder para los errores.
 
 ## 2026-10-22 — Etapa 5: `/merge-pdf` (Folding table No.4)
 
