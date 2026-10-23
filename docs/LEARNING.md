@@ -113,11 +113,46 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Encargado del tratamiento** | Quien procesa datos por cuenta del responsable (Google Cloud, el hosting). |
 | **Lighthouse** | Auditoría automática de Chrome: rendimiento, accesibilidad, buenas prácticas y SEO. |
 | **Core Web Vitals** | Métricas de Google sobre la experiencia al cargar: LCP, CLS e INP. |
+| **Despliegue continuo** | Publicar automáticamente con cada `git push`. |
+| **CDN** | Red de servidores en muchas ciudades que entrega copias del sitio desde el más cercano. |
+| **CNAME** | Registro DNS que hace de un nombre un alias de otro. |
+| **Redirección 308** | Redirección permanente: la dirección buena es la nueva, para siempre. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-23 — Etapa 7: Toolito publicado
+
+**Qué hicimos:**
+- Publicamos `web/` en **Cloudflare Pages** conectado a GitHub: directorio raíz `web`, comando `npm run build`, salida `dist`, `NODE_VERSION=24`.
+- Subdominio **`toolito.jpgstudio.net`** con un registro CNAME hacia Pages: HTTPS y CDN incluidos.
+- Añadimos el dominio a `ALLOWED_ORIGINS` en Cloud Run (revisión `toolito-api-00004`), manteniendo `localhost:4321` para desarrollar.
+- Comprobado en vivo: páginas `200`, `robots.txt`, sitemap, manifest, `sw.js` con 95 archivos, `/merge-pdf.html` y `/merge-pdf/` → `308` a `/merge-pdf`, CORS correcta y la secadora funcionando desde el dominio.
+- `docs/DEPLOY.md` ya documenta la web.
+
+**Conceptos nuevos:**
+- **Despliegue continuo (CD):** cada `git push` a `main` construye y publica solo; cada rama o PR tiene su URL de vista previa.
+- **CDN:** copias del sitio en muchas ciudades; cada visitante las recibe del servidor más cercano (el nuestro respondió desde Bogotá).
+- **Cloudflare Pages vs. Workers:** el panel ahora empuja a Workers (con `wrangler` y un archivo de configuración). Para un sitio estático, Pages funciona sin configuración extra.
+- **CNAME:** un alias de DNS; `toolito.jpgstudio.net` "es" el proyecto de Pages.
+- **Redirección `308`:** permanente; le dice a Google que la dirección buena es la otra.
+- **CORS con varios orígenes en producción:** se permite el dominio real y el local; cualquier otro recibe `400` sin permiso.
+
+**Comandos que aprendí:**
+- `curl -sI URL` → ver solo las cabeceras de la respuesta (servidor, redirecciones).
+- `curl -s -o /dev/null -w "%{http_code} -> %{redirect_url}" URL` → ver a dónde redirige una URL.
+- `gcloud run services update … --update-env-vars "^##^ALLOWED_ORIGINS=a,b"` → cambiar una sola variable con comas.
+
+**Errores y cómo los resolvimos:**
+- El formulario de Cloudflare no tenía "Root directory" ni "Build output" → Causa: era el flujo de **Workers**, no de Pages. → Solución: crear el proyecto como Pages. Se borró el `wrangler.jsonc` que habíamos preparado (nunca llegó a GitHub).
+- El plan ponía el CNAME antes de publicar → el CNAME necesita apuntar a un proyecto que ya exista; hay que publicar primero.
+
+**Dudas pendientes:**
+- Probar la tarjeta de vista previa al compartir el enlace (WhatsApp, X).
+- Volver a pasar Lighthouse con el sitio publicado.
+- Analítica, Search Console y lo previo a AdSense (siguientes tareas).
 
 ## 2026-10-23 — Etapa 6: páginas legales y Lighthouse (cierre de la etapa)
 
