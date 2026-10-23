@@ -52,6 +52,8 @@ const socialImage = new URL("/social-card.png", Astro.site).href;
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={canonical} />
+    <!-- Google Search Console ownership check (URL-prefix property). Public by design. -->
+    <meta name="google-site-verification" content="QPkvItkH11nCeJLjOftwNPobarsL_YXL3PKn-TPh-Wk" />
     <!-- Link previews (Open Graph, also read by X/Twitter). -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Toolito Laundromat" />
