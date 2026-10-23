@@ -90,11 +90,51 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Roving tabindex** | Patrón de teclado: un grupo es una sola parada de `Tab` y se recorre con flechas. |
 | **Licencia dual** | El autor ofrece dos licencias ("MIT OR GPL"); tú eliges una. |
 | **Slot** | Hueco de un componente Astro donde la página inserta su propio contenido. |
+| **ImageData** | La imagen como píxeles sin comprimir (RGBA); lo que se decodifica antes de volver a codificar. |
+| **Códec** | Programa que codifica y decodifica un formato (MozJPEG para JPG, libwebp para WebP…). |
+| **Cola** | Lista de trabajos que esperan turno y se procesan uno a uno. |
+| **clipPath** | Forma de SVG que recorta lo que se dibuja dentro, como un esténcil. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-22 — Etapa 5: `/compress-image` (Washer No.1)
+
+**Qué hicimos:**
+- Motor de imágenes con **jSquash** (códecs de Squoosh en WebAssembly) dentro de un Web Worker: decodificar → (redimensionar) → codificar en JPG, PNG (OxiPNG, sin pérdida), WebP o AVIF.
+- Revisamos la licencia de cada códec empaquetado (MozJPEG, libwebp, libavif, OxiPNG, resize…): todas permisivas.
+- Página `/compress-image`: `WasherControls` (LED `Q75 · WEBP`, formatos, calidad, redimensionar), ojo de buey grande con **ropa** (tus miniaturas) que gira mientras lava, cola de una imagen a la vez, filas con estado, resumen "CLEAN LOAD" y **Take all home (ZIP)**, botón **Rewash**.
+- "Already clean": si una imagen no baja de tamaño en su mismo formato, devolvemos el original (como la API).
+- Añadí el icono `chevron-down` al diseño; tokens versión 11 (ojo de buey grande, miniatura, ropa). 68 tests en `web/`.
+- Probado con capturas: PNG → WebP de 185 KB a 47 KB (−75 %) en 0,1 s.
+
+**Conceptos nuevos:**
+- **WebAssembly (WASM):** código C/Rust compilado a un formato binario que el navegador ejecuta casi a velocidad nativa.
+- **Licencias de lo empaquetado:** que un paquete sea Apache no cambia la licencia del código que lleva dentro; hay que revisar cada códec. BSD e IJG piden mostrar los avisos de copyright (créditos).
+- **Cargar cada códec solo cuando hace falta:** el codificador AVIF pesa 3,5 MB y solo se descarga si eliges AVIF.
+- **`ImageData`:** la imagen "sin lavar" (ancho × alto × 4 bytes). Una foto de 12 MP ocupa unos 48 MB.
+- **Cola de procesamiento:** una imagen a la vez para no agotar la memoria.
+- **Animaciones con `prefers-reduced-motion`:** el tambor y la barra solo se mueven si el sistema lo permite.
+- **`clipPath` de SVG:** un "esténcil" que recorta tu foto con la forma de cada prenda.
+- **El signo menos real** (`−72%`, no un guion) como pide el brand book.
+- **Recordar con qué ajustes se lavó cada carga** para saber cuándo hace falta "Rewash".
+- **Evitar trabajo repetido:** el ZIP solo se rehace cuando cambian los resultados, no con cada movimiento del deslizador.
+
+**Comandos que aprendí:**
+- `curl -s localhost:4321/src/styles/global.css | grep ...` → comprobar si una clase de Tailwind existe de verdad en el CSS de desarrollo.
+
+**Errores y cómo los resolvimos:**
+- Las clases nuevas no se aplicaban (la flecha del select salía debajo) → Causa: la carpeta `src/pages/dev/` se creó con el servidor ya encendido y Tailwind no la escaneaba. → Solución: reiniciar `npm run dev`.
+- Comentario HTML dentro de `{ cond ? (...) : (...) }` → Causa: dentro de una expresión es JavaScript. → Solución: comentario fuera de la expresión (o `{/* */}`).
+- El botón Rewash desaparecía al añadir fotos tras cambiar ajustes → Causa: un solo "ajustes usados" para toda la lista. → Solución: guardar los ajustes en cada carga.
+- La flecha nativa del `<select>` pegada al borde → Solución: `appearance-none` + icono `chevron-down` propio con tokens de espacio.
+
+**Dudas pendientes:**
+- Página de créditos con los avisos BSD/IJG de los códecs (etapa 6, páginas legales).
+- "Add more to the drum" en dos líneas como el diseño, y el banner de anuncio bajo la lista.
+- AVIF multihilo (`avif_enc_mt`) necesita cabeceras especiales de seguridad; revisar en la etapa 6 si AVIF va lento.
 
 ## 2026-10-22 — Etapa 5: `/split-pdf` (Clothesline No.5)
 
