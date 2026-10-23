@@ -1,0 +1,13 @@
+---
+// Cork board for the side ad slot (design/components/NoticeBoard.md). The flyer
+// reserves the exact 300 × 250 slot so nothing jumps when an ad loads.
+// Ads never cover or push a machine's controls; none on error screens.
+---
+
+<aside aria-label="Advertisement" class="cork-board flex items-center justify-center rounded-sm p-6">
+  <div class="relative flex h-ad-rect-height w-full max-w-ad-rect-width rotate-2 wide:w-ad-rect-width flex-col items-center justify-center gap-1 bg-note p-4 text-center text-on-note">
+    <span aria-hidden="true" class="absolute -top-2 left-1/2 size-4 -translate-x-1/2 rounded-pill border-thin border-on-note bg-accent"></span>
+    <span class="sign-sm">Notice board</span>
+    <span class="caption">Advertisement · 300 × 250</span>
+  </div>
+</aside>

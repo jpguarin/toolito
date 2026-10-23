@@ -115,6 +115,8 @@
   --container-lead: var(--container-lead);
   --spacing-porthole-sm: var(--porthole-sm);
   --spacing-machine-card-min: var(--machine-card-min);
+  --spacing-ad-rect-width: var(--ad-rect-width);
+  --spacing-ad-rect-height: var(--ad-rect-height);
 
   /* Media queries cannot read CSS variables: keep equal to the
      breakpoint-wide token in design/tokens.json. */
@@ -201,4 +203,13 @@
     radial-gradient(circle at calc(var(--tile) * 1.5) 0, var(--awning-b) 0 var(--awning-scallop), transparent calc(var(--awning-scallop) + 1px));
   background-size: calc(var(--tile) * 2) var(--awning-scallop);
   background-repeat: repeat-x;
+}
+
+/* Cork notice board (NoticeBoard.md): `cork` with a dotted texture drawn
+   from `cork-frame`, inside a thick wooden frame. */
+@utility cork-board {
+  border: var(--cork-frame-width) solid var(--cork-frame);
+  background-color: var(--cork);
+  background-image: radial-gradient(color-mix(in srgb, var(--cork-frame) 45%, transparent) 1px, transparent 1.5px);
+  background-size: 7px 7px;
 }

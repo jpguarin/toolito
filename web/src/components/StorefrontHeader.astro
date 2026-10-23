@@ -9,8 +9,8 @@ import { MAIN_LINKS } from "../lib/nav";
   <div class="awning awning-full"></div>
   <div class="awning-scallop"></div>
 </div>
-<header class="mx-auto flex w-full max-w-page flex-wrap items-center justify-between gap-4 px-5 pt-2">
-  <nav aria-label="Main" class="label flex flex-wrap gap-5">
+<header class="mx-auto flex w-full max-w-page flex-wrap items-center justify-center gap-4 px-5 pt-2 wide:justify-between">
+  <nav aria-label="Main" class="label flex flex-wrap justify-center gap-5">
     {MAIN_LINKS.map(({ label, href }) => <a href={href} class="text-ink no-underline">{label}</a>)}
   </nav>
   <div class="sign-sm flex gap-3" aria-hidden="true">

@@ -1,5 +1,7 @@
 ---
+import HouseRules from "../components/HouseRules.astro";
 import MachineCard from "../components/MachineCard.astro";
+import NoticeBoard from "../components/NoticeBoard.astro";
 import Storefront from "../components/Storefront.astro";
 import { MACHINES } from "../lib/machines";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -20,4 +22,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       ))}
     </ul>
   </section>
+
+  <div class="mx-auto grid w-full max-w-page gap-5 px-5 pb-7 lg:grid-cols-[1fr_auto]">
+    <HouseRules />
+    <NoticeBoard />
+  </div>
 </BaseLayout>
