@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 6 (Etapas 0 a 5 completadas; las 4 herramientas del navegador funcionan, también sin conexión)
+**Estado actual:** Etapa 6 — 2 de 16 tareas (lógica de la secadora lista; falta la página `/compress-pdf`)
 
 ---
 
@@ -115,8 +115,8 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Objetivo:** el sitio completo listo para publicar.
 **Aprendes:** `fetch` con archivos, CORS, PWA y service workers, SEO técnico.
 
-- [ ] Leer `docs/DRYER-FLOW.md` (fases, progreso, errores, cancelación)
-- [ ] Estado de la secadora como tipo `DryerState` y validación previa (≤ 30 MB, cabecera `%PDF-`)
+- [x] Leer `docs/DRYER-FLOW.md` (fases, progreso, errores, cancelación)
+- [x] Estado de la secadora como tipo `DryerState` y validación previa (≤ 30 MB, cabecera `%PDF-`)
 - [ ] `/compress-pdf` envía el PDF con `XMLHttpRequest`: progreso real de subida (`LOADING n%`)
 - [ ] Fase de secado: barra indeterminada, tiempo transcurrido (`DRYING 0:12`) y aviso a los 8 s
 - [ ] Resultado: cabeceras de tamaño, caso "already optimized", descarga y `revokeObjectURL`
