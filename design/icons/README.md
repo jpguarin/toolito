@@ -25,3 +25,7 @@ In the product, **inline the SVG and set `stroke="currentColor"`** (or `fill` fo
 | chevron-down | Custom `<select>` arrow (the native one sits too close to the edge) |
 
 Never use emoji instead of these icons.
+
+## App icon
+
+`app-icon.svg` (rounded tile) and `app-icon-maskable.svg` (full-bleed, for Android masks) are the source of the favicon and the PWA icons: the washer porthole with laundry, drawn with Light token values. After changing them, run `npm run icons` in `web/` to regenerate the PNGs in `web/public/icons/`.

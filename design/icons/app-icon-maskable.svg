@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Toolito app icon: the washer porthole with laundry (Light token values:
+       panel, rim, glass-image, cloth-1/2/3, cloth-line). Maskable: full-bleed background, porthole inside the 80% safe circle. -->
+  <rect width="512" height="512" fill="#12233D"/>
+  <circle cx="256" cy="256" r="190" fill="#C5D0D6" stroke="#12233D" stroke-width="10"/>
+  <circle cx="256" cy="256" r="150" fill="#6FD3E0" stroke="#12233D" stroke-width="10"/>
+  <g>
+    <rect x="167.9" y="214.2" width="99.0" height="77.3" rx="12" fill="#FFD7B5" stroke="#12233D" stroke-width="7" transform="rotate(-18 217.3 252.9)"/>
+    <rect x="260.6" y="167.9" width="86.6" height="86.6" rx="12" fill="#D4CCFF" stroke="#12233D" stroke-width="7" transform="rotate(12 303.9 211.2)"/>
+    <rect x="239.0" y="269.9" width="108.2" height="80.4" rx="12" fill="#FFF6F0" stroke="#12233D" stroke-width="7" transform="rotate(-6 293.1 310.1)"/>
+  </g>
+</svg>
