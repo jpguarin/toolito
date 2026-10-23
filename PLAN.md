@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 5 — 6 de 7 tareas (faltan las páginas `/jpg-to-webp`…)
+**Estado actual:** Etapa 6 (Etapas 0 a 5 completadas; las 4 herramientas del navegador funcionan, también sin conexión)
 
 ---
 
@@ -102,7 +102,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] `/split-pdf` (por rangos y "cada página por separado")
 - [x] `/compress-image` con jSquash en un Web Worker, con control de calidad
 - [x] Conversión de formatos (JPG, PNG, WebP, AVIF)
-- [ ] Páginas de conversión con `getStaticPaths` (`/jpg-to-webp`, `/png-to-webp`, `/webp-to-jpg`, `/png-to-jpg`…)
+- [x] Páginas de conversión con `getStaticPaths` (`/jpg-to-webp`, `/png-to-webp`, `/webp-to-jpg`, `/png-to-jpg`…; 12 pares)
 - [x] Procesamiento por lotes y descarga en ZIP (JSZip)
 - [x] Mostrar tamaño antes y después y el porcentaje ahorrado
 
