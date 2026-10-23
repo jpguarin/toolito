@@ -1,4 +1,6 @@
 ---
+import ToolGuide from "../components/ToolGuide.astro";
+import { GUIDES } from "../lib/content";
 import FoldStack from "../components/FoldStack.astro";
 import ToolIntro from "../components/ToolIntro.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -15,4 +17,5 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     lead="Stack your PDFs in order, then fold them into one. Folded right here on your device."
   />
   <FoldStack />
+  <ToolGuide guide={GUIDES["merge-pdf"]} />
 </BaseLayout>

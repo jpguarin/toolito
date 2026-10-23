@@ -1,0 +1,48 @@
+---
+// "How the machine works" + "Questions at the counter" under each tool.
+// No component for this exists in design/: built from HouseRules' pattern
+// (paper panel, border-thick, heading in sign-lg) and native <details>, which
+// opens with the keyboard and works without JavaScript.
+import { faqJsonLd, type ToolGuide } from "../lib/content";
+
+interface Props {
+  guide: ToolGuide;
+}
+
+const { guide } = Astro.props;
+const panel = "flex flex-col gap-4 rounded-md border-thick border-line bg-paper p-6";
+---
+
+<div class="mx-auto grid w-full max-w-page items-start gap-6 px-5 pb-8 lg:grid-cols-2">
+  <section aria-labelledby="how-title" class={panel}>
+    <h2 id="how-title" class="sign-lg text-heading">How the machine works</h2>
+    <ol class="flex flex-col gap-3">
+      {guide.steps.map((step, index) => (
+        <li class="flex items-start gap-4">
+          <span aria-hidden="true" class="sign-md flex size-tap shrink-0 items-center justify-center rounded-pill border-md border-line bg-panel text-led">
+            {index + 1}
+          </span>
+          <p class="body pt-2">{step}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section aria-labelledby="faq-title" class={panel}>
+    <h2 id="faq-title" class="sign-lg text-heading">Questions at the counter</h2>
+    <div class="flex flex-col gap-2">
+      {guide.faq.map(({ question, answer }) => (
+        <details class="group rounded-sm border-md border-line bg-card">
+          <summary class="label flex min-h-tap cursor-pointer list-none items-center justify-between gap-3 px-4 py-2 focus-visible:outline-[length:var(--border-md)] focus-visible:outline-offset-[var(--border-thin)] focus-visible:outline-accent [&::-webkit-details-marker]:hidden">
+            {question}
+            <span aria-hidden="true" class="sign-md transition-transform group-open:rotate-45">+</span>
+          </summary>
+          <p class="body px-4 pb-4 text-muted">{answer}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+</div>
+
+<!-- The same questions for search engines (schema.org FAQPage). -->
+<script is:inline type="application/ld+json" set:html={faqJsonLd(guide.faq)} />

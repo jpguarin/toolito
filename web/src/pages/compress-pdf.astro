@@ -1,4 +1,6 @@
 ---
+import ToolGuide from "../components/ToolGuide.astro";
+import { GUIDES } from "../lib/content";
 import Dryer from "../components/Dryer.astro";
 import StepIndicator from "../components/StepIndicator.astro";
 import ToolIntro from "../components/ToolIntro.astro";
@@ -14,4 +16,5 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     <StepIndicator steps={["Load", "Cycle", "Dry", "Take home"]} />
   </ToolIntro>
   <Dryer />
+  <ToolGuide guide={GUIDES["compress-pdf"]} />
 </BaseLayout>

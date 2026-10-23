@@ -1,4 +1,6 @@
 ---
+import ToolGuide from "../components/ToolGuide.astro";
+import { GUIDES } from "../lib/content";
 import SegmentedTabs from "../components/SegmentedTabs.astro";
 import SplitLine from "../components/SplitLine.astro";
 import ToolIntro from "../components/ToolIntro.astro";
@@ -26,4 +28,5 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     />
   </ToolIntro>
   <SplitLine />
+  <ToolGuide guide={GUIDES["split-pdf"]} />
 </BaseLayout>

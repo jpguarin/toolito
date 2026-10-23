@@ -1,4 +1,6 @@
 ---
+import ToolGuide from "../components/ToolGuide.astro";
+import { GUIDES } from "../lib/content";
 import ToolIntro from "../components/ToolIntro.astro";
 import Washer from "../components/Washer.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -15,4 +17,5 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     lead="Gentle cycle for JPG, PNG, WebP and AVIF. Runs on your device — nothing leaves the building."
   />
   <Washer />
+  <ToolGuide guide={GUIDES["compress-image"]} />
 </BaseLayout>
