@@ -74,11 +74,56 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Gestor de versiones** | Herramienta (nvm) para tener varias versiones de Node y elegir cuál usar. |
 | **Comodín (glob)** | Símbolos como `*` que la terminal convierte en nombres de archivos; se evitan con comillas. |
 | **Vitest** | El "pytest" del mundo JavaScript/Vite: `test`, `expect`, `test.each`. |
+| **Props** | Los "parámetros" de un componente Astro (`<ShopHeader current="pdfs" />`). |
+| **ARIA** | Atributos que le cuentan a un lector de pantalla lo que se ve (`aria-expanded`, `aria-current`). |
+| **Foco** | El "cursor" de quien navega con teclado (`Tab`); hay que devolverlo a un lugar lógico. |
+| **CLS** | Cuánto "salta" la página mientras carga; se evita reservando el espacio (p. ej. del anuncio). |
+| **Capa de CSS (`@layer`)** | Grupo de estilos con prioridad; lo que no está en ninguna capa gana. |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-22 — Etapa 4: cabecera, pie y portada
+
+**Qué hicimos:**
+- `BaseLayout` completo: enlace "Skip to content", `ShopHeader` (toldo, letrero, navegación, letreros OPEN 24/7 / SELF-SERVICE), menú de teléfono accesible y `Footer`.
+- Portada: `StorefrontHeader` (toldo grande con festón), `Storefront` (letrero, titular, entrada), 5 `MachineCard` con `Porthole` y `LedDisplay`, `HouseRules` y `NoticeBoard` (corcho con espacio reservado de 300 × 250).
+- `tokens.json` pasó de la versión 1 a la 6: grupo `layout` (breakpoint, anchos, toldo, objetivo táctil, ojo de buey, anuncio…), colores `sign-border` y `shadow-sign`, y el estilo `card-title`.
+- Script `npm run tokens:typography`: convierte los estilos de texto de `tokens.json` en utilidades de Tailwind.
+- Iconos de `design/icons/` copiados a `web/src/icons/` y usados como componentes SVG.
+
+**Conceptos nuevos:**
+- **Componente Astro y props:** el bloque `---` corre al generar el HTML (nunca en el navegador); `interface Props` tipa los parámetros, como una función de Python.
+- **Las variantes de Tailwind (`wide:`, `hover:`) solo sirven con sus utilidades**, no con clases CSS normales. Por eso generamos utilidades de tipografía desde `tokens.json`.
+- **Capas de CSS:** importamos `tokens.css` en `layer(base)` para que las utilidades le ganen.
+- **Tailwind lee el código como texto:** solo genera clases escritas completas; `` `bg-glass-${id}` `` nunca se genera.
+- **SVG como componente:** se inserta en línea y acepta props (`stroke="currentColor"`), así el icono toma el color del tema.
+- **Dibujar con CSS:** el festón del toldo son `radial-gradient` repetidos; el corcho, puntos con `color-mix`.
+- **ARIA y foco:** `aria-expanded`, `aria-controls`, `aria-current`, `hidden`; Escape cierra el menú y el foco vuelve al botón.
+- **`npm run build` no revisa tipos:** solo `npm run check` lo hace. Hay que correr los dos.
+- **Una sola fuente de verdad para el estado:** el menú lee `aria-expanded`, el mismo atributo que usa el CSS.
+- **CLS:** reservar el tamaño del anuncio antes de que cargue para que la página no salte.
+- **Un solo `<h1>` por página.**
+
+**Comandos que aprendí:**
+- `npm run tokens:typography` → regenerar las utilidades de texto tras cambiar `tokens.json`.
+- `Cmd+Shift+M` en DevTools → vista de teléfono.
+
+**Errores y cómo los resolvimos:**
+- `wide:sign-lg` no se generaba → Causa: `sign-lg` es una clase normal, no una utilidad. → Solución: generar utilidades desde `tokens.json` (primero lo resolvimos duplicando elementos, luego lo hicimos bien).
+- `ts(2345): 'string | boolean' is not assignable to 'boolean'` en el menú → Causa: `hidden` puede valer `"until-found"`. → Solución: usar `aria-expanded` como estado.
+- La fila de navegación de la portada salía centrada → Causa: en un flex de columna, `mx-auto` encoge el elemento a su contenido. → Solución: `w-full`.
+- Las tarjetas no llenaban su columna → Causa: dentro de un `<li class="flex">` el hijo toma el ancho de su contenido. → Solución: `w-full` en la tarjeta.
+- El borde del letrero no tenía neón de noche → Causa: usé `awning-b`, que es crema en los dos temas. → Solución: tokens nuevos `sign-border` y `shadow-sign` sacados del mockup.
+
+**Dudas pendientes:**
+- Copiar los tokens nuevos (versiones 2 a 6) al design system original en Claude.
+- El mockup pone sombra suave al volante del corcho, pero el brand book la prohíbe: la dejé sin sombra.
+- En teléfono el espacio de 300 × 250 no cabe: usar el banner 320 × 50 cuando lleguen los anuncios reales.
+- Aproximaciones al token más cercano (13 en vez de 12 px, 24 en vez de 22 px, radio 20 en vez de 18…).
+- La barra de herramientas de Astro aparece en las capturas (solo en `npm run dev`); se puede desactivar.
 
 ## 2026-10-22 — Etapa 4: Astro, tokens y temas
 
