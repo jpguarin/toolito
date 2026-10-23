@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 5 (Etapas 0 a 4 completadas; sitio base en Astro listo)
+**Estado actual:** Etapa 5 — 1 de 7 tareas (`/merge-pdf` lista)
 
 ---
 
@@ -98,7 +98,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Objetivo:** las cuatro herramientas que no necesitan servidor.
 **Aprendes:** archivos en el navegador (`File`, `Blob`), Web Workers, WebAssembly, pdf-lib, jSquash, rutas dinámicas.
 
-- [ ] `/merge-pdf` con pdf-lib (reordenar antes de unir)
+- [x] `/merge-pdf` con pdf-lib (reordenar antes de unir; arrastrar con el ratón pendiente)
 - [ ] `/split-pdf` (por rangos y "cada página por separado")
 - [ ] `/compress-image` con jSquash en un Web Worker, con control de calidad
 - [ ] Conversión de formatos (JPG, PNG, WebP, AVIF)
