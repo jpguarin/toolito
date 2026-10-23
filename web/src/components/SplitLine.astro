@@ -1,0 +1,94 @@
+---
+// The split tool (design/components/Clothesline.md + mockups/TlLine.dc.html):
+// pages hang on a line, pinned pages go in the basket. Pages are built in the
+// browser from the <template> below.
+import Dropzone from "./Dropzone.astro";
+
+const field = "min-h-tap rounded-md border-md border-line bg-paper px-4 text-ink focus-visible:outline-[length:var(--border-md)] focus-visible:outline-offset-[var(--border-thin)] focus-visible:outline-accent aria-invalid:border-error";
+---
+
+<div data-split class="mx-auto grid w-full max-w-page gap-6 px-5 pt-5 pb-8 lg:grid-cols-[1fr_var(--ad-rect-width)]">
+  <section aria-label="The clothesline" class="flex flex-col gap-5 self-start rounded-lg border-thick border-line bg-paper p-5">
+    <div data-split-empty>
+      <Dropzone title="Hang your PDF on the line" hint="or tap to choose · one PDF" accept="application/pdf" />
+    </div>
+
+    <div class="flex flex-col gap-5" data-split-loaded hidden>
+      <div class="label flex flex-wrap justify-between gap-3">
+        <span data-split-file></span>
+        <span class="text-heading" data-split-count>0 selected</span>
+      </div>
+
+      <div id="pick-panel" role="tabpanel" aria-labelledby="pick-tab" class="flex flex-col gap-5">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(var(--clothesline-page-min),1fr))] gap-y-6" data-split-pages></div>
+        <p class="caption text-muted">Tap a page to pin or unpin it. Shift-click pins a whole range. Pinned pages go in your basket.</p>
+      </div>
+      <div id="ranges-panel" role="tabpanel" aria-labelledby="ranges-tab" class="body" hidden>
+        Type the pages you need in your basket, like <strong>1-3, 8</strong>.
+      </div>
+      <div id="every-panel" role="tabpanel" aria-labelledby="every-tab" class="body" hidden>
+        Every page comes off the line as its own PDF: <strong data-split-every></strong>.
+      </div>
+
+      <Dropzone title="Hang a different PDF" hint="Replaces the one on the line" accept="application/pdf" compact />
+    </div>
+    <p class="caption rounded-sm bg-card p-3 text-error" data-split-error hidden></p>
+  </section>
+
+  <aside aria-labelledby="basket-title" class="flex flex-col gap-5 self-start rounded-lg border-thick border-line bg-card p-5">
+    <h2 id="basket-title" class="sign-md">Your basket</h2>
+
+    <div class="flex flex-col gap-2" data-split-picker>
+      <label for="split-pages" class="label">Pages</label>
+      <input id="split-pages" type="text" inputmode="numeric" autocomplete="off" placeholder="1-3, 8" aria-describedby="split-pages-hint" class:list={["body", field]} data-split-field disabled />
+      <p id="split-pages-hint" class="caption text-muted" data-split-hint>Type ranges or tap pages on the line.</p>
+    </div>
+
+    <fieldset class="flex flex-col gap-1" data-split-output>
+      <legend class="label mb-2">Take them home as</legend>
+      <label class="body flex min-h-tap cursor-pointer items-center gap-3">
+        <input type="radio" name="split-output" value="one" checked class="size-5 accent-accent" />
+        One PDF with those pages
+      </label>
+      <label class="body flex min-h-tap cursor-pointer items-center gap-3">
+        <input type="radio" name="split-output" value="per-range" class="size-5 accent-accent" />
+        One PDF per range
+      </label>
+    </fieldset>
+
+    <p class="caption text-muted" data-split-summary>Hang a PDF on the line first.</p>
+    <button
+      type="button"
+      class="sign-md min-h-tap rounded-pill border-thick border-line bg-accent px-5 py-3 text-on-accent [box-shadow:var(--glow-accent)] disabled:cursor-default disabled:border-rim disabled:bg-transparent disabled:text-muted disabled:shadow-none"
+      data-split-button
+      disabled
+    >
+      Take down &amp; split
+    </button>
+    <p class="caption text-muted">Split on your device. Nothing is uploaded.</p>
+  </aside>
+
+  <p class="sr-only" aria-live="polite" data-split-announce></p>
+</div>
+
+<template data-split-page>
+  <div class="border-t-thick border-line px-2">
+    <button
+      type="button"
+      aria-pressed="false"
+      class="group relative mt-4 flex h-clothesline-page w-full flex-col gap-1 rounded-sm border-md border-line bg-note px-3 pt-5 pb-3 text-on-note aria-pressed:border-heading aria-pressed:shadow-pinned focus-visible:outline-[length:var(--border-thick)] focus-visible:outline-offset-[var(--border-thin)] focus-visible:outline-accent"
+    >
+      <span class="absolute -top-5 left-1/2 h-pin-h w-pin-w -translate-x-1/2 rounded-sm border-thin border-line bg-rim group-aria-pressed:bg-accent" aria-hidden="true"></span>
+      <span class="ruled-sheet w-full flex-1" aria-hidden="true"></span>
+      <span class="sign-sm" data-page-number></span>
+    </button>
+  </div>
+</template>
+
+<script>
+  import { initSplitLine } from "../scripts/split-line";
+
+  const root = document.querySelector<HTMLElement>("[data-split]");
+  const template = document.querySelector<HTMLTemplateElement>("template[data-split-page]");
+  if (root && template) initSplitLine(root, template);
+</script>

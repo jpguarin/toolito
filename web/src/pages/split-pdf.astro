@@ -1,0 +1,29 @@
+---
+import SegmentedTabs from "../components/SegmentedTabs.astro";
+import SplitLine from "../components/SplitLine.astro";
+import ToolIntro from "../components/ToolIntro.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Split PDF — extract pages or split every page, free · Toolito"
+  description="Split a PDF by page ranges, pick the pages you need or save every page as its own PDF. Free, and nothing is uploaded: it runs on your device."
+  section="pdfs"
+>
+  <ToolIntro
+    machine="Clothesline No.5"
+    title="Split PDF"
+    lead="Hang every page on the line and take down only the ones you need."
+  >
+    <SegmentedTabs
+      label="Split mode"
+      selected="pick"
+      tabs={[
+        { id: "pick", label: "Pick pages" },
+        { id: "ranges", label: "Ranges" },
+        { id: "every", label: "Every page" },
+      ]}
+    />
+  </ToolIntro>
+  <SplitLine />
+</BaseLayout>

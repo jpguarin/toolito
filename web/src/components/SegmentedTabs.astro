@@ -1,0 +1,43 @@
+---
+// Pill-shaped row of tabs that switches how a tool works
+// (design/components/SegmentedTabs.md). Each tab controls the element with
+// id `${id}-panel`. Never for theme selection: there is none.
+interface Props {
+  label: string; // aria-label of the tablist, e.g. "Split mode"
+  tabs: { id: string; label: string }[];
+  selected: string;
+}
+
+const { label, tabs, selected } = Astro.props;
+---
+
+<div
+  role="tablist"
+  aria-label={label}
+  class="flex w-fit overflow-hidden rounded-pill border-md border-line bg-paper"
+  data-tabs
+>
+  {tabs.map(({ id, label: text }, index) => (
+    <button
+      type="button"
+      role="tab"
+      id={`${id}-tab`}
+      aria-controls={`${id}-panel`}
+      aria-selected={id === selected ? "true" : "false"}
+      tabindex={id === selected ? 0 : -1}
+      data-tab={id}
+      class:list={[
+        "label min-h-tap px-4 text-ink aria-selected:bg-panel aria-selected:text-led",
+        index > 0 && "border-l-md border-line",
+      ]}
+    >
+      {text}
+    </button>
+  ))}
+</div>
+
+<script>
+  import { initTabs } from "../scripts/tabs";
+
+  document.querySelectorAll<HTMLElement>("[data-tabs]").forEach(initTabs);
+</script>

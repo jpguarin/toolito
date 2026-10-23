@@ -13,8 +13,12 @@ interface Props {
 const { machine, title, lead, hot = false } = Astro.props;
 ---
 
-<section class="mx-auto flex w-full max-w-page flex-col gap-2 px-5 pt-7">
-  <Badge variant={hot ? "hot" : "machine"}>{machine}</Badge>
-  <h1 class="heading wide:title">{title}</h1>
-  <p class="body text-muted wide:lead">{lead}</p>
+<section class="mx-auto flex w-full max-w-page flex-wrap items-end justify-between gap-5 px-5 pt-7">
+  <div class="flex flex-col gap-2">
+    <Badge variant={hot ? "hot" : "machine"}>{machine}</Badge>
+    <h1 class="heading wide:title">{title}</h1>
+    <p class="body text-muted wide:lead">{lead}</p>
+  </div>
+  <!-- Optional tool controls next to the title, e.g. SegmentedTabs on Split PDF. -->
+  <slot />
 </section>

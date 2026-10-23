@@ -103,6 +103,7 @@
   --shadow-press: var(--shadow-press);
   --shadow-hot: var(--shadow-hot);
   --shadow-sign: var(--shadow-sign);
+  --shadow-pinned: var(--shadow-pinned);
   --shadow-glow-accent: var(--glow-accent);
   --shadow-glow-led: var(--glow-led);
   --shadow-glow-sign: var(--glow-sign);
@@ -118,6 +119,9 @@
   --spacing-ad-rect-width: var(--ad-rect-width);
   --spacing-ad-rect-height: var(--ad-rect-height);
   --spacing-dropzone: var(--dropzone-min-height);
+  --spacing-clothesline-page: var(--clothesline-page-height);
+  --spacing-pin-w: var(--pin-width);
+  --spacing-pin-h: var(--pin-height);
 
   /* Media queries cannot read CSS variables: keep equal to the
      breakpoint-wide token in design/tokens.json. */
@@ -230,4 +234,19 @@
   width: var(--towel-width);
   border-right: var(--border-md) solid var(--line);
   background-image: repeating-linear-gradient(0deg, var(--towel) 0 var(--space-2), var(--paper) var(--space-2) calc(var(--space-2) + 6px));
+}
+
+/* Ruled lines on a hanging page (Clothesline.md). */
+@utility ruled-sheet {
+  background-image: repeating-linear-gradient(0deg, color-mix(in srgb, var(--rim) 70%, transparent) 0 var(--border-thin), transparent var(--border-thin) var(--space-3));
+}
+
+@utility border-l-md {
+  border-left-style: solid;
+  border-left-width: var(--border-md);
+}
+
+@utility border-t-thick {
+  border-top-style: solid;
+  border-top-width: var(--border-thick);
 }
