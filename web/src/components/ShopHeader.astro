@@ -1,0 +1,64 @@
+---
+// Top of every inner page (design/components/ShopHeader.md): awning strip,
+// TOOLITO / LAUNDROMAT sign, main navigation and the shop signs.
+// Below 600px the navigation and signs collapse behind a menu button.
+// There is never a theme switch here: the theme follows the local time.
+
+export type Section = "images" | "pdfs" | "house-rules";
+
+interface Props {
+  current?: Section;
+}
+
+const { current } = Astro.props;
+
+const links: { section: Section; label: string; href: string }[] = [
+  { section: "images", label: "Images", href: "/#images" },
+  { section: "pdfs", label: "PDFs", href: "/#pdfs" },
+  { section: "house-rules", label: "House rules", href: "/#house-rules" },
+];
+---
+
+<div>
+  <div class="awning awning-strip" aria-hidden="true"></div>
+  <header class="border-b-md border-line bg-panel text-panel-ink">
+    <div class="mx-auto flex max-w-page items-center justify-between gap-4 px-4 py-2 wide:px-5 wide:py-3">
+      <a href="/" class="flex items-baseline gap-3 no-underline">
+        <!-- sign-md/sign-lg are plain token classes, so they cannot take `wide:`;
+             one logo per size instead (hidden ones are not read aloud). -->
+        <span class="sign-md text-accent [text-shadow:var(--glow-sign)] wide:hidden">TOOLITO</span>
+        <span class="sign-lg hidden text-accent [text-shadow:var(--glow-sign)] wide:inline">TOOLITO</span>
+        <span class="sign-sm hidden tracking-sign text-sign-sub [text-shadow:var(--glow-led)] wide:inline">LAUNDROMAT</span>
+      </a>
+
+      <nav aria-label="Main" class="label hidden gap-5 wide:flex">
+        {links.map(({ section, label, href }) => (
+          <a
+            href={href}
+            aria-current={section === current ? "page" : undefined}
+            class="text-panel-ink no-underline aria-[current=page]:text-accent-2"
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="sign-sm hidden gap-2 wide:flex" aria-hidden="true">
+        <span class="rounded-sm border-thin border-led px-3 py-2 text-led [text-shadow:var(--glow-led)]">OPEN 24/7</span>
+        <span class="rounded-sm border-thin border-panel-ink px-3 py-2">SELF-SERVICE</span>
+      </div>
+
+      <!-- Opens the phone menu (wired up in the next step). -->
+      <button
+        type="button"
+        class="flex size-tap items-center justify-center rounded-md text-panel-ink wide:hidden"
+        aria-label="Open menu"
+        aria-expanded="false"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+      </button>
+    </div>
+  </header>
+</div>

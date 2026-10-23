@@ -100,6 +100,14 @@
   --shadow-glow-accent: var(--glow-accent);
   --shadow-glow-led: var(--glow-led);
   --shadow-glow-sign: var(--glow-sign);
+
+  --spacing-tap: var(--tap-target);
+  --container-page: var(--container-page);
+  --tracking-sign: var(--tracking-sign);
+
+  /* Media queries cannot read CSS variables: keep equal to the
+     breakpoint-wide token in design/tokens.json. */
+  --breakpoint-wide: 600px;
 }
 
 @layer base {
@@ -138,4 +146,33 @@
 @utility border-thin {
   border-style: solid;
   border-width: var(--border-thin);
+}
+
+@utility border-b-md {
+  border-bottom-style: solid;
+  border-bottom-width: var(--border-md);
+}
+@utility border-t-md {
+  border-top-style: solid;
+  border-top-width: var(--border-md);
+}
+
+/* Striped awning (BRAND-BOOK §7). Stripe width is set by the size class. */
+@utility awning {
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--awning-a) 0 var(--awning-stripe),
+    var(--awning-b) var(--awning-stripe) calc(2 * var(--awning-stripe))
+  );
+}
+
+/* Inner pages: thin strip on phones (MobileHeader.md), taller strip with
+   `tile` stripes from the wide breakpoint up (ShopHeader.md). */
+@utility awning-strip {
+  --awning-stripe: var(--awning-stripe-sm);
+  height: var(--awning-height-sm);
+  @variant wide {
+    --awning-stripe: var(--tile);
+    height: var(--awning-height);
+  }
 }

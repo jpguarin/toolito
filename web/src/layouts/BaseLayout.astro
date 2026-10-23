@@ -2,15 +2,18 @@
 // Minimal shell: styles, fonts and metadata. Header, footer and full SEO
 // tags come in the "BaseLayout" task of PLAN.md (stage 4).
 import { Font } from "astro:assets";
+import Footer from "../components/Footer.astro";
+import ShopHeader, { type Section } from "../components/ShopHeader.astro";
 import { DAY_START, NIGHT_START } from "../lib/theme";
 import "../styles/global.css";
 
 interface Props {
-  title: string;
-  description: string;
+  title: string; // Becomes "<title> · Toolito" unless it is the home page.
+  description: string; // Meta description for search results.
+  section?: Section; // Highlights the current link in the header.
 }
 
-const { title, description } = Astro.props;
+const { title, description, section } = Astro.props;
 ---
 
 <!doctype html>
@@ -38,8 +41,18 @@ const { title, description } = Astro.props;
     <Font cssVariable="--font-work-sans" preload />
     <Font cssVariable="--font-caveat" />
   </head>
-  <body>
-    <slot />
+  <body class="flex min-h-dvh flex-col">
+    <a
+      href="#main"
+      class="label sr-only rounded-sm bg-accent p-3 text-on-accent focus:not-sr-only focus:absolute focus:top-2 focus:left-2"
+    >
+      Skip to content
+    </a>
+    <ShopHeader current={section} />
+    <main id="main" class="flex-1">
+      <slot />
+    </main>
+    <Footer />
     <script>
       import "../scripts/live-theme";
     </script>
