@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 6 — 9 de 16 tareas (secadora completa; faltan pruebas en Dark, PWA, textos, SEO y páginas legales)
+**Estado actual:** Etapa 6 — 10 de 16 tareas (secadora completa y probada; faltan PWA, textos, SEO, páginas legales y Lighthouse)
 
 ---
 
@@ -123,7 +123,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 - [x] Errores de la API → tarjetas OutOfOrder (incluidos timeout, offline y `Retry-After`)
 - [x] Botón "Stop the dryer" con `abort()` y protección contra doble clic
 - [x] Precalentar Cloud Run con `GET /health` al soltar el PDF
-- [ ] Probar los escenarios de `docs/DRYER-FLOW.md` §10 en Light y Dark
+- [x] Probar los escenarios de `docs/DRYER-FLOW.md` §10 en Light y Dark (y con reducir movimiento)
 - [x] CORS correcto, incluido `Access-Control-Expose-Headers` (tamaños, `X-Already-Optimized`, `Retry-After`)
 - [ ] PWA: manifest, íconos, funcionamiento offline de las herramientas locales
 - [ ] Texto de cada página: instrucciones y FAQ
