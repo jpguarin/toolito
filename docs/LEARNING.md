@@ -79,11 +79,43 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Foco** | El "cursor" de quien navega con teclado (`Tab`); hay que devolverlo a un lugar lógico. |
 | **CLS** | Cuánto "salta" la página mientras carga; se evita reservando el espacio (p. ej. del anuncio). |
 | **Capa de CSS (`@layer`)** | Grupo de estilos con prioridad; lo que no está en ninguna capa gana. |
+| **XSS** | Ataque que mete código en una página a través de datos del usuario; se evita con `textContent`. |
+| **Evento personalizado** | Aviso propio (`dropzone:files`) que un componente lanza para que otros reaccionen. |
+| **Atributo booleano** | Atributo de HTML que se activa solo con estar presente (`multiple`, `disabled`, `hidden`). |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-22 — Etapa 4: Dropzone (cierre de la etapa)
+
+**Qué hicimos:**
+- Componente `Dropzone` reutilizable: `<label>` con un `<input type="file">` oculto, arrastrar y soltar, estado "Let go to load it · N files", versión compacta y anillo de foco para teclado.
+- `scripts/dropzone.ts`: avisa a cada herramienta con el evento `dropzone:files` (lista de `File`). No sube nada; cada herramienta revisará tipo y tamaño.
+- Página temporal `/dev/dropzone` con `noindex` para probarlo (se borra cuando exista la primera herramienta).
+- Token nuevo `dropzone-min-height` (tokens.json versión 7).
+- **Etapa 4 completada.**
+
+**Conceptos nuevos:**
+- **`File` en el navegador:** nombre, tamaño, tipo y contenido; nada sale del computador salvo que el código lo envíe.
+- **Eventos de arrastrar:** `dragenter`, `dragover` (con `preventDefault()` o el navegador abre el archivo), `dragleave` y `drop` (`dataTransfer.files`).
+- **Contador de entradas:** `dragleave` también salta sobre los hijos; contamos entradas y salidas para que el resaltado no parpadee.
+- **Evento personalizado (`CustomEvent`):** el componente "toca el timbre" y quien escucha decide qué hacer.
+- **`input.value = ""`:** si no, elegir el mismo archivo dos veces no dispara `change`.
+- **`textContent`, nunca `innerHTML`, con datos del usuario:** un nombre de archivo podría contener HTML y ejecutar código (XSS).
+- **Atributos booleanos de HTML:** basta con que existan para estar activos; `multiple="false"` ¡está encendido!
+
+**Comandos que aprendí:**
+- `curl -s localhost:4321/ruta | grep -o '<input[^>]*>'` → mirar el HTML que de verdad genera Astro.
+
+**Errores y cómo los resolvimos:**
+- `outline-thick` no generaba nada → Causa: los grosores de `outline` en Tailwind son números, no tokens. → Solución: `outline-[length:var(--border-thick)]`.
+- La secadora aceptaba 3 archivos → Causa: Astro escribió `multiple="false"`, que HTML trata como activo. → Solución: `multiple={multiple || undefined}`.
+
+**Dudas pendientes:**
+- "Toda la página acepta archivos" y "pegar desde el portapapeles" (Dropzone.md) quedan para las páginas de herramientas.
+- Borrar `/dev/dropzone` al construir `/merge-pdf`.
 
 ## 2026-10-22 — Etapa 4: cabecera, pie y portada
 
