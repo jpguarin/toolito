@@ -1,0 +1,21 @@
+---
+// Pill steps showing where the user is in a machine's flow
+// (design/components/StepIndicator.md). Informational only: not clickable.
+// The dryer script moves aria-current="step" and data-done as phases change.
+interface Props {
+  steps: string[];
+}
+
+const { steps } = Astro.props;
+---
+
+<ol aria-label="Progress" class="flex flex-wrap gap-2" data-steps>
+  {steps.map((label, index) => (
+    <li
+      aria-current={index === 0 ? "step" : undefined}
+      class="sign-sm rounded-pill border-md border-line px-3 py-2 text-ink data-done:bg-accent-2 data-done:text-on-accent-2 aria-[current=step]:bg-panel aria-[current=step]:text-led"
+    >
+      {index + 1} {label}
+    </li>
+  ))}
+</ol>

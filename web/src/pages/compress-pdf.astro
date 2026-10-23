@@ -1,0 +1,17 @@
+---
+import Dryer from "../components/Dryer.astro";
+import StepIndicator from "../components/StepIndicator.astro";
+import ToolIntro from "../components/ToolIntro.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Compress PDF — shrink PDF files up to 30 MB, free · Toolito"
+  description="Compress PDF files online, free and without sign-up. Photos are recompressed, text stays sharp and selectable, and your file is deleted right after."
+  section="pdfs"
+>
+  <ToolIntro machine="Dryer No.3" title="Compress PDF" lead="Heavy loads welcome, up to 30 MB. Text stays sharp and selectable." hot>
+    <StepIndicator steps={["Load", "Cycle", "Dry", "Take home"]} />
+  </ToolIntro>
+  <Dryer />
+</BaseLayout>

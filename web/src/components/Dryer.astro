@@ -1,0 +1,166 @@
+---
+// Dryer No.3 (mockups/TlDryer.dc.html, docs/DRYER-FLOW.md): the hot machine
+// on the left, one panel per phase on the right. Only the panel of the
+// current phase is visible; scripts/dryer-machine.ts switches them.
+import CheckIcon from "../icons/check.svg";
+import DownloadIcon from "../icons/download.svg";
+import PlayIcon from "../icons/play.svg";
+import { CYCLES, DEFAULT_CYCLE } from "../lib/dryer";
+import Dropzone from "./Dropzone.astro";
+
+// CycleOption.md: estimates are ranges, never promises.
+const cycleCopy = {
+  low: { desc: "Best quality, great for printing", estimate: "~30–40% off" },
+  recommended: { desc: "Email-ready, looks just as good", estimate: "~50–65% off" },
+  extreme: { desc: "Smallest file, softer photos", estimate: "~70–85% off" },
+};
+const secondary = "label min-h-tap self-start rounded-pill border-md border-line px-5 text-ink";
+const bigBar = "relative h-4 overflow-hidden rounded-pill border-md border-line bg-bg";
+---
+
+<div data-dryer class="mx-auto grid w-full max-w-page items-start gap-6 px-5 pt-5 pb-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+  <section aria-label="Dryer No.3" class="overflow-hidden rounded-xl border-thick border-hot bg-paper shadow-hot">
+    <div class="flex items-center justify-between gap-3 bg-panel px-5 py-4 text-panel-ink">
+      <span class="sign-md">No.3</span>
+      <!-- Visible LED; screen readers hear phase changes from the live region instead (§9). -->
+      <span aria-hidden="true" class="sign-md rounded-sm bg-led-bg px-4 py-1 tracking-sign text-led [text-shadow:var(--glow-led)]" data-dryer-led>READY</span>
+      <span aria-hidden="true" class="size-4 rounded-pill border-thin border-panel-ink bg-led data-running:bg-accent" data-dryer-lamp></span>
+    </div>
+    <div class="flex justify-center px-5 py-7">
+      <div
+        aria-hidden="true"
+        class="flex size-porthole-xl items-center justify-center rounded-pill border-[length:var(--porthole-rim-xl)] border-rim bg-surface [box-shadow:0_0_0_var(--border-thick)_var(--line),inset_0_0_0_var(--border-thick)_var(--line)]"
+        data-dryer-glass
+      >
+        <span class="flex" data-dryer-pdf hidden>
+          <svg class="text-icon-dryer" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z M14 3v5h5 M8 13h8 M8 16h5"></path>
+          </svg>
+        </span>
+        <!-- Papers tumbling while drying (Porthole.md). Placed symmetrically around the
+             centre (75, 75), so the pile stays centred while the drum turns. -->
+        <span class="flex" data-dryer-papers hidden>
+          <!-- overflow visible: the tilted papers stick out of the 150px box; the glass has room. -->
+          <svg class="drum-spin" width="150" height="150" viewBox="0 0 150 150" overflow="visible">
+            <rect x="16" y="18" width="58" height="74" rx="6" fill="var(--note)" stroke="var(--cloth-line)" stroke-width="3" transform="rotate(-20 45 55)"></rect>
+            <rect x="79" y="62" width="52" height="66" rx="6" fill="var(--note)" stroke="var(--cloth-line)" stroke-width="3" transform="rotate(25 105 95)"></rect>
+            <circle cx="75" cy="75" r="17" fill="var(--accent)" stroke="var(--cloth-line)" stroke-width="3"></circle>
+          </svg>
+        </span>
+        <span class="flex" data-dryer-check hidden>
+          <CheckIcon class="text-icon-sort" width="110" height="110" stroke="currentColor" />
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <div class="flex flex-col gap-5">
+    <!-- empty -->
+    <div data-panel="empty">
+      <Dropzone title="Drop your PDF in the dryer" hint="or tap to choose · up to 30 MB" accept="application/pdf" />
+    </div>
+
+    <!-- loaded -->
+    <div class="flex flex-col gap-5" data-panel="loaded" hidden>
+      <div class="flex flex-wrap items-center gap-4 rounded-md border-md border-line bg-card px-4 py-3">
+        <span aria-hidden="true" class="sign-sm rounded-sm bg-hot px-2 py-3 text-on-hot">PDF</span>
+        <div class="min-w-0 flex-1 basis-48">
+          <p class="label truncate" data-dryer-file></p>
+          <p class="caption text-muted" data-dryer-file-meta></p>
+        </div>
+        <button type="button" class={secondary} data-dryer-swap>Swap load</button>
+      </div>
+
+      <fieldset class="flex flex-col gap-3">
+        <legend class="sign-md mb-3">Pick a cycle</legend>
+        {CYCLES.map(({ value, name }) => (
+          <button
+            type="button"
+            aria-pressed={value === DEFAULT_CYCLE ? "true" : "false"}
+            data-cycle={value}
+            class="flex min-h-8 items-center justify-between gap-4 rounded-md border-md border-line bg-card px-5 py-3 text-left text-ink aria-pressed:bg-accent-2 aria-pressed:text-on-accent-2 aria-pressed:shadow-press"
+          >
+            <span class="flex flex-col gap-1">
+              <span class="sign-md">{name}</span>
+              <span class="caption">{cycleCopy[value].desc}</span>
+            </span>
+            <span class="label whitespace-nowrap">{cycleCopy[value].estimate}</span>
+          </button>
+        ))}
+      </fieldset>
+
+      <button
+        type="button"
+        class="sign-md flex min-h-tap items-center gap-3 self-start rounded-pill border-thick border-line bg-accent px-7 py-3 text-on-accent uppercase [box-shadow:var(--glow-accent)]"
+        data-dryer-start
+      >
+        <PlayIcon width="22" height="22" fill="currentColor" aria-hidden="true" />
+        Start dryer
+      </button>
+    </div>
+
+    <!-- uploading: the only stretch with a real percentage -->
+    <div class="flex flex-col gap-4 rounded-lg border-md border-line bg-card p-6" data-panel="uploading" hidden>
+      <p class="sign-lg">Loading the dryer…</p>
+      <p class="body text-muted" data-dryer-upload-line></p>
+      <div role="progressbar" aria-label="Upload progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" class={bigBar} data-dryer-upload-bar>
+        <span class="absolute inset-y-0 left-0 w-0 bg-accent [box-shadow:var(--glow-accent)]" data-dryer-upload-fill></span>
+      </div>
+      <p class="caption text-muted" data-dryer-upload-note></p>
+      <button type="button" class={secondary} data-dryer-stop>Stop the dryer</button>
+    </div>
+
+    <!-- drying: no percentage exists (§1), so a stripe and the elapsed time -->
+    <div class="flex flex-col gap-4 rounded-lg border-md border-line bg-card p-6" data-panel="drying" hidden>
+      <p class="sign-lg">Tumbling your PDF…</p>
+      <p class="body text-muted" data-dryer-dry-line></p>
+      <div role="progressbar" aria-label="Drying progress" aria-valuetext="Drying" class={bigBar}>
+        <span class="progress-stripes absolute inset-0"></span>
+      </div>
+      <p class="caption text-muted" data-dryer-dry-note>Please don't open the door. It only takes a few seconds.</p>
+      <button type="button" class={secondary} data-dryer-stop>Stop the dryer</button>
+    </div>
+
+    <!-- done -->
+    <div class="flex flex-col gap-4" data-panel="done" hidden>
+      <section aria-labelledby="dryer-result-title" class="flex flex-col gap-2 rounded-lg border-thick border-ok bg-paper px-6 py-5">
+        <p class="sign-sm text-heading">Fresh &amp; folded</p>
+        <h2 id="dryer-result-title" class="heading" data-dryer-result-title></h2>
+        <p class="label text-muted" data-dryer-result-line></p>
+      </section>
+      <div class="caption flex max-w-md flex-col gap-1 rounded-sm border-thin border-line bg-note px-4 py-3 text-on-note">
+        <p class="sign-sm">Care label</p>
+        <dl class="flex flex-col gap-1">
+          <div class="flex justify-between"><dt>Cycle</dt><dd class="font-extrabold" data-dryer-care-cycle></dd></div>
+          <div class="flex justify-between"><dt>Text</dt><dd class="font-extrabold">Still selectable</dd></div>
+          <div class="flex justify-between"><dt>Original</dt><dd class="font-extrabold">Removed from the dryer</dd></div>
+        </dl>
+      </div>
+      <div class="flex flex-wrap gap-3">
+        <a class="label flex min-h-tap items-center gap-3 rounded-pill bg-btn px-6 py-3 text-on-btn no-underline" data-dryer-download>
+          <DownloadIcon width="20" height="20" stroke="currentColor" aria-hidden="true" />
+          Take it home
+        </a>
+        <button type="button" class="label min-h-tap rounded-pill border-md border-line px-5 text-ink" data-dryer-again>Run another load</button>
+      </div>
+    </div>
+
+    <!-- error: simple for now; the full OutOfOrder card comes next -->
+    <section aria-labelledby="dryer-error-title" class="flex flex-col gap-3 rounded-lg border-thick border-error bg-paper p-6" data-panel="error" hidden>
+      <p class="sign-sm text-error" data-dryer-error-led></p>
+      <h2 id="dryer-error-title" tabindex="-1" class="heading" data-dryer-error-title></h2>
+      <p class="body text-muted" data-dryer-error-body></p>
+      <a class="label flex min-h-tap items-center self-start rounded-pill bg-btn px-5 text-on-btn no-underline" data-dryer-error-link hidden></a>
+      <button type="button" class={secondary} data-dryer-error-button hidden></button>
+    </section>
+  </div>
+
+  <p class="sr-only" aria-live="polite" data-dryer-announce></p>
+</div>
+
+<script>
+  import { initDryer } from "../scripts/dryer-machine";
+
+  const root = document.querySelector<HTMLElement>("[data-dryer]");
+  if (root) initDryer(root);
+</script>
