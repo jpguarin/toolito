@@ -11,7 +11,7 @@ Esta carpeta es **la fuente de verdad visual** dentro del repositorio. Claude Co
 | `tokens.css` | Los mismos tokens como variables CSS (`--bg`, `--accent`…) por tema (`[data-theme]`) | Se copia a `web/src/styles/tokens.css` e importa en el layout |
 | `components/<Nombre>.md` | Especificación de cada uno de los 23 componentes (anatomía, variantes, estados, accesibilidad) | Leer antes de construir ese componente |
 | `components/<Nombre>.html` | Vista previa estática del componente usando `tokens.css` (cambia `data-theme="light"` por `"dark"` en el `<html>` para ver el tema nocturno) | Abrir en el navegador para comparar con lo construido |
-| `icons/*.svg` | 17 iconos de trazo (24 × 24) y su guía `icons/README.md` | Insertarlos en línea con `stroke="currentColor"` |
+| `icons/*.svg` | 18 iconos de trazo (24 × 24) y su guía `icons/README.md` | Insertarlos en línea con `stroke="currentColor"` |
 | `mockups/*.dc.html` | Código fuente de las 7 pantallas del lienzo de diseño | **Referencia** de estructura, textos y medidas; no es código de producción ni se ejecuta solo |
 | `screens/` | Capturas PNG de las pantallas (Light y Dark) | Comparación visual pantalla por pantalla |
 

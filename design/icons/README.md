@@ -1,6 +1,6 @@
 # Icons
 
-17 stroke icons on a 24 × 24 grid, 2–2.6px strokes, round caps and joins. The files are drawn in `ink` (#12233D) so they read on light backgrounds when used as images.
+18 stroke icons on a 24 × 24 grid, 2–2.6px strokes, round caps and joins. The files are drawn in `ink` (#12233D) so they read on light backgrounds when used as images.
 
 In the product, **inline the SVG and set `stroke="currentColor"`** (or `fill` for `play`) so each icon takes its colour from the token of its context: `icon-<machine>` inside portholes, `on-accent` on primary buttons, `panel-ink` in headers. Decorative icons get `aria-hidden="true"`; icon-only buttons need an `aria-label`.
 
@@ -22,5 +22,6 @@ In the product, **inline the SVG and set `stroke="currentColor"`** (or `fill` fo
 | cloud | "Deleted after every load" badge, server notice |
 | arrow-up / arrow-down | Reorder on the folding table |
 | alert | Generic warning |
+| chevron-down | Custom `<select>` arrow (the native one sits too close to the edge) |
 
 Never use emoji instead of these icons.
