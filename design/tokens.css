@@ -26,6 +26,7 @@
   --awning-a: #FF4F5E;
   --awning-b: #FFF4EA;
   --sign-sub: #5CF2C2;
+  --sign-border: #FFF4EA;
   --note: #FFFDF8;
   --on-note: #12233D;
   --tape: #FFF3B0;
@@ -47,6 +48,7 @@
   --icon-sort: #12233D;
   --shadow-press: 4px 4px 0 #12233D;
   --shadow-hot: 0 0 0 4px #FF4F5E;
+  --shadow-sign: 0 0 0 4px #12233D;
   --glow-accent: none;
   --glow-led: none;
   --glow-sign: none;
@@ -78,6 +80,7 @@
   --awning-a: #FF5E6C;
   --awning-b: #F4F1EA;
   --sign-sub: #3DE8F5;
+  --sign-border: #3DE8F5;
   --note: #FFFDF8;
   --on-note: #0F1630;
   --tape: #FFF3B0;
@@ -99,6 +102,7 @@
   --icon-sort: #5CF2A0;
   --shadow-press: 4px 4px 0 #F4F1EA;
   --shadow-hot: 0 0 26px rgba(255,228,94,0.4);
+  --shadow-sign: 0 0 28px rgba(61,232,245,0.45);
   --glow-accent: 0 0 22px rgba(255,94,108,0.55);
   --glow-led: 0 0 10px rgba(61,232,245,0.8);
   --glow-sign: 0 0 10px rgba(255,94,108,0.9), 0 0 26px rgba(255,94,108,0.6);
@@ -121,6 +125,11 @@
   --awning-stripe-sm: 44px;
   --tap-target: 44px;
   --tracking-sign: 4px;
+  --awning-height-lg: 48px;
+  --awning-scallop: 28px;
+  --tracking-sign-lg: 6px;
+  --container-headline: 820px;
+  --container-lead: 600px;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
