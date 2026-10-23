@@ -4,11 +4,13 @@ import { PdfError, type PdfErrorCode } from "./pdf-errors";
 
 export type PdfRequest =
   | { id: number; type: "count"; bytes: ArrayBuffer }
-  | { id: number; type: "merge"; sources: ArrayBuffer[] };
+  | { id: number; type: "merge"; sources: ArrayBuffer[] }
+  | { id: number; type: "split"; bytes: ArrayBuffer; groups: number[][] };
 
 export type PdfResponse =
   | { id: number; ok: true; pages: number }
   | { id: number; ok: true; bytes: Uint8Array }
+  | { id: number; ok: true; parts: Uint8Array[] }
   | { id: number; ok: false; code: PdfErrorCode; message: string };
 
 type Pending = { resolve: (response: PdfResponse) => void };
@@ -51,4 +53,11 @@ export async function mergeInWorker(sources: ArrayBuffer[]): Promise<Uint8Array>
   const response = unwrap(await send({ id: nextId++, type: "merge", sources }, sources));
   if (!("bytes" in response)) throw new PdfError("corrupted_pdf", "The PDFs could not be folded.");
   return response.bytes;
+}
+
+/** Groups of 1-based page numbers -> one PDF per group (see splitPdf). */
+export async function splitInWorker(bytes: ArrayBuffer, groups: number[][]): Promise<Uint8Array[]> {
+  const response = unwrap(await send({ id: nextId++, type: "split", bytes, groups }, [bytes]));
+  if (!("parts" in response)) throw new PdfError("corrupted_pdf", "The PDF could not be split.");
+  return response.parts;
 }

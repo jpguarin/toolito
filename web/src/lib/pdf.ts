@@ -55,3 +55,19 @@ export async function mergePdfs(sources: PdfBytes[]): Promise<Uint8Array> {
   }
   return merged.save();
 }
+
+/**
+ * Split one PDF into several: each group lists 1-based page numbers, in order.
+ * [[1, 2, 3], [8]] gives two PDFs; [[1], [2], [3]] is "every page".
+ */
+export async function splitPdf(bytes: PdfBytes, groups: number[][]): Promise<Uint8Array[]> {
+  const source = await openPdf(bytes);
+  const outputs: Uint8Array[] = [];
+  for (const group of groups) {
+    const part = await PDFDocument.create();
+    const pages = await part.copyPages(source, group.map((page) => page - 1));
+    for (const page of pages) part.addPage(page);
+    outputs.push(await part.save());
+  }
+  return outputs;
+}
