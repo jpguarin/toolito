@@ -4,7 +4,7 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 
 > Consejo: usa `/siguiente` en Claude Code para retomar donde quedaste.
 
-**Estado actual:** Etapa 7 (Etapas 0 a 6 completadas; sitio listo para publicar)
+**Estado actual:** Etapa 7 — 3 de 7 tareas (Toolito publicado en https://toolito.jpgstudio.net; faltan analítica, Search Console y AdSense)
 
 ---
 
@@ -141,9 +141,9 @@ Cada etapa tiene un **objetivo**, lo que vas a **aprender**, las **tareas** y un
 **Objetivo:** Toolito en internet.
 **Aprendes:** dominios y DNS, despliegue continuo, analítica, Search Console.
 
-- [ ] Subdominio `toolito.jpgstudio.net`: registro DNS (CNAME) hacia Cloudflare Pages (no hace falta comprar dominio)
-- [ ] Publicar `web/` en Cloudflare Pages conectado a GitHub
-- [ ] Conectar `toolito.jpgstudio.net` en Cloudflare Pages y añadirlo a `ALLOWED_ORIGINS` en Cloud Run
+- [x] Subdominio `toolito.jpgstudio.net`: registro DNS (CNAME) hacia Cloudflare Pages (no hace falta comprar dominio)
+- [x] Publicar `web/` en Cloudflare Pages conectado a GitHub
+- [x] Conectar `toolito.jpgstudio.net` en Cloudflare Pages y añadirlo a `ALLOWED_ORIGINS` en Cloud Run
 - [ ] Cloudflare Web Analytics (gratis y sin cookies)
 - [ ] Google Search Console y envío del sitemap
 - [ ] Antes de AdSense: canal de contacto público, responsable en la Privacy Policy, jurisdicción en Terms y revisión legal

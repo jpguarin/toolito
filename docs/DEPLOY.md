@@ -44,12 +44,13 @@ gcloud run services update toolito-api --region us-central1 \
 
 ```bash
 gcloud run services update toolito-api --region us-central1 \
-  --set-env-vars "ALLOWED_ORIGINS=http://localhost:4321,MAX_FILE_MB=30,MAX_PAGES=500,PROCESSING_TIMEOUT_S=60,RATE_LIMIT=20/minute"
+  --set-env-vars "^##^ALLOWED_ORIGINS=https://toolito.jpgstudio.net,http://localhost:4321##MAX_FILE_MB=30##MAX_PAGES=500##PROCESSING_TIMEOUT_S=60##RATE_LIMIT=20/minute"
 ```
 
 - `--set-env-vars` reemplaza la lista completa; `--update-env-vars` solo cambia las que nombres.
 - `PORT` lo define Cloud Run; no se configura.
-- `ALLOWED_ORIGINS` solo permite el sitio local mientras no haya dominio (etapa 7). Con varios dominios, la coma choca con el separador de gcloud; usa otro separador: `"^##^ALLOWED_ORIGINS=https://toolito.jpgstudio.net,http://localhost:4321##MAX_FILE_MB=30##..."`.
+- `ALLOWED_ORIGINS` permite el sitio publicado (`https://toolito.jpgstudio.net`) y el local (`http://localhost:4321`, para `npm run dev`). Con varios dominios, la coma choca con el separador de gcloud: por eso `^##^` cambia el separador a `##`.
+- Para cambiar solo esa variable: `gcloud run services update toolito-api --region us-central1 --update-env-vars "^##^ALLOWED_ORIGINS=https://toolito.jpgstudio.net,http://localhost:4321"`.
 
 ## Permisos (IAM)
 
@@ -63,3 +64,16 @@ gcloud run services update toolito-api --region us-central1 \
 gcloud run services describe toolito-api --region us-central1
 curl https://toolito-api-352538375764.us-central1.run.app/health
 ```
+
+## La web (Cloudflare Pages)
+
+- Proyecto de Cloudflare Pages conectado al repositorio de GitHub: cada `git push` a `main` construye y publica; cada rama o PR recibe una URL de vista previa.
+- Configuración: directorio raíz `web`, comando `npm run build` (incluye el service worker), carpeta de salida `dist`, variable `NODE_VERSION=24`.
+- Dominio: `toolito.jpgstudio.net`, con un registro **CNAME** hacia el proyecto de Pages (decisión D-012).
+- `PUBLIC_SITE_URL` y `PUBLIC_API_URL` no se configuran: sus valores por defecto ya son el dominio y la API de Cloud Run.
+
+```bash
+curl -sI https://toolito.jpgstudio.net/          # 200 desde Cloudflare
+curl -s https://toolito.jpgstudio.net/robots.txt  # apunta al sitemap
+```
+
