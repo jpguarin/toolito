@@ -133,6 +133,9 @@
   --porthole-sm: 132px;
   --porthole-rim-sm: 12px;
   --machine-card-min: 200px;
+  --cork-frame-width: 8px;
+  --ad-rect-width: 300px;
+  --ad-rect-height: 250px;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;
