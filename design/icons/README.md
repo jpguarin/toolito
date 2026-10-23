@@ -29,3 +29,5 @@ Never use emoji instead of these icons.
 ## App icon
 
 `app-icon.svg` (rounded tile) and `app-icon-maskable.svg` (full-bleed, for Android masks) are the source of the favicon and the PWA icons: the washer porthole with laundry, drawn with Light token values. After changing them, run `npm run icons` in `web/` to regenerate the PNGs in `web/public/icons/`.
+
+`social-card.svg` is the 1200 × 630 preview shown when a page is shared (Open Graph); `npm run icons` renders it to `web/public/social-card.png`.
