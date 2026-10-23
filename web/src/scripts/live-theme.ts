@@ -1,6 +1,6 @@
 // Keeps the theme in sync with the clock while the page stays open
 // (docs/THEMES.md §3). The first choice happens in BaseLayout's inline script.
-import { resolveTheme, type Theme } from "../lib/theme";
+import { resolveTheme, type Theme, THEME_COLOR } from "../lib/theme";
 
 const CHECK_EVERY_MS = 60_000;
 const TRANSITION_MS = 400; // Matches the CSS transition in global.css.
@@ -18,6 +18,7 @@ function applyClockTheme(): void {
   // Mark the switch so colors fade only now, not on every hover or click.
   root.dataset.themeChanging = "";
   root.dataset.theme = theme;
+  document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute("content", THEME_COLOR[theme]);
   window.setTimeout(() => delete root.dataset.themeChanging, TRANSITION_MS);
 }
 

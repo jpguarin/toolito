@@ -6,7 +6,7 @@ import Footer from "../components/Footer.astro";
 import ShopHeader from "../components/ShopHeader.astro";
 import StorefrontHeader from "../components/StorefrontHeader.astro";
 import type { Section } from "../lib/nav";
-import { DAY_START, NIGHT_START } from "../lib/theme";
+import { DAY_START, NIGHT_START, THEME_COLOR } from "../lib/theme";
 import "../styles/global.css";
 
 interface Props {
@@ -29,18 +29,24 @@ const { title, description, section, storefront = false, noindex = false } = Ast
       Mirrors resolveTheme() in src/lib/theme.ts; the hours come from there.
       ?theme=light|dark is a test-only override: never saved, never linked.
     -->
-    <script is:inline define:vars={{ DAY_START, NIGHT_START }}>
+    <meta name="theme-color" content={THEME_COLOR.light} />
+    <script is:inline define:vars={{ DAY_START, NIGHT_START, THEME_COLOR }}>
       var hour = new Date().getHours();
       var theme = hour >= DAY_START && hour < NIGHT_START ? "light" : "dark";
       var forced = new URLSearchParams(location.search).get("theme");
       if (forced === "light" || forced === "dark") theme = forced;
       document.documentElement.dataset.theme = theme;
+      // The browser bar follows the theme too (docs/THEMES.md §6).
+      document.querySelector('meta[name="theme-color"]').content = THEME_COLOR[theme];
     </script>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
     <!-- Self-hosted brand fonts (configured in astro.config.mjs). -->
     <Font cssVariable="--font-bungee" preload />
     <Font cssVariable="--font-work-sans" preload />

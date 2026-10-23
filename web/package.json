@@ -12,7 +12,8 @@
     "astro": "astro",
     "check": "astro check",
     "test": "vitest run",
-    "tokens:typography": "node scripts/generate-typography.mjs"
+    "tokens:typography": "node scripts/generate-typography.mjs",
+    "icons": "node scripts/generate-icons.mjs"
   },
   "dependencies": {
     "@jsquash/avif": "^2.1.1",
@@ -29,6 +30,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@resvg/resvg-js": "^2.6.2",
+    "@types/node": "^24.19.2",
     "typescript": "^6.0.3",
     "vitest": "^5.0.5",
     "workbox-build": "^7.4.1"

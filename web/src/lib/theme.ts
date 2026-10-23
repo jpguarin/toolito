@@ -9,3 +9,7 @@ export type Theme = "light" | "dark";
 export function resolveTheme(hour: number): Theme {
   return hour >= DAY_START && hour < NIGHT_START ? "light" : "dark";
 }
+
+// Browser bar colour per theme (docs/THEMES.md §6): the --panel token's values.
+// theme.test.ts checks they still match design/tokens.css.
+export const THEME_COLOR: Record<Theme, string> = { light: "#12233D", dark: "#070B1C" };
