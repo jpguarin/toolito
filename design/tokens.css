@@ -114,6 +114,13 @@
   --space-7: 48px;
   --space-8: 64px;
   --tile: 56px;
+  --breakpoint-wide: 600px;
+  --container-page: 1180px;
+  --awning-height: 26px;
+  --awning-height-sm: 20px;
+  --awning-stripe-sm: 44px;
+  --tap-target: 44px;
+  --tracking-sign: 4px;
   --radius-sm: 6px;
   --radius-md: 12px;
   --radius-lg: 20px;

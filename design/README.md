@@ -7,7 +7,7 @@ Esta carpeta es **la fuente de verdad visual** dentro del repositorio. Claude Co
 | Ruta | Qué es | Cómo se usa |
 |---|---|---|
 | `BRAND-BOOK.md` | Principios, voz, colores, tipografía, formas, máquinas | Leer antes de diseñar o escribir textos de interfaz |
-| `tokens.json` | Todos los tokens (colores Light/Dark, tipografía, espaciado, radios, bordes, sombras) | Fuente de datos; **no se edita a mano en otro lugar** |
+| `tokens.json` | Todos los tokens (colores Light/Dark, tipografía, espaciado, radios, bordes, sombras y medidas de layout) | Fuente de datos; **no se edita a mano en otro lugar** |
 | `tokens.css` | Los mismos tokens como variables CSS (`--bg`, `--accent`…) por tema (`[data-theme]`) | Se copia a `web/src/styles/tokens.css` e importa en el layout |
 | `components/<Nombre>.md` | Especificación de cada uno de los 23 componentes (anatomía, variantes, estados, accesibilidad) | Leer antes de construir ese componente |
 | `components/<Nombre>.html` | Vista previa estática del componente usando `tokens.css` (cambia `data-theme="light"` por `"dark"` en el `<html>` para ver el tema nocturno) | Abrir en el navegador para comparar con lo construido |
