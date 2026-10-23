@@ -62,7 +62,7 @@ El usuario puede cambiar el modo en cualquier momento:
 | Imágenes (navegador) | jSquash (`@jsquash/jpeg`, `/png`, `/webp`, `/avif`, `/oxipng`, `/resize`) en Web Workers |
 | PDF en navegador | pdf-lib |
 | Descargas múltiples | JSZip |
-| PWA | @vite-pwa/astro |
+| PWA | Workbox (`workbox-build`) tras `astro build` + manifest propio (ver `docs/DECISIONS.md` D-011) |
 | API | Python 3.12+, FastAPI, Uvicorn |
 | Compresión PDF | pikepdf + Pillow |
 | Rate limiting | slowapi |

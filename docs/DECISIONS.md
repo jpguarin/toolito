@@ -77,3 +77,13 @@ Formato: **Decisión · Contexto · Alternativas descartadas · Consecuencias**.
 - **Decisión:** progreso real solo en la subida (`XMLHttpRequest` + `upload.onprogress`, LED `LOADING n%`); durante la compresión, barra indeterminada y tiempo transcurrido (`DRYING 0:12`). Detalle en `docs/DRYER-FLOW.md`.
 - **Descartado:** porcentaje simulado (miente y se congela en archivos grandes); API asíncrona con trabajos y consulta de estado (necesita almacenamiento y cola: demasiado para la fase 1); Server-Sent Events con progreso (pikepdf no informa avance por página de forma sencilla).
 - **Consecuencias:** se usa `XMLHttpRequest` solo en esta pantalla; si más adelante la API pasa a ser asíncrona, se revisará esta decisión.
+
+## D-011 · PWA con Workbox directo, no con @vite-pwa/astro
+
+- **Contexto:** el stack proponía `@vite-pwa/astro`, pero su versión 1.2.0 solo declara compatibilidad con Astro 1–5 y el proyecto usa Astro 7. Instalarlo forzando la versión podía funcionar por casualidad y romperse en cualquier actualización.
+- **Decisión:** usar **Workbox** (`workbox-build`, MIT, de Google), que es lo que esa integración usa por dentro. Un script (`web/scripts/build-sw.mjs`) recorre `dist/` después de `astro build` y genera `sw.js`; el manifest (`public/manifest.webmanifest`) y los íconos se escriben a mano.
+- **Qué se guarda:** precaché de páginas, JS, CSS, fuentes, íconos y los códecs comunes (~3 MB); los códecs **AVIF** (~8 MB) solo al primer uso; las peticiones a la API **nunca** (privacidad).
+- **Licencias del árbol de `workbox-build`** (315 paquetes, solo se usan al construir): MIT, ISC, BSD, Apache-2.0, más **BlueOak-1.0.0** (permisiva) y un **CC-BY-4.0** (`caniuse-lite`, una tabla de datos). Ningún GPL.
+- **Íconos:** `design/icons/app-icon.svg` (ojo de buey con ropa) es la fuente; `npm run icons` genera los PNG con `@resvg/resvg-js` (MPL-2.0). Se descartó `sharp` porque incluye libvips (LGPL).
+- **Consecuencias:** no depende de la versión de Astro. En `npm run dev` el service worker se desinstala solo, para no servir copias viejas.
+
