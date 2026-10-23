@@ -94,11 +94,41 @@ Se va llenando a medida que aparecen términos nuevos.
 | **Códec** | Programa que codifica y decodifica un formato (MozJPEG para JPG, libwebp para WebP…). |
 | **Cola** | Lista de trabajos que esperan turno y se procesan uno a uno. |
 | **clipPath** | Forma de SVG que recorta lo que se dibuja dentro, como un esténcil. |
+| **Ruta dinámica** | Archivo como `[conversion].astro` que genera muchas páginas desde una lista (`getStaticPaths`). |
+| **Atributo `data-*`** | Atributo propio en el HTML para pasarle datos al JavaScript (`data-default-format="webp"`). |
 | **REPL** | La consola interactiva de Python (`>>>`): escribes una línea y se ejecuta al instante. |
 
 ---
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
+
+## 2026-10-23 — Etapa 5: `/convert-image` y páginas de conversión (cierre de la etapa)
+
+**Qué hicimos:**
+- `Washer` configurable con props (`machine`, `format`, `accepts`): el mismo componente arma la Washer No.1 (comprimir) y la No.2 (convertir, "DYE", vidrio rosa, sin "Same").
+- `/convert-image`: si la imagen crece al convertir (p. ej. a PNG) es normal; el resumen dice "N images dyed" en vez de "You saved".
+- `[conversion].astro` con `getStaticPaths`: **12 páginas** (`/jpg-to-webp`, `/png-to-jpg`…), cada una con su título, descripción y el convertidor ya preparado (solo acepta el formato de origen).
+- "Popular conversions" en `/convert-image` enlaza a las 12. 73 tests en `web/`.
+- Probado sin conexión: tras usar una herramienta una vez, sigue funcionando en modo "Offline".
+- **Etapa 5 completada:** unir, dividir, comprimir y convertir funcionan en el navegador.
+
+**Conceptos nuevos:**
+- **Configurar en vez de copiar:** un componente con props evita mantener dos copias que se separan con el tiempo.
+- **Pasar datos de Astro al script con `data-*`:** el HTML generado en tu computador lleva la configuración que lee el JavaScript del navegador.
+- **Rutas dinámicas (`[param].astro` + `getStaticPaths`):** un archivo, muchas páginas; todas se generan al construir, como HTML estático.
+- **SEO por intención de búsqueda:** la gente busca "jpg to webp", así que cada par merece su URL propia.
+- **Enlaces internos:** una lista de enlaces ayuda a que la gente (y Google) llegue a cada página.
+- **Sin conexión hoy vs. con PWA:** los códecs se descargan al usarlos; el soporte completo sin conexión (descargar todo antes) es la PWA de la etapa 6.
+
+**Comandos que aprendí:**
+- (Ninguno nuevo.)
+
+**Errores y cómo los resolvimos:**
+- Ninguno en esta parte.
+
+**Dudas pendientes:**
+- FAQ e instrucciones largas de cada página (etapa 6: "Texto de cada página").
+- No hay mockup propio de la Washer No.2: reutilizamos el de la No.1 con los colores de la No.2.
 
 ## 2026-10-22 — Etapa 5: `/compress-image` (Washer No.1)
 
