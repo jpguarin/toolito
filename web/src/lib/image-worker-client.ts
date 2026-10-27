@@ -19,7 +19,18 @@ function getWorker(): Worker {
     pending.get(event.data.id)?.(event.data);
     pending.delete(event.data.id);
   });
+  // If the worker cannot load (a failed module or .wasm fetch), no reply will ever
+  // come: fail every waiting request and drop the worker so the next one retries.
+  worker.addEventListener("error", () => failAll("The washer could not start. Check your connection and try again."));
+  worker.addEventListener("messageerror", () => failAll("The washer sent back something unreadable. Try again."));
   return worker;
+}
+
+function failAll(message: string): void {
+  worker?.terminate();
+  worker = undefined;
+  for (const [id, resolve] of pending) resolve({ id, ok: false, message });
+  pending.clear();
 }
 
 /** Wash one image in the worker. The input buffer is handed over, not copied. */
