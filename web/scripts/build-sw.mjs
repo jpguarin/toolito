@@ -12,8 +12,9 @@ const { count, size, warnings } = await generateSW({
   globPatterns: ["**/*.{html,js,css,woff2,svg,ico,png,webmanifest,wasm}"],
   globIgnores: ["**/avif_*.wasm", "sw.js", "workbox-*.js"],
   maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
-  // A new version takes over as soon as it is installed; old caches are removed.
-  skipWaiting: true,
+  // A new version waits until the visitor taps "Update" in the toast (register-sw.ts
+  // sends SKIP_WAITING). clientsClaim only matters on the very first visit.
+  skipWaiting: false,
   clientsClaim: true,
   cleanupOutdatedCaches: true,
   // Pages are files (merge-pdf.html) served at clean URLs (/merge-pdf); Workbox's
