@@ -1,6 +1,7 @@
 // jSquash codecs (WebAssembly, from Squoosh). Each codec is imported only when
 // a file needs it, so nobody downloads the AVIF encoder unless they pick AVIF.
 // Only imported from the image worker.
+import { applyOrientation, readJpegOrientation } from "./exif-orientation";
 import { fitWithin, type ImageFormat, type WashSettings, targetFormat } from "./image";
 
 export class ImageError extends Error {
@@ -57,6 +58,11 @@ export interface WashResult {
 /** decode -> (resize) -> encode, the whole wash cycle for one image. */
 export async function washImage(bytes: ArrayBuffer, input: ImageFormat, settings: WashSettings): Promise<WashResult> {
   let image = await decode(input, bytes);
+  if (input === "jpeg") {
+    // Phone photos are stored sideways with an EXIF tag; bake the rotation into the pixels.
+    const upright = applyOrientation(image, readJpegOrientation(bytes));
+    if (upright !== image) image = new ImageData(upright.data, upright.width, upright.height);
+  }
   if (settings.resize) {
     const size = fitWithin(image.width, image.height);
     if (size.width !== image.width) {
