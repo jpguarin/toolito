@@ -27,13 +27,16 @@ function watchForUpdates(registration: ServiceWorkerRegistration): void {
   const offerIfWaiting = (): void => {
     if (registration.waiting && navigator.serviceWorker.controller) offerUpdate(registration.waiting);
   };
-  offerIfWaiting();
-  registration.addEventListener("updatefound", () => {
-    const worker = registration.installing;
+  const track = (worker: ServiceWorker | null): void => {
     worker?.addEventListener("statechange", () => {
       if (worker.state === "installed") offerIfWaiting();
     });
-  });
+  };
+  offerIfWaiting();
+  // The update may already be installing by the time register() answers, and then
+  // "updatefound" has fired before we listened: pick that worker up here.
+  track(registration.installing);
+  registration.addEventListener("updatefound", () => track(registration.installing));
   // An installed app can stay open for days without a reload: look for news whenever it comes back.
   document.addEventListener("visibilitychange", () => {
     if (document.visibilityState === "visible") registration.update().catch(() => undefined);
