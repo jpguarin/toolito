@@ -6,6 +6,7 @@ import { PUBLIC_CF_ANALYTICS_TOKEN } from "astro:env/client";
 import Footer from "../components/Footer.astro";
 import ShopHeader from "../components/ShopHeader.astro";
 import StorefrontHeader from "../components/StorefrontHeader.astro";
+import Toast from "../components/Toast.astro";
 import type { Section } from "../lib/nav";
 import { DAY_START, NIGHT_START, THEME_COLOR } from "../lib/theme";
 import "../styles/global.css";
@@ -98,9 +99,11 @@ const socialImage = new URL("/social-card.png", Astro.site).href;
       <slot />
     </main>
     <Footer />
+    <Toast />
     <script>
       import "../scripts/live-theme";
       import "../scripts/register-sw";
+      import "../scripts/install-prompt";
     </script>
   </body>
 </html>

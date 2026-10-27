@@ -1,0 +1,12 @@
+---
+// The install / update toast (design/components/Toast.md). Empty on purpose:
+// scripts/toast.ts fills it in and shows it only when there is something to offer.
+---
+
+<aside data-toast role="status" aria-live="polite" hidden class="fixed inset-x-0 bottom-0 z-50 px-5 pb-4 wide:left-auto wide:w-full wide:max-w-lead">
+  <div class="flex flex-col gap-3 rounded-md border-md border-line bg-card p-4 shadow-press">
+    <p class="label" data-toast-title></p>
+    <p class="caption text-muted" data-toast-text></p>
+    <div class="flex flex-wrap gap-3" data-toast-actions></div>
+  </div>
+</aside>
