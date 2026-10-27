@@ -26,7 +26,7 @@ const noun = accepts.length === 1 ? `${FORMAT_LABEL[accepts[0]]} images` : "imag
 const iconButton = "flex size-tap shrink-0 items-center justify-center rounded-pill border-thin border-line text-ink";
 ---
 
-<div data-washer data-machine={machine} data-accepts={accepts.join(",")} data-default-format={format} class="mx-auto grid w-full max-w-page items-start gap-6 px-5 pt-5 pb-8 lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
+<div data-washer data-machine={machine} data-accepts={accepts.join(",")} data-default-format={format} class="mx-auto grid w-full max-w-page items-start gap-6 px-5 pt-5 pb-8 grid-cols-[minmax(0,1fr)] lg:grid-cols-[minmax(0,2fr)_minmax(0,3fr)]">
   <section aria-label={`Washer No.${number}`} class="overflow-hidden rounded-xl border-thick border-line bg-surface">
     <WasherControls number={number} includeSame={!converting} format={format} />
     <div class="flex flex-col items-center gap-5 p-6">
