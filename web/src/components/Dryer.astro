@@ -96,7 +96,7 @@ const bigBar = "relative h-4 overflow-hidden rounded-pill border-md border-line 
 
       <button
         type="button"
-        class="sign-md flex min-h-tap items-center gap-3 self-start rounded-pill border-thick border-line bg-accent px-7 py-3 text-on-accent uppercase [box-shadow:var(--glow-accent)]"
+        class="sign-md flex min-h-tap items-center justify-center gap-3 rounded-pill border-thick border-line bg-accent px-7 py-3 text-on-accent uppercase wide:self-start [box-shadow:var(--glow-accent)]"
         data-dryer-start
       >
         <PlayIcon width="22" height="22" fill="currentColor" aria-hidden="true" />
@@ -141,12 +141,12 @@ const bigBar = "relative h-4 overflow-hidden rounded-pill border-md border-line 
           <div class="flex justify-between"><dt>Original</dt><dd class="font-extrabold">Removed from the dryer</dd></div>
         </dl>
       </div>
-      <div class="flex flex-wrap gap-3">
-        <a class="label flex min-h-tap items-center gap-3 rounded-pill bg-btn px-6 py-3 text-on-btn no-underline" data-dryer-download>
+      <div class="flex flex-col gap-3 wide:flex-row wide:flex-wrap">
+        <a class="label flex min-h-tap items-center justify-center gap-3 rounded-pill bg-btn px-6 py-3 text-on-btn no-underline" data-dryer-download>
           <DownloadIcon width="20" height="20" stroke="currentColor" aria-hidden="true" />
           Take it home
         </a>
-        <button type="button" class="label min-h-tap rounded-pill border-md border-line px-5 text-ink" data-dryer-again>Run another load</button>
+        <button type="button" class="label min-h-tap rounded-pill border-md border-line px-5 text-center text-ink" data-dryer-again>Run another load</button>
       </div>
     </div>
 
