@@ -131,6 +131,7 @@
   --spacing-pin-h: var(--pin-height);
   --spacing-porthole-lg: var(--porthole-lg);
   --spacing-thumb: var(--file-thumb);
+  --spacing-file-text: var(--file-text-min);
   --spacing-porthole-xl: var(--porthole-xl);
 
   /* Media queries cannot read CSS variables: keep equal to the
