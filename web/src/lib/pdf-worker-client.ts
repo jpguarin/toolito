@@ -28,7 +28,18 @@ function getWorker(): Worker {
     pending.get(event.data.id)?.resolve(event.data);
     pending.delete(event.data.id);
   });
+  // A worker that cannot load never replies: fail every waiting request and drop
+  // the worker so the next one starts a fresh one.
+  worker.addEventListener("error", () => failAll("The folding table could not start. Check your connection and try again."));
+  worker.addEventListener("messageerror", () => failAll("The folding table sent back something unreadable. Try again."));
   return worker;
+}
+
+function failAll(message: string): void {
+  worker?.terminate();
+  worker = undefined;
+  for (const [id, { resolve }] of pending) resolve({ id, ok: false, code: "corrupted_pdf", message });
+  pending.clear();
 }
 
 function send(request: PdfRequest, transfer: Transferable[]): Promise<PdfResponse> {
