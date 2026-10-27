@@ -126,6 +126,36 @@ Se va llenando a medida que aparecen términos nuevos.
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
 
+## 2026-10-27 — Etapa 7: pulido móvil y avisos de la PWA
+
+**Qué hicimos:**
+- Arreglamos varias pantallas que se veían mal en el iPhone: la fila del resultado en Compress/Convert image, los botones de Compress PDF a todo el ancho, y la mesa de Merge PDF (scroll horizontal y tarjetas de reorder apretadas).
+- Nuevo componente **Toast** (`design/components/Toast.md`) con dos usos: ofrecer **Add to home screen** y avisar de que hay una **versión nueva** de la app.
+- La actualización de la PWA ahora pregunta antes (decisión D-013 en `docs/DECISIONS.md`).
+
+**Conceptos nuevos:**
+- **Tailwind sin escala de espaciado:** `global.css` hace `--spacing: initial` para que solo existan los tokens del diseño. Una clase como `basis-48` **no genera ningún CSS** y no da error: simplemente no hace nada. Si una clase "no funciona", busca la regla en el CSS compilado (`grep` en `dist/`).
+- **`minmax(0, 1fr)` en una rejilla:** una columna `auto` de un `grid` nunca baja de su contenido mínimo, y un nombre con `truncate` cuenta completo. Eso ensanchaba toda la página. `minmax(0, 1fr)` le dice a la columna que puede encogerse hasta 0.
+- **`display: contents`:** el contenedor desaparece del layout y sus hijos pasan a ser hijos del abuelo. Con `wide:contents` una misma fila es "texto sobre botones" en el móvil y una sola línea desde 600px, sin duplicar el HTML.
+- **Instalar una PWA:** Android/Chrome lanza `beforeinstallprompt` y se puede abrir el diálogo desde un botón. iOS no tiene ese evento: solo se puede explicar el camino a mano. Se detecta con el *user agent* (y el iPad se hace pasar por Mac, por eso se mira también `maxTouchPoints`).
+- **Ciclo de vida del service worker:** una versión nueva pasa por *installing → waiting → active*. Con `skipWaiting` salta la espera sola; sin él, espera hasta que la página le manda `SKIP_WAITING` (y `controllerchange` avisa de que ya tomó el control, el momento de recargar).
+- **`sessionStorage` frente a `localStorage`:** el primero se borra al cerrar la pestaña; así recordamos un "No, gracias" sin guardar nada duradero (la política de privacidad no cambia).
+- **Si falta un token, se propone:** para el ancho mínimo de la fila creamos `--file-text-min` en los tres archivos de tokens, en vez de usar un valor suelto.
+
+**Comandos que aprendí:**
+- `grep -oh "\.clase{[^}]*}" $(find dist -name "*.css")` → comprobar que Tailwind generó la regla de una clase.
+- `grep -o 'SKIP_WAITING' dist/sw.js` → comprobar que Workbox añadió el oyente del mensaje.
+
+**Errores y cómo los resolvimos:**
+- Fila del resultado aplastada en móvil → Causa: `basis-48` sin efecto por `--spacing: initial`. → Solución: token `--file-text-min` y `basis-file-text`, y después rehacer la fila como miniatura + texto sobre acciones.
+- Scroll horizontal en Merge PDF → Causa: columna `auto` del `grid` que crece al largo del nombre del PDF. → Solución: `grid-cols-[minmax(0,1fr)]`.
+- `sed -i` falló en macOS (`bad flag in substitute command`) → Causa: macOS exige `-i ''`. → Solución: usar la herramienta de edición en vez de `sed`.
+
+**Dudas pendientes:**
+- `SplitLine.astro` tiene el mismo patrón de rejilla que causaba el desborde en Merge; revisarlo en `/split-pdf` con un nombre largo.
+- El recuadro compacto "Add another PDF to the table" se ve apretado en móvil ("PDF only" en dos líneas).
+- Comprobar el toast de instalar en Android con HTTPS real, y el de actualizar con dos despliegues seguidos.
+
 ## 2026-10-27 — Etapa 7: fotos del iPhone giradas y workers que se quedan colgados
 
 **Qué hicimos:**
