@@ -126,6 +126,35 @@ Se va llenando a medida que aparecen términos nuevos.
 
 <!-- Las entradas de cada sesión van debajo de esta línea, la más reciente arriba. -->
 
+## 2026-10-27 — Etapa 7: fotos del iPhone giradas y workers que se quedan colgados
+
+**Qué hicimos:**
+- Un bug real: al comprimir o convertir una foto vertical del iPhone, la descarga salía girada 90° en sentido antihorario. Causa: **orientación EXIF** (ver abajo).
+- Nuevo `lib/exif-orientation.ts`: `readJpegOrientation` lee la etiqueta del JPEG y `applyOrientation` reordena los píxeles; `washImage` lo aplica tras decodificar y antes del resize. Tests con las 8 orientaciones.
+- Al probar desde el iPhone con `npm run dev -- --host`, el lavado se quedaba en "progress" para siempre. Arreglo: los clientes de los workers (`image-worker-client.ts` y `pdf-worker-client.ts`) ahora escuchan `error`/`messageerror`, responden a las peticiones pendientes con un error claro y crean un worker nuevo en el siguiente intento.
+
+**Conceptos nuevos:**
+- **Orientación EXIF:** el iPhone guarda los píxeles tal como los lee el sensor (horizontal) y añade una etiqueta que dice cómo girarlos al mostrarlos. Safari y Fotos la respetan; un decodificador "crudo" como jSquash la ignora, y al re-codificar se pierde la etiqueta. Hay que girar los píxeles uno mismo.
+- **Re-codificar descarta los metadatos:** de paso se va el EXIF con GPS y cámara, bueno para la privacidad.
+- **Tipos y `ImageData` en tests:** Node no tiene `ImageData`; por eso las funciones puras trabajan con `{ data, width, height }` y solo el worker crea el `ImageData` real.
+- **Una promesa sin respuesta es un cuelgue silencioso:** si el worker muere antes de contestar, nadie resuelve la promesa. Todo canal de mensajes necesita un camino de error.
+- **Dev server vs. build:** `astro dev` sirve los módulos sin empaquetar (más peticiones, más lento por red); `npm run build && npm run preview -- --host` se parece a producción.
+- **Probar en el móvil:** `--host` hace que el servidor escuche en la red local (no solo en `localhost`); el iPhone abre `http://<IP-del-Mac>:4321` en el mismo wifi.
+
+**Comandos que aprendí:**
+- `npm run dev -- --host` → el `--` pasa el flag al comando de Astro, no a npm.
+- `ipconfig getifaddr en0` → IP del Mac en la red local.
+- `lsof -nP -iTCP:4321 -sTCP:LISTEN` → quién escucha en un puerto y en qué interfaz (`[::1]` = solo localhost).
+
+**Errores y cómo los resolvimos:**
+- Foto girada 90° → Causa: EXIF ignorado por el decodificador. → Solución: leer la etiqueta y girar los píxeles.
+- El iPhone no conectaba y pensé en el firewall → Causa real: el servidor escuchaba solo en `[::1]`; `lsof` lo mostró. → Aprendí a mirar primero *dónde* escucha el servidor antes de culpar al firewall.
+- Lavado en "progress" eterno → Causa: worker sin listener de `error`. → Solución: `failAll` resuelve lo pendiente y reinicia el worker.
+- `astro check`: `Uint8ClampedArray<ArrayBufferLike>` no sirve para `ImageData` → Solución: tipar `Pixels.data` como `Uint8ClampedArray<ArrayBuffer>`.
+
+**Dudas pendientes:**
+- No encontramos la causa exacta del fallo de carga del worker en el iPhone con el dev server (con `build`/`preview` funcionó). Si reaparece en producción, el mensaje nuevo lo hará visible; mirar la consola con el Inspector web de Safari.
+
 ## 2026-10-23 — Etapa 7: analítica sin cookies y Google Search Console
 
 **Qué hicimos:**
